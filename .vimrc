@@ -18,6 +18,7 @@ set softtabstop=4
 set ruler
 set undolevels=1000
 set backspace=indent,eol,start
+set wildmenu
 
 " Shortcutting split navigation:
 map <C-h> <C-w>h
@@ -27,5 +28,3 @@ map <C-l> <C-w>l
 
 " Automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
-
-
