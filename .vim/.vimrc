@@ -19,6 +19,13 @@ set ruler
 set undolevels=1000
 set backspace=indent,eol,start
 set wildmenu
+set wildmode=longest,list,full
+set nohlsearch
+
+" Theme settings
+syntax on
+set t_Co=256
+colorscheme distinguished
 
 " Shortcutting split navigation:
 map <C-h> <C-w>h
@@ -28,3 +35,9 @@ map <C-l> <C-w>l
 
 " Automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
+
+" Commands related to filetype
+filetype on
+
+" JavaScript
+
