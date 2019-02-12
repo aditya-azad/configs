@@ -1,4 +1,6 @@
 " Basic settings:
+filetype plugin on
+
 set nocompatible
 set encoding=utf-8
 set number relativenumber
@@ -35,9 +37,4 @@ map <C-l> <C-w>l
 
 " Automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
-
-" Commands related to filetype
-filetype on
-
-" JavaScript
 
