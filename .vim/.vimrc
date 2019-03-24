@@ -1,6 +1,9 @@
 " Basic settings:
 filetype plugin on
 
+" Search down into subfolders
+" Provides tab-completion for all file-related tasks
+set path+=**
 set nocompatible
 set encoding=utf-8
 set number relativenumber
@@ -20,6 +23,7 @@ set softtabstop=4
 set ruler
 set undolevels=1000
 set backspace=indent,eol,start
+" Display all matching names when tab completes
 set wildmenu
 set wildmode=longest,list,full
 set nohlsearch
