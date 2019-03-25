@@ -1,0 +1,28 @@
+!--------URXVT---------
+!NOTE: colors are handled by pywal
+
+! scroll back to bottom on keypress
+URxvt*scrollTtyKeypress: true
+
+! disable scrollback buffer for secondary screen eg. less
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+
+! remove scollbar 
+URxvt.scrollBar: false
+
+! extentions
+URxvt.perl-ext-common: default, matcher, url-select, keyboard-select 
+URxvt.colorUL: #4682B4
+
+! url-select
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+
+! matcher (click on links)
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+
+! keyboard-select
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
