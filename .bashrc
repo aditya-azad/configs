@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
+PS1='\e[0;36m\u@\h \W > \e[m'
 
 # key bindings
 alias r="ranger"

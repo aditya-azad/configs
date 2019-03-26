@@ -1,6 +1,9 @@
 !--------URXVT---------
 !NOTE: colors are handled by pywal
 
+! font
+URxvt.font: xft:Inconsolata-Regular:size=12
+
 ! scroll back to bottom on keypress
 URxvt*scrollTtyKeypress: true
 
@@ -8,11 +11,11 @@ URxvt*scrollTtyKeypress: true
 URxvt.secondaryScreen: 1
 URxvt.secondaryScroll: 0
 
-! remove scollbar 
+! remove scollbar
 URxvt.scrollBar: false
 
 ! extentions
-URxvt.perl-ext-common: default, matcher, url-select, keyboard-select 
+URxvt.perl-ext-common: default, matcher, url-select, keyboard-select
 URxvt.colorUL: #4682B4
 
 ! url-select
