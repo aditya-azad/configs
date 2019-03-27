@@ -10,3 +10,4 @@ places, or integrate this in your own management system. Do it whichever way it 
 ## Todo
     - Add an automated script for installing and changing files in system
     - Handle different filetypes differently
+    - Make this separate from .config folder in home directory
