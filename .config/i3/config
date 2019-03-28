@@ -36,6 +36,7 @@ gaps inner 10
 exec udiskie &
 exec compton &
 exec polybar mybar &
+exec nm-applet &
 exec wal -R
 exec xrandr --output eDP-1 --mode 1600x900
 exec feh --bg-scale ~/Pictures/wallpaper.jpg
