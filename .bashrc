@@ -12,3 +12,4 @@ PS1='\e[0;36m\u@\h \W > \e[m'
 alias r="ranger"
 alias c="cmus"
 alias cb="bash /home/aditya/brightness.sh"
+alias sdn="shutdown now"
