@@ -29,3 +29,7 @@ URxvt.matcher.button: 1
 
 ! keyboard-select
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
+
+! eval (for copy paste)
+URxvt.keysym.Shift-Control-v: eval:paste_clipboard
+URxvt.keysym.Shift-Control-c: eval:selection_to_clipboard

@@ -1,6 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/home/aditya/configs/.config'
 let g:netrw_dirhist_2='/home/aditya/configs/.git'
 let g:netrw_dirhist_3='/etc/fonts/conf.d'
 let g:netrw_dirhist_4='/home/aditya/.vim'
+let g:netrw_dirhist_5='/home/aditya/.config'
+let g:netrw_dirhist_6='/home/aditya/.vim'

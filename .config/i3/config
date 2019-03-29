@@ -35,8 +35,10 @@ gaps inner 10
 # ---run desired programs---
 exec udiskie &
 exec compton &
+exec dunst &
 exec polybar mybar &
 exec nm-applet &
+exec xbindkeys
 exec wal -R
 exec xrandr --output eDP-1 --mode 1600x900
 exec feh --bg-scale ~/Pictures/wallpaper.jpg
