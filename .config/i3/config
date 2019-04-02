@@ -46,6 +46,7 @@ exec feh --bg-scale ~/Pictures/wallpaper.jpg
 # ---cutom key bindings---
 # i am using rofi instead of dmenu_run
 bindsym $mod+d exec rofi -show run
+bindsym $mod+Shift+f exec --no-startup-id firefox
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
