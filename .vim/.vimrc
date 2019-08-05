@@ -39,5 +39,9 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Visual mode shortcuts
+vmap <Tab> >
+vmap <S-Tab> <
+
 " Other keymappings
 inoremap <S-Tab> <C-d>
