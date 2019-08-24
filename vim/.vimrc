@@ -31,7 +31,7 @@ set nohlsearch
 " Theme settings
 syntax on
 set t_Co=256
-" colorscheme distinguished
+colorscheme distinguished
 
 " Shortcutting split navigation:
 map <C-h> <C-w>h
@@ -45,3 +45,18 @@ vmap <S-Tab> <
 
 " Other keymappings
 inoremap <S-Tab> <C-d>
+
+" Vim Plug
+call plug#begin()
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'itchyny/lightline.vim'
+call plug#end()
+    
+" Plugin settings
+set laststatus=2
+
+" Plugin remaps
+map <C-o> :NERDTreeToggle<CR>
+map; :FZF <CR>
+
+
