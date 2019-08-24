@@ -1,4 +1,4 @@
-" Basic settings:
+"Basic settings:
 filetype plugin on
 
 " Search down into subfolders
@@ -50,6 +50,7 @@ inoremap <S-Tab> <C-d>
 call plug#begin()
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/lightline.vim'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 call plug#end()
     
 " Plugin settings
