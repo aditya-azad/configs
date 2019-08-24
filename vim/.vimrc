@@ -1,6 +1,21 @@
 "Basic settings:
 filetype plugin on
 
+" Vim Plug
+call plug#begin()
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'itchyny/lightline.vim'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'morhetz/gruvbox'
+call plug#end()
+    
+" Plugin settings
+set laststatus=2
+
+" Plugin remaps
+map <C-o> :NERDTreeToggle<CR>
+map; :FZF <CR>
+
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
 set path+=**
@@ -31,7 +46,8 @@ set nohlsearch
 " Theme settings
 syntax on
 set t_Co=256
-colorscheme distinguished
+colorscheme gruvbox
+set background=dark
 
 " Shortcutting split navigation:
 map <C-h> <C-w>h
@@ -45,19 +61,5 @@ vmap <S-Tab> <
 
 " Other keymappings
 inoremap <S-Tab> <C-d>
-
-" Vim Plug
-call plug#begin()
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'itchyny/lightline.vim'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-call plug#end()
-    
-" Plugin settings
-set laststatus=2
-
-" Plugin remaps
-map <C-o> :NERDTreeToggle<CR>
-map; :FZF <CR>
 
 
