@@ -8,6 +8,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'morhetz/gruvbox'
 call plug#end()
+
+" Remapping leader
+let mapleader=","
     
 " Plugin settings
 set laststatus=2
@@ -38,10 +41,15 @@ set expandtab
 set ruler
 set undolevels=1000
 set backspace=indent,eol,start
+set nohlsearch
+set colorcolumn=80
+
+" Disable auto commenting
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 " Display all matching names when tab completes
 set wildmenu
 set wildmode=longest,list,full
-set nohlsearch
 
 " Theme settings
 syntax on
@@ -61,5 +69,3 @@ vmap <S-Tab> <
 
 " Other keymappings
 inoremap <S-Tab> <C-d>
-
-
