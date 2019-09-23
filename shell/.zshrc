@@ -28,3 +28,8 @@ bindkey -v '^?' backward-delete-char
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
+
+# Alias
+alias v="vim"
+alias r="ranger"
+alias sd="shutdown now"
