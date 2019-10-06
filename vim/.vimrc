@@ -69,3 +69,6 @@ vmap <S-Tab> <
 
 " Other keymappings
 inoremap <S-Tab> <C-d>
+
+" Toggle terminal while inside vim
+noremap <C-d> :sh<cr>
