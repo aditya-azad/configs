@@ -35,6 +35,10 @@
 ;; setting very high limits for undo buffers
 (setq undo-limit 20000000)
 (setq undo-strong-limit 40000000)
+
+;; show line numbers
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
 	            
 ;; PACKAGES
 ;; ========
@@ -57,4 +61,3 @@
     :config
     (ranger-override-dired-mode t))
 (global-set-key (kbd "C-;") 'ranger)
-
