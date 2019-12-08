@@ -10,7 +10,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (gruvbox-theme use-package gruber-darker-theme evil)))
+    (ranger gruvbox-theme use-package gruber-darker-theme evil)))
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
 
