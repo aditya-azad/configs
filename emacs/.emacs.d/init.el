@@ -39,6 +39,9 @@
 ;; show line numbers
 (when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
+
+;; save file every 20 characters
+(setq auto-save-interval 20)
 	            
 ;; PACKAGES
 ;; ========
