@@ -25,6 +25,10 @@
 ;; use space instead of tabs
 (setq-default indent-tabs-mode nil)
 
+;; set tab lengths
+(setq-default tab-width 4)
+(setq-default c-basic-offset 4)
+
 ;; set font
 (add-to-list 'default-frame-alist
              '(font . "DejaVu Sans Mono-12"))
@@ -42,6 +46,7 @@
 
 ;; save file every 20 characters
 (setq auto-save-interval 20)
+
 	            
 ;; PACKAGES
 ;; ========
