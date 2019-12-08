@@ -15,6 +15,7 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
+(setq use-package-always-ensure t)
 
 ; PACKAGES
 ; ========
@@ -30,6 +31,13 @@
   :ensure t
   :config
   (load-theme 'gruvbox))
+
+; load ranger
+(use-package ranger
+    :ensure t
+    :config
+    (ranger-override-dired-mode t))
+(global-set-key (kbd "C-;") 'ranger)
 
 ; OTHER SETTINGS
 ; ==============
