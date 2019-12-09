@@ -40,10 +40,6 @@
 (setq undo-limit 20000000)
 (setq undo-strong-limit 40000000)
 
-;; show line numbers
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode))
-
 ;; save file every 20 characters
 (setq auto-save-interval 20)
 
