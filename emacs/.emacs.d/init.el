@@ -43,6 +43,9 @@
 ;; save file every 20 characters
 (setq auto-save-interval 20)
 
+;; do not use backup files
+(setq make-backup-files nil)
+
 	            
 ;; PACKAGES
 ;; ========
