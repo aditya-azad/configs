@@ -9,6 +9,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'morhetz/gruvbox'
+Plug 'jceb/vim-orgmode'
 call plug#end()
 
 " Enable copy pase in neovim
