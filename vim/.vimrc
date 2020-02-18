@@ -8,7 +8,10 @@ Plug 'jceb/vim-orgmode'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'neoclide/coc.nvim', { 'branch': 'release'}
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-fugitive'
+Plug 'chun-yang/auto-pairs'
 call plug#end()
 
 " Enable copy pase in neovim
@@ -26,8 +29,10 @@ map; :FZF <CR>
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
 set path+=**
+
+set hidden
 set nocompatible
-set encoding=utf-8
+set encoding=UTF-8
 set number relativenumber
 set linebreak
 set showmatch
