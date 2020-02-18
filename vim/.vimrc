@@ -12,6 +12,10 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'chun-yang/auto-pairs'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-surround'
+Plug 'rust-lang-nursery/rustfmt'
 call plug#end()
 
 " Enable copy pase in neovim
@@ -25,6 +29,16 @@ set laststatus=2
 " Plugin remaps
 map <C-o> :NERDTreeToggle<CR>
 map; :FZF <CR>
+
+" Syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
