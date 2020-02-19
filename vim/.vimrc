@@ -16,6 +16,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'rust-lang-nursery/rustfmt'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " Enable copy pase in neovim
@@ -34,11 +35,20 @@ map; :FZF <CR>
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Coc settings
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
 
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
@@ -82,11 +92,11 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " Visual mode shortcuts
-vmap <Tab> >
-vmap <S-Tab> <
+" vmap <Tab> >
+" vmap <S-Tab> <
 
 " Other keymappings
-inoremap <S-Tab> <C-d>
+" inoremap <S-Tab> <C-d>
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
