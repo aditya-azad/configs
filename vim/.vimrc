@@ -95,6 +95,9 @@ set t_Co=256
 colorscheme gruvbox
 set background=dark
 
+" Switching buffers
+map <C-Tab> :b#<CR>
+
 " Shortcutting split navigation:
 map <C-h> <C-w>h
 map <C-j> <C-w>j
