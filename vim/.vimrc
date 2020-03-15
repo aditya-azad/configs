@@ -17,6 +17,8 @@ Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'rust-lang-nursery/rustfmt'
 Plug 'ryanoasis/vim-devicons'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
+
 call plug#end()
 
 " Enable copy pase in neovim
@@ -54,6 +56,9 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+" Markdown settings
+let g:mkdp_auto_start = 1
+let g:mkdp_auto_close = 1
 
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
