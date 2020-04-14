@@ -1,6 +1,7 @@
-"Basic settings:
 filetype plugin on
 
+" =========================PLUGINS=============================
+" =============================================================
 " Vim Plug
 call plug#begin()
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -21,10 +22,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 
 call plug#end()
 
-" Enable copy pase in neovim
-if has('win32')
-    so $VIMRUNTIME/mswin.vim
-endif
     
 " Plugin settings
 set laststatus=2
@@ -56,14 +53,15 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Markdown settings
-let g:mkdp_auto_start = 1
-let g:mkdp_auto_close = 1
-
+" ========================BASIC SETTINGS=======================
+" =============================================================
+" Enable copy pase in neovim
+if has('win32')
+    so $VIMRUNTIME/mswin.vim
+endif
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
 set path+=**
-
 set hidden
 set nocompatible
 set encoding=UTF-8
@@ -103,13 +101,6 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-
-" Visual mode shortcuts
-" vmap <Tab> >
-" vmap <S-Tab> <
-
-" Other keymappings
-" inoremap <S-Tab> <C-d>
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
