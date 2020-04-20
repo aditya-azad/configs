@@ -3,7 +3,7 @@ filetype plugin on
 " =========================PLUGINS=============================
 " =============================================================
 " Vim Plug
-call plug#begin()
+call plug#begin('~/.vim/autoload')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'jceb/vim-orgmode'
 Plug 'itchyny/lightline.vim'
@@ -59,6 +59,11 @@ inoremap <silent><expr> <c-space> coc#refresh()
 if has('win32')
     so $VIMRUNTIME/mswin.vim
 endif
+" Set the fonts when gVim is running
+if has("gui_running")
+    set gfn=mononoki_NF:h11
+endif
+    
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
 set path+=**
