@@ -92,6 +92,10 @@ set wildmenu
 set wildmode=longest,list,full
 set nohlsearch
 
+" Save temp files (swp files) in separate directory
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+
 " Theme settings
 syntax on
 set t_Co=256
