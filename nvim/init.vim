@@ -3,15 +3,35 @@ filetype plugin on
 " =========================PLUGINS=============================
 " =============================================================
 
+" Install Vim Plug (nvim for windows)
+if has("win32")
+    if empty(glob('$LOCALAPPDATA\nvim\autoload\plug.vim'))
+      silent ! powershell -Command "
+      \   New-Item -Path ~\AppData\Local\nvim -Name autoload -Type Directory -Force;
+      \   Invoke-WebRequest
+      \   -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+      \   -OutFile ~\AppData\Local\nvim\autoload\plug.vim
+      \ "
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+else
+    if empty(glob('~/.vim/autoload/plug.vim'))
+      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+endif
+
 " Vim Plug
 call plug#begin('~/.vim/autoload')
-Plug 'valloric/youcompleteme'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kien/ctrlp.vim'
-Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'chun-yang/auto-pairs'
+Plug 'lilydjwg/colorizer'
+Plug 'vim-airline/vim-airline'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
 Plug 'rust-lang-nursery/rustfmt'
@@ -24,15 +44,33 @@ set laststatus=2
 " NerdTree
 let NERDTreeMinimalUI=1
 
-" YCM
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
-let g:ycm_max_diagnostics_to_display=0
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_server_log_level = 'debug'
-let g:ycm_warning_symbol = '.'
-let g:ycm_error_symbol = '..'
-let g:ycm_server_use_vim_stdout = 1
+" COC
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Install extentions
+let g:coc_global_extentions="coc-tsserver coc-eslint coc-json coc-css coc-html"
+
+" airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_tab_count = 0
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#tabs_label = ''
+let g:airline#extensions#tabline#buffers_label = ''
+let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+
 
 " =======================KEY MAPPINGS==========================
 " =============================================================
@@ -60,9 +98,12 @@ vmap <leader>y "+y
 nnoremap <leader>o :NERDTreeToggle<CR>
 nnoremap <silent> <Leader>pv :NERDTreeFind<CR>
 
-" YCM
-nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
+" COC
+nmap <silent> <Leader>gd <Plug>(coc-definition)
+nmap <silent> <Leader>gy <Plug>(coc-type-definition)
+nmap <silent> <Leader>gi <Plug>(coc-implementation)
+nmap <silent> <Leader>gr <Plug>(coc-references)
+nmap <silent> <leader>rn <Plug>(coc-rename)
 
 
 " ========================BASIC SETTINGS=======================
@@ -77,7 +118,7 @@ endif
 if has("gui_running")
     set gfn=mononoki_NF:h11
 endif
-    
+
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
 set hidden
@@ -102,6 +143,8 @@ set colorcolumn=80
 set undolevels=1000
 set backspace=indent,eol,start
 set updatetime=100
+set paste
+set shortmess+=c
 
 " Save temp files in separate directory
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
