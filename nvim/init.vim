@@ -32,6 +32,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'chun-yang/auto-pairs'
 Plug 'lilydjwg/colorizer'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
 Plug 'rust-lang-nursery/rustfmt'
@@ -61,13 +62,18 @@ inoremap <silent><expr> <c-space> coc#refresh()
 let g:coc_global_extentions="coc-tsserver coc-eslint coc-json coc-css coc-html"
 
 " airline
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+	let g:airline_symbols = {}
+endif
+let g:airline_theme='gruvbox'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline_section_a = airline#section#create(['mode'])
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#show_tab_count = 0
-let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#tabline#tabs_label = ''
 let g:airline#extensions#tabline#buffers_label = ''
-let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
+let airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 
@@ -105,6 +111,9 @@ nmap <silent> <Leader>gi <Plug>(coc-implementation)
 nmap <silent> <Leader>gr <Plug>(coc-references)
 nmap <silent> <leader>rn <Plug>(coc-rename)
 
+" vimrc
+nnoremap <Leader>ve :e $MYVIMRC<CR>
+nnoremap <Leader>vr :source $MYVIMRC<CR>
 
 " ========================BASIC SETTINGS=======================
 " =============================================================
@@ -145,6 +154,7 @@ set backspace=indent,eol,start
 set updatetime=100
 set paste
 set shortmess+=c
+set clipboard^=unnamed,unnamedplus
 
 " Save temp files in separate directory
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -157,10 +167,7 @@ set nohlsearch
 
 " Theme settings
 syntax on
-set t_Co=256
 colorscheme gruvbox
-set background=dark
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
-
