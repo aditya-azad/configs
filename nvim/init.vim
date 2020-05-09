@@ -85,8 +85,11 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let mapleader=" "
 
 " Sizing windows
-map - <C-w>-
-map = <C-w>+
+nmap <leader>J 5<C-w>+
+nmap <leader>K 5<C-w>-
+nmap <leader>L 5<C-w>>
+nmap <leader>H 5<C-w><
+nmap <leader>= <C-w>=
 
 " Shortcutting split navigation:
 nmap <silent> <leader>h :wincmd h<CR>
@@ -94,11 +97,8 @@ nmap <silent> <leader>j :wincmd j<CR>
 nmap <silent> <leader>k :wincmd k<CR>
 nmap <silent> <leader>l :wincmd l<CR>
 
-" Switching buffers
-map <C-Tab> :b#<CR>
-
-" Copying
-vmap <leader>y "+y
+" Close current buffer
+ map <Leader>dt :bd<CR>
 
 " NerdTree
 nnoremap <leader>o :NERDTreeToggle<CR>
