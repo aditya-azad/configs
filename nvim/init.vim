@@ -25,9 +25,11 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'morhetz/gruvbox'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-fugitive'
 Plug 'chun-yang/auto-pairs'
 Plug 'lilydjwg/colorizer'
@@ -60,6 +62,14 @@ endfunction
 inoremap <silent><expr> <c-space> coc#refresh()
 " Install extentions
 let g:coc_global_extentions="coc-tsserver coc-eslint coc-json coc-css coc-html"
+" Shows documentation
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 " airline
 let g:airline_powerline_fonts = 1
@@ -110,6 +120,11 @@ nmap <silent> <Leader>gy <Plug>(coc-type-definition)
 nmap <silent> <Leader>gi <Plug>(coc-implementation)
 nmap <silent> <Leader>gr <Plug>(coc-references)
 nmap <silent> <leader>rn <Plug>(coc-rename)
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
+
+" FZF
+map <C-f> :Files<CR>
+map <leader>b :Buffers<CR>
 
 " vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
