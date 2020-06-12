@@ -95,15 +95,16 @@ if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
 let g:airline_theme='onedark'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.dirty='⚡'
 let g:airline_section_a = airline#section#create(['mode'])
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tabs_label = ''
-let g:airline#extensions#tabline#buffers_label = ''
-let airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#tabline#show_buffers = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 " Rooter
 let g:rooter_change_directory_for_non_project_files = 'home'
