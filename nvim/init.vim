@@ -25,8 +25,9 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-rooter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
@@ -38,16 +39,33 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-surround'
 Plug 'rust-lang-nursery/rustfmt'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 call plug#end()
 
 " Plugin settings
 set laststatus=2
 
 " NerdTree
+let g:NERDTreeDirArrowExpandable = ' '
+let g:NERDTreeDirArrowCollapsible = ' '
 let NERDTreeMinimalUI=1
 
 " COC
+let g:coc_global_extensions = [
+  \ 'coc-tsserver',
+  \ 'coc-floaterm',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-emoji',
+  \ 'coc-cssmodules',
+  \ 'coc-yaml',
+  \ 'coc-python',
+  \ 'coc-explorer',
+  \ 'coc-svg',
+  \ 'coc-prettier',
+  \ 'coc-vimlsp',
+  \ 'coc-xml',
+  \ 'coc-json',
+  \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -76,7 +94,7 @@ let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
-let g:airline_theme='gruvbox'
+let g:airline_theme='onedark'
 let g:airline_left_sep = '▶'
 let g:airline_right_sep = '◀'
 let g:airline_section_a = airline#section#create(['mode'])
@@ -87,6 +105,8 @@ let airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 
+" Rooter
+let g:rooter_change_directory_for_non_project_files = 'home'
 
 " =======================KEY MAPPINGS==========================
 " =============================================================
@@ -133,18 +153,7 @@ nnoremap <Leader>vr :source $MYVIMRC<CR>
 " ========================BASIC SETTINGS=======================
 " =============================================================
 
-" Enable copy pase in neovim
-if has('win32')
-    so $VIMRUNTIME/mswin.vim
-endif
-
-" Set the fonts when gVim is running
-if has("gui_running")
-    set gfn=mononoki_NF:h11
-endif
-
-" Search down into subfolders
-" Provides tab-completion for all file-related tasks
+set guifont=Hack:h11
 set hidden
 set nocompatible
 set encoding=UTF-8
@@ -159,17 +168,24 @@ set ignorecase
 set incsearch
 set autoindent
 set cindent
-set tabstop=4 softtabstop=4
-set shiftwidth=4
+set tabstop=2 softtabstop=2
+set shiftwidth=2
 set smartindent
+set smarttab
 set expandtab
 set colorcolumn=80
 set undolevels=1000
+set background=dark
 set backspace=indent,eol,start
 set updatetime=100
 set paste
 set shortmess+=c
 set clipboard^=unnamed,unnamedplus
+set t_Co=256
+set nobackup
+set nowritebackup
+set mouse=a
+set conceallevel=3
 
 " Save temp files in separate directory
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -182,7 +198,8 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme gruvbox
+colorscheme onedark
+let g:onedark_termcolors=256
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
