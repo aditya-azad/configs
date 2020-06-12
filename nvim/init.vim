@@ -5,32 +5,30 @@ filetype plugin on
 
 " Install Vim Plug (nvim for windows)
 if has("win32")
-    if empty(glob('$LOCALAPPDATA\nvim\autoload\plug.vim'))
-      silent ! powershell -Command "
-      \   New-Item -Path ~\AppData\Local\nvim -Name autoload -Type Directory -Force;
-      \   Invoke-WebRequest
-      \   -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-      \   -OutFile ~\AppData\Local\nvim\autoload\plug.vim
-      \ "
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    endif
+  if empty(glob('$LOCALAPPDATA\nvim\autoload\plug.vim'))
+    silent ! powershell -Command "
+          \   New-Item -Path ~\AppData\Local\nvim -Name autoload -Type Directory -Force;
+          \   Invoke-WebRequest
+          \   -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+          \   -OutFile ~\AppData\Local\nvim\autoload\plug.vim
+          \ "
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
 else
-	if empty(glob('~/.config/nvim/autoload/plug.vim'))
-	  !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-	endif
+  if empty(glob('~/.config/nvim/autoload/plug.vim'))
+    !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
 endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-fugitive'
 Plug 'chun-yang/auto-pairs'
 Plug 'lilydjwg/colorizer'
@@ -44,28 +42,23 @@ call plug#end()
 " Plugin settings
 set laststatus=2
 
-" NerdTree
-let g:NERDTreeDirArrowExpandable = ' '
-let g:NERDTreeDirArrowCollapsible = ' '
-let NERDTreeMinimalUI=1
-
 " COC
 let g:coc_global_extensions = [
-  \ 'coc-tsserver',
-  \ 'coc-floaterm',
-  \ 'coc-html',
-  \ 'coc-css',
-  \ 'coc-emoji',
-  \ 'coc-cssmodules',
-  \ 'coc-yaml',
-  \ 'coc-python',
-  \ 'coc-explorer',
-  \ 'coc-svg',
-  \ 'coc-prettier',
-  \ 'coc-vimlsp',
-  \ 'coc-xml',
-  \ 'coc-json',
-  \ ]
+      \ 'coc-floaterm',
+      \ 'coc-emoji',
+      \ 'coc-cssmodules',
+      \ 'coc-explorer',
+      \ 'coc-svg',
+      \ 'coc-prettier',
+      \ 'coc-yaml',
+      \ 'coc-python',
+      \ 'coc-tsserver',
+      \ 'coc-html',
+      \ 'coc-css',
+      \ 'coc-vimlsp',
+      \ 'coc-xml',
+      \ 'coc-json',
+      \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -88,11 +81,33 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+" provider config
+let g:loaded_python_provider=0 " python 2 support disabled
+let g:loaded_ruby_provider=0
+" explorer
+let g:coc_explorer_global_presets = {
+      \   'floating': {
+      \      'position': 'floating',
+      \   },
+      \   'floatingLeftside': {
+      \      'position': 'floating',
+      \      'floating-position': 'left-center',
+      \      'floating-width': 30,
+      \   },
+      \   'floatingRightside': {
+      \      'position': 'floating',
+      \      'floating-position': 'right-center',
+      \      'floating-width': 30,
+      \   },
+      \   'simplify': {
+      \     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+      \   }
+      \ }
 
 " airline
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
+  let g:airline_symbols = {}
 endif
 let g:airline_theme='onedark'
 let g:airline_left_sep = ''
@@ -115,6 +130,9 @@ let g:rooter_change_directory_for_non_project_files = 'home'
 " Leader set
 let mapleader=" "
 
+" Fix indentation in file
+nmap <leader>ff gg=G<C-o><C-o>
+
 " Sizing windows
 nmap <leader>J 5<C-w>+
 nmap <leader>K 5<C-w>-
@@ -129,11 +147,7 @@ nmap <silent> <leader>k :wincmd k<CR>
 nmap <silent> <leader>l :wincmd l<CR>
 
 " Close current buffer
- map <Leader>dt :bd<CR>
-
-" NerdTree
-nnoremap <leader>o :NERDTreeToggle<CR>
-nnoremap <silent> <Leader>pv :NERDTreeFind<CR>
+map <Leader>dt :bd<CR>
 
 " COC
 nmap <silent> <Leader>gd <Plug>(coc-definition)
@@ -142,10 +156,10 @@ nmap <silent> <Leader>gi <Plug>(coc-implementation)
 nmap <silent> <Leader>gr <Plug>(coc-references)
 nmap <silent> <leader>rn <Plug>(coc-rename)
 nnoremap <silent> gh :call <SID>show_documentation()<CR>
+nnoremap <leader>o :CocCommand explorer --toggle --sources=buffer+,file+<CR>
 
 " FZF
 map <C-f> :Files<CR>
-map <leader>b :Buffers<CR>
 
 " vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
@@ -174,19 +188,19 @@ set shiftwidth=2
 set smartindent
 set smarttab
 set expandtab
-set colorcolumn=80
 set undolevels=1000
 set background=dark
 set backspace=indent,eol,start
 set updatetime=100
-set paste
 set shortmess+=c
 set clipboard^=unnamed,unnamedplus
 set t_Co=256
 set nobackup
 set nowritebackup
 set mouse=a
-set conceallevel=3
+
+" Remove trailing space on save
+autocmd BufWritePre * %s/\s\+$//e
 
 " Save temp files in separate directory
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
