@@ -158,6 +158,14 @@ nmap <silent> <leader>rn <Plug>(coc-rename)
 nnoremap <silent> gh :call <SID>show_documentation()<CR>
 nnoremap <leader>o :CocCommand explorer --toggle --sources=buffer+,file+<CR>
 
+" Fugitive
+nmap <Leader>ga :Git add
+nmap <Leader>gaa :Git add .<CR>
+nmap <Leader>gpl :Git pull<CR>
+nmap <Leader>gps :Git push<CR>
+nmap <Leader>gs :Git status<CR>
+nmap <Leader>gc :Git commit<CR>
+
 " FZF
 map <C-f> :Files<CR>
 
