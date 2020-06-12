@@ -133,6 +133,9 @@ let mapleader=" "
 " Fix indentation in file
 nmap <leader>ff gg=G<C-o><C-o>
 
+" Switch to previous buffer
+nmap <C-TAB> :b#<CR>
+
 " Sizing windows
 nmap <leader>J 5<C-w>+
 nmap <leader>K 5<C-w>-
