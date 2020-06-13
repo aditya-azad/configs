@@ -5,7 +5,3 @@
 # Increase volume
 "pactl set-sink-volume @DEFAULT_SINK@ -5%"
     XF86AudioLowerVolume
-
-# Mute volume
-"pactl set-sink-volume 0 toggle"
-    XF86WakeUp

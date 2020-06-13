@@ -34,26 +34,24 @@ gaps inner 10
 
 # ---run desired programs---
 exec udiskie &
-exec compton &
 exec dunst &
 exec polybar mybar &
 exec nm-applet &
+exec picom &
 exec xbindkeys
-exec wal -R
 exec xrandr --output eDP-1 --mode 1600x900
-exec feh --bg-scale ~/Pictures/wallpaper.jpg
+exec feh --bg-scale ~/Pictures/wallpapers/guweiz-woman-rain-wallpaper.jpg
 
 # ---cutom key bindings---
 # i am using rofi instead of dmenu_run
-bindsym $mod+d exec rofi -show run
-bindsym $mod+Shift+f exec --no-startup-id firefox
-bindsym $mod+Shift+a exec --no-startup-id emacs
+bindsym $mod+p exec rofi -show run
+bindsym $mod+Shift+b exec --no-startup-id brave
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -83,10 +81,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+Shift+s split h
+bindsym $mod+Shift+s split v
 
 # split in vertical orientation
-bindsym $mod+Shift+v split v
+bindsym $mod+Shift+v split h
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle

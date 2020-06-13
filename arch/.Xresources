@@ -2,7 +2,7 @@
 !NOTE: colors are handled by pywal
 
 ! font
-URxvt.font: xft:Inconsolata-Regular:size=12
+URxvt.font: xft:Hack-Regular:size=12
 
 ! scroll back to bottom on keypress
 URxvt*scrollTtyKeypress: true
