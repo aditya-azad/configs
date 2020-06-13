@@ -225,6 +225,10 @@ set nohlsearch
 " Theme settings
 syntax on
 colorscheme onedark
+" Transparent background
+if has('unix')
+  hi Normal guibg=NONE ctermbg=NONE
+endif
 let g:onedark_termcolors=256
 
 " Spell check on markdown files
