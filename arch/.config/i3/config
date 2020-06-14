@@ -37,10 +37,10 @@ exec udiskie &
 exec dunst &
 exec polybar mybar &
 exec nm-applet &
+exec xbindkeys &
+exec xrandr --output eDP-1 --mode 1600x900 &
+exec feh --bg-scale ~/Pictures/wallpapers/guweiz-woman-rain-wallpaper.jpg &
 exec picom &
-exec xbindkeys
-exec xrandr --output eDP-1 --mode 1600x900
-exec feh --bg-scale ~/Pictures/wallpapers/guweiz-woman-rain-wallpaper.jpg
 
 # ---cutom key bindings---
 # i am using rofi instead of dmenu_run
