@@ -111,11 +111,14 @@ alias lal="ls -la"
 alias r="ranger"
 alias v="nvim"
 alias sdn="shutdown now"
+alias c="cmus"
+
 alias br="sudo brightness.sh"
 
 alias spsyu='sudo pacman -Syu'
 alias sps='sudo pacman -S'
 alias spr='sudo pacman -R'
+
 
 # Load nvm
 export NVM_DIR=~/.nvm
