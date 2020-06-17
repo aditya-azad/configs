@@ -44,11 +44,9 @@ set laststatus=2
 
 " COC
 let g:coc_global_extensions = [
-      \ 'coc-floaterm',
       \ 'coc-emoji',
       \ 'coc-cssmodules',
       \ 'coc-explorer',
-      \ 'coc-svg',
       \ 'coc-prettier',
       \ 'coc-yaml',
       \ 'coc-python',
@@ -57,7 +55,7 @@ let g:coc_global_extensions = [
       \ 'coc-css',
       \ 'coc-vimlsp',
       \ 'coc-xml',
-      \ 'coc-json',
+      \ 'coc-json'
       \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
