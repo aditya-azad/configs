@@ -24,6 +24,7 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
+Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
 Plug 'joshdick/onedark.vim'
@@ -157,7 +158,7 @@ nmap <silent> <Leader>gi <Plug>(coc-implementation)
 nmap <silent> <Leader>gr <Plug>(coc-references)
 nmap <silent> <leader>rn <Plug>(coc-rename)
 nnoremap <silent> gh :call <SID>show_documentation()<CR>
-nnoremap <leader>o :CocCommand explorer --toggle --sources=buffer+,file+<CR>
+nnoremap <silent> <leader>o :CocCommand explorer --toggle --sources=buffer+,file+<CR>
 
 " Fugitive
 nmap <Leader>ga :Git add
@@ -170,9 +171,13 @@ nmap <Leader>gc :Git commit<CR>
 " FZF
 map <C-f> :Files<CR>
 
+" Prettier
+nmap <silent> <Leader>pf :CocCommand prettier.formatFile<CR>
+
 " vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
 nnoremap <Leader>vr :source $MYVIMRC<CR>
+
 
 " ========================BASIC SETTINGS=======================
 " =============================================================
