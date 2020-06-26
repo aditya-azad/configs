@@ -25,8 +25,6 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'voldikss/vim-floaterm'
-Plug 'smallwat3r/vim-simplicity'
-Plug 'fxn/vim-monochrome'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
