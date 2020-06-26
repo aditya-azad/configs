@@ -24,6 +24,7 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
+Plug 'voldikss/vim-floaterm'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
@@ -177,6 +178,10 @@ nmap <silent> <Leader>pf :CocCommand prettier.formatFile<CR>
 " vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
 nnoremap <Leader>vr :source $MYVIMRC<CR>
+
+" Terminal
+tnoremap <silent> <C-`> <C-\><C-n>:FloatermToggle<CR>
+nnoremap <silent> <C-`> :FloatermToggle<CR>
 
 
 " ========================BASIC SETTINGS=======================
