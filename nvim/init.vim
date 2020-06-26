@@ -130,6 +130,9 @@ let g:rooter_change_directory_for_non_project_files = 'home'
 " Leader set
 let mapleader=" "
 
+" Shortcut to cd into home directory (useful for windows)
+nmap <leader>cdh :cd ~/<CR>
+
 " Fix indentation in file
 nmap <leader>ff gg=G<C-o><C-o>
 
@@ -180,9 +183,14 @@ nnoremap <Leader>ve :e $MYVIMRC<CR>
 nnoremap <Leader>vr :source $MYVIMRC<CR>
 
 " Terminal
-tnoremap <silent> <C-`> <C-\><C-n>:FloatermToggle<CR>
 nnoremap <silent> <C-`> :FloatermToggle<CR>
-
+tnoremap <silent> <C-`> <C-\><C-n>:FloatermToggle<CR>
+tnoremap <silent> <C-TAB> <C-\><C-n>:FloatermNext<CR>
+tnoremap <silent> <C-n> <C-\><C-n>:FloatermNew<CR>
+tnoremap <silent> <C-q> <C-\><C-n>:FloatermKill<CR>:FloatermToggle<CR>
+tnoremap <silent> <C-l> cls<CR>
+tnoremap <silent> <C-S-TAB> <C-\><C-n>:FloatermPrev<CR>
+tnoremap <Esc> <C-\><C-n>
 
 " ========================BASIC SETTINGS=======================
 " =============================================================
