@@ -25,6 +25,8 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'voldikss/vim-floaterm'
+Plug 'smallwat3r/vim-simplicity'
+Plug 'fxn/vim-monochrome'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
@@ -32,17 +34,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'chun-yang/auto-pairs'
 Plug 'lilydjwg/colorizer'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'rust-lang/rust.vim'
-Plug 'tpope/vim-surround'
-Plug 'rust-lang-nursery/rustfmt'
 call plug#end()
-
-" Plugin settings
-set laststatus=2
 
 " COC
 let g:coc_global_extensions = [
@@ -103,23 +96,6 @@ let g:coc_explorer_global_presets = {
       \     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
       \   }
       \ }
-
-" airline
-let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_theme='onedark'
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.dirty='⚡'
-let g:airline_section_a = airline#section#create(['mode'])
 
 " Rooter
 let g:rooter_change_directory_for_non_project_files = 'home'
@@ -197,6 +173,7 @@ tnoremap <Esc> <C-\><C-n>
 
 set guifont=Hack:h11
 set hidden
+set formatoptions-=cro
 set nocompatible
 set encoding=UTF-8
 set number relativenumber
@@ -246,6 +223,20 @@ if has('unix')
   hi Normal guibg=NONE ctermbg=NONE
 endif
 let g:onedark_termcolors=256
+
+" Statusline
+set noshowmode
+set noshowcmd
+set laststatus=2
+set statusline=
+set statusline +=%*\ %*                     "spacing
+set statusline +=%*%y%*                "file type
+set statusline +=%*\ %{fugitive#statusline()}
+set statusline +=%*\ %<%F%*            "full path
+set statusline +=%*\ %m%r%w%*             "modified/readonly
+set statusline +=%*%=%1l%*             "current line
+set statusline +=%*/%L%*               "total lines
+set statusline +=%*%1v\ %*             "virtual column number
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
