@@ -25,11 +25,10 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'voldikss/vim-floaterm'
-Plug 'tek256/simple-dark'
+Plug 'aditya-azad/simple-dark'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
-Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
