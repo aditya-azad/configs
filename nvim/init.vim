@@ -5,26 +5,27 @@ filetype plugin on
 
 " Install Vim Plug (nvim for windows)
 if has("win32")
-  if empty(glob('$LOCALAPPDATA\nvim\autoload\plug.vim'))
-    silent ! powershell -Command "
-          \   New-Item -Path ~\AppData\Local\nvim -Name autoload -Type Directory -Force;
-          \   Invoke-WebRequest
-          \   -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-          \   -OutFile ~\AppData\Local\nvim\autoload\plug.vim
-          \ "
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
+if empty(glob('$LOCALAPPDATA\nvim\autoload\plug.vim'))
+silent ! powershell -Command "
+\   New-Item -Path ~\AppData\Local\nvim -Name autoload -Type Directory -Force;
+\   Invoke-WebRequest
+\   -Uri 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+\   -OutFile ~\AppData\Local\nvim\autoload\plug.vim
+\ "
+autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 else
-  if empty(glob('~/.config/nvim/autoload/plug.vim'))
-    !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'voldikss/vim-floaterm'
+Plug 'tek256/simple-dark'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
@@ -37,28 +38,28 @@ call plug#end()
 
 " COC
 let g:coc_global_extensions = [
-      \ 'coc-emoji',
-      \ 'coc-cssmodules',
-      \ 'coc-explorer',
-      \ 'coc-prettier',
-      \ 'coc-yaml',
-      \ 'coc-python',
-      \ 'coc-tsserver',
-      \ 'coc-html',
-      \ 'coc-css',
-      \ 'coc-vimlsp',
-      \ 'coc-xml',
-      \ 'coc-json'
-      \ ]
+\ 'coc-emoji',
+\ 'coc-cssmodules',
+\ 'coc-explorer',
+\ 'coc-prettier',
+\ 'coc-yaml',
+\ 'coc-python',
+\ 'coc-tsserver',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-vimlsp',
+\ 'coc-xml',
+\ 'coc-json'
+\ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+\ pumvisible() ? "\<C-n>" :
+\ <SID>check_back_space() ? "\<TAB>" :
+\ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -66,34 +67,34 @@ inoremap <silent><expr> <c-space> coc#refresh()
 let g:coc_global_extentions="coc-tsserver coc-eslint coc-json coc-css coc-html"
 " Shows documentation
 function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+if &filetype == 'vim'
+execute 'h '.expand('<cword>')
+else
+call CocAction('doHover')
+endif
 endfunction
 " provider config
 let g:loaded_python_provider=0 " python 2 support disabled
 let g:loaded_ruby_provider=0
 " explorer
 let g:coc_explorer_global_presets = {
-      \   'floating': {
-      \      'position': 'floating',
-      \   },
-      \   'floatingLeftside': {
-      \      'position': 'floating',
-      \      'floating-position': 'left-center',
-      \      'floating-width': 30,
-      \   },
-      \   'floatingRightside': {
-      \      'position': 'floating',
-      \      'floating-position': 'right-center',
-      \      'floating-width': 30,
-      \   },
-      \   'simplify': {
-      \     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-      \   }
-      \ }
+\   'floating': {
+\      'position': 'floating',
+\   },
+\   'floatingLeftside': {
+\      'position': 'floating',
+\      'floating-position': 'left-center',
+\      'floating-width': 30,
+\   },
+\   'floatingRightside': {
+\      'position': 'floating',
+\      'floating-position': 'right-center',
+\      'floating-width': 30,
+\   },
+\   'simplify': {
+\     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   }
+\ }
 
 " Rooter
 let g:rooter_change_directory_for_non_project_files = 'home'
@@ -169,12 +170,13 @@ tnoremap <Esc> <C-\><C-n>
 " ========================BASIC SETTINGS=======================
 " =============================================================
 
+set t_Co=256
 set guifont=Hack:h11
 set hidden
+set foldcolumn=1
 set formatoptions-=cro
 set nocompatible
 set encoding=UTF-8
-set number relativenumber
 set linebreak
 set showmatch
 set novisualbell
@@ -194,12 +196,12 @@ set undolevels=1000
 set background=dark
 set backspace=indent,eol,start
 set updatetime=100
-set shortmess+=c
-set clipboard^=unnamed,unnamedplus
-set t_Co=256
+set shortmess+=I
 set nobackup
+set noundofile
 set nowritebackup
 set mouse=a
+set clipboard^=unnamed,unnamedplus
 
 " Remove trailing space on save
 autocmd BufWritePre * %s/\s\+$//e
@@ -215,26 +217,16 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme onedark
+colorscheme simple-dark
 " Transparent background
 if has('unix')
-  hi Normal guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
 endif
-let g:onedark_termcolors=256
 
 " Statusline
-set noshowmode
-set noshowcmd
-set laststatus=2
-set statusline=
-set statusline +=%*\ %*                     "spacing
-set statusline +=%*%y%*                "file type
-set statusline +=%*\ %{fugitive#statusline()}
-set statusline +=%*\ %<%F%*            "full path
-set statusline +=%*\ %m%r%w%*             "modified/readonly
-set statusline +=%*%=%1l%*             "current line
-set statusline +=%*/%L%*               "total lines
-set statusline +=%*%1v\ %*             "virtual column number
+set showmode
+set showcmd
+set laststatus=0
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
