@@ -25,7 +25,7 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'voldikss/vim-floaterm'
-Plug 'aditya-azad/simple-dark'
+Plug 'aditya-azad/candle-grey'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
@@ -220,7 +220,7 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme simple-dark
+colorscheme candle-grey
 " Transparent background
 if has('unix')
 hi Normal guibg=NONE ctermbg=NONE
@@ -228,8 +228,8 @@ endif
 
 " Statusline
 set showmode
-set showcmd
-set laststatus=0
+set noshowcmd
+set laststatus=2
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
