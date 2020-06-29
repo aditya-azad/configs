@@ -37,18 +37,22 @@ call plug#end()
 
 " COC
 let g:coc_global_extensions = [
-\ 'coc-emoji',
-\ 'coc-cssmodules',
-\ 'coc-explorer',
-\ 'coc-prettier',
-\ 'coc-yaml',
-\ 'coc-python',
 \ 'coc-tsserver',
-\ 'coc-html',
+\ 'coc-prettier',
+\ 'coc-eslint',
+\
+\ 'coc-cssmodules',
 \ 'coc-css',
-\ 'coc-vimlsp',
+\ 'coc-html',
+\
+\ 'coc-emoji',
 \ 'coc-xml',
-\ 'coc-json'
+\ 'coc-python',
+\ 'coc-vimlsp',
+\ 'coc-yaml',
+\ 'coc-json',
+\
+\ 'coc-explorer'
 \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
