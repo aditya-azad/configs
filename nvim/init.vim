@@ -236,3 +236,7 @@ set laststatus=2
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
+
+" Set appropriate tab length for files
+autocmd BufRead,BufNewFile *.c, *.h, *.cpp, *.py set shiftwidth=4
+autocmd BufRead,BufNewFile *.c, *.h, *.cpp, *.py set tabstop=4
