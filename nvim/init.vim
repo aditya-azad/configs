@@ -48,6 +48,7 @@ let g:coc_global_extensions = [
 \ 'coc-emoji',
 \ 'coc-xml',
 \ 'coc-python',
+\ 'coc-clangd',
 \ 'coc-vimlsp',
 \ 'coc-yaml',
 \ 'coc-json',
@@ -220,10 +221,12 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme candle-grey
+if has("win32")
+  colorscheme candle-grey
+endif
 " Transparent background
 if has('unix')
-hi Normal guibg=NONE ctermbg=NONE
+  colorscheme candle-grey-transparent
 endif
 
 " Statusline
