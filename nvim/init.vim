@@ -118,6 +118,9 @@ nmap <leader>ff gg=G<C-o><C-o>
 " Switch to previous buffer
 nmap <C-TAB> :b#<CR>
 
+" Copy the contents of file
+nmap YY :%y+<CR>
+
 " Sizing windows
 nmap <leader>J 5<C-w>+
 nmap <leader>K 5<C-w>-
