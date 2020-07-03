@@ -180,6 +180,7 @@ tnoremap <Esc> <C-\><C-n>
 set t_Co=256
 set guifont=Hack:h11
 set hidden
+set foldcolumn=1
 set formatoptions-=cro
 set nocompatible
 set encoding=UTF-8
