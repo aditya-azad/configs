@@ -25,7 +25,7 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'voldikss/vim-floaterm'
-Plug 'aditya-azad/candle-grey'
+Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
@@ -180,7 +180,6 @@ tnoremap <Esc> <C-\><C-n>
 set t_Co=256
 set guifont=Hack:h11
 set hidden
-set foldcolumn=1
 set formatoptions-=cro
 set nocompatible
 set encoding=UTF-8
@@ -224,13 +223,7 @@ set nohlsearch
 
 " Theme settings
 syntax on
-if has("win32")
-  colorscheme candle-grey
-endif
-" Transparent background
-if has('unix')
-  colorscheme candle-grey-transparent
-endif
+colorscheme gruvbox
 
 " Statusline
 set showmode
