@@ -24,6 +24,8 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
+Plug 'mhinz/vim-startify'
+Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'voldikss/vim-floaterm'
 Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-gitgutter'
@@ -173,6 +175,9 @@ tnoremap <silent> <C-q> <C-\><C-n>:FloatermKill<CR>:FloatermToggle<CR>
 tnoremap <silent> <C-l> cls<CR>
 tnoremap <silent> <C-S-TAB> <C-\><C-n>:FloatermPrev<CR>
 tnoremap <Esc> <C-\><C-n>
+
+" Delete hidden buffers
+nnoremap <F5> :DeleteHiddenBuffers<CR>
 
 " ========================BASIC SETTINGS=======================
 " =============================================================
