@@ -26,7 +26,6 @@ endif
 call plug#begin('~/.vim/autoload')
 Plug 'mhinz/vim-startify'
 Plug 'arithran/vim-delete-hidden-buffers'
-Plug 'voldikss/vim-floaterm'
 Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -165,16 +164,6 @@ nmap <silent> <Leader>pf :CocCommand prettier.formatFile<CR>
 " vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
 nnoremap <Leader>vr :source $MYVIMRC<CR>
-
-" Terminal
-nnoremap <silent> <C-`> :FloatermToggle<CR>
-tnoremap <silent> <C-`> <C-\><C-n>:FloatermToggle<CR>
-tnoremap <silent> <C-TAB> <C-\><C-n>:FloatermNext<CR>
-tnoremap <silent> <C-n> <C-\><C-n>:FloatermNew<CR>
-tnoremap <silent> <C-q> <C-\><C-n>:FloatermKill<CR>:FloatermToggle<CR>
-tnoremap <silent> <C-l> cls<CR>
-tnoremap <silent> <C-S-TAB> <C-\><C-n>:FloatermPrev<CR>
-tnoremap <Esc> <C-\><C-n>
 
 " Delete hidden buffers
 nnoremap <F5> :DeleteHiddenBuffers<CR>
