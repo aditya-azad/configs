@@ -24,9 +24,9 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
+Plug 'mhartington/oceanic-next'
 Plug 'mhinz/vim-startify'
 Plug 'arithran/vim-delete-hidden-buffers'
-Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-rooter'
@@ -34,6 +34,9 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'lilydjwg/colorizer'
+
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 call plug#end()
 
 " COC
@@ -218,7 +221,7 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme gruvbox
+colorscheme OceanicNext
 
 " Statusline
 set showmode
@@ -231,3 +234,6 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 " Set appropriate tab length for files
 autocmd BufRead,BufNewFile *.c, *.h, *.cpp, *.py set shiftwidth=4
 autocmd BufRead,BufNewFile *.c, *.h, *.cpp, *.py set tabstop=4
+
+" set filetypes as typescript.tsx
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
