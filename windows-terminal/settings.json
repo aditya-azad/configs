@@ -44,6 +44,6 @@
       "keys": "alt+shift+d"
     },
     { "command": "closeTab", "keys": "ctrl+shift+w" },
-    { "command": "newTab", "keys": "ctrl+n" }
+    { "command": "newTab", "keys": "ctrl+t" }
   ]
 }
