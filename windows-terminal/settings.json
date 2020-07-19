@@ -6,7 +6,8 @@
   "profiles": {
     "defaults": {
       "fontFace": "Hack",
-      "fontSize": 11
+      "fontSize": 11,
+      "scrollbarState": "hidden"
     },
     "list": [
       {
