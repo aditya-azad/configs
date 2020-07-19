@@ -41,6 +41,8 @@
         "splitMode": "duplicate"
       },
       "keys": "alt+shift+d"
-    }
+    },
+    { "command": "closeTab", "keys": "ctrl+shift+w" },
+    { "command": "newTab", "keys": "ctrl+n" }
   ]
 }
