@@ -29,12 +29,10 @@ Plug 'mhinz/vim-startify'
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'lilydjwg/colorizer'
-
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 call plug#end()
@@ -44,19 +42,17 @@ let g:coc_global_extensions = [
 \ 'coc-tsserver',
 \ 'coc-prettier',
 \ 'coc-eslint',
-\
 \ 'coc-cssmodules',
 \ 'coc-css',
 \ 'coc-html',
-\
 \ 'coc-emoji',
 \ 'coc-xml',
-\ 'coc-python',
-\ 'coc-clangd',
-\ 'coc-vimlsp',
 \ 'coc-yaml',
 \ 'coc-json',
-\
+\ 'coc-vimlsp',
+\ 'coc-python',
+\ 'coc-clangd',
+\ 'coc-go',
 \ 'coc-explorer'
 \ ]
 " Use tab for trigger completion with characters ahead and navigate.
@@ -103,9 +99,6 @@ let g:coc_explorer_global_presets = {
 \     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
 \   }
 \ }
-
-" Rooter
-let g:rooter_change_directory_for_non_project_files = 'home'
 
 " =======================KEY MAPPINGS==========================
 " =============================================================
