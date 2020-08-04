@@ -24,6 +24,7 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
+Plug 'itchyny/lightline.vim'
 Plug 'mhartington/oceanic-next'
 Plug 'mhinz/vim-startify'
 Plug 'arithran/vim-delete-hidden-buffers'
@@ -168,9 +169,9 @@ nnoremap <F5> :DeleteHiddenBuffers<CR>
 " =============================================================
 
 set t_Co=256
+set relativenumber
 set guifont=Hack:h11
 set hidden
-set foldcolumn=1
 set formatoptions-=cro
 set nocompatible
 set encoding=UTF-8
@@ -217,9 +218,10 @@ syntax on
 colorscheme OceanicNext
 
 " Statusline
-set showmode
-set noshowcmd
 set laststatus=2
+let g:lightline = {
+      \ 'colorscheme': 'one',
+      \ }
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
