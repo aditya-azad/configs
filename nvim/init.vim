@@ -25,7 +25,7 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'itchyny/lightline.vim'
-Plug 'mhartington/oceanic-next'
+Plug 'aditya-azad/candle-grey'
 Plug 'mhinz/vim-startify'
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'airblade/vim-gitgutter'
@@ -169,6 +169,7 @@ nnoremap <F5> :DeleteHiddenBuffers<CR>
 " =============================================================
 
 set t_Co=256
+set noshowmode
 set relativenumber
 set guifont=Hack:h11
 set hidden
@@ -215,7 +216,7 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme OceanicNext
+colorscheme candle-grey
 
 " Statusline
 set laststatus=2
