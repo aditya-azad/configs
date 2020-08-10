@@ -1,61 +1,30 @@
----WEBSITES--
+--WEBSITES--
 https://news.ycombinator.com/rss "Hacker News"
 
----REDDIT---
-https://www.reddit.com/r/news.rss "News"
-https://www.reddit.com/r/worldnews.rss "World News"
-https://www.reddit.com/r/Pocketfrogs.rss "Pocket Frogs"
-https://www.reddit.com/r/Stoicism.rss "Stoicism"
-https://www.reddit.com/r/Purdue.rss "Purdue"
-
----TWITTER---
-https://nitter.net/jmswrnr/rss "James Warner"
-https://nitter.net/tek256/rss "Tek256"
-https://nitter.net/codinghorror/rss "Jeff Artwood"
-https://nitter.net/dan_abramov/rss "Dan Abramov"
-https://nitter.net/narendramodi/rss "Narendra Modi"
-https://nitter.net/LifeAtPurdue/rss "Purdue"
-
 ---YOUTUBE---
---tech
-https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "Luke Smith"
-https://www.youtube.com/feeds/videos.xml?channel_id=UC7YOGHUfC1Tb6E4pudI9STA "Mental Outlaw"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCVYamHliCI9rw1tHR1xbkfw "Dave Lee"
+--development
 https://www.youtube.com/feeds/videos.xml?channel_id=UCUkRj4qoT1bsWpE_C8lZYoQ "ThinMatrix"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCkQX1tChV7Z7l1LFF4L9j_g "InfoQ"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCwoOpKfkyCQHW562hXXQAGg "Codegram"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCsBjURrPoezykLs9EqgamOA "Fireship"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCzoVCacndDCfGDf41P-z0iA "JSConf"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCuXy5tCgEninup9cGplbiFw "Missing Semester"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw "Michael Reeves"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCtxCXg-UvSnTKPOzLH4wJaQ "Coding Tech"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCzBkNPSxw15qrW_Y8p-oCUw "High Resolution"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg "Tsoding"
+--linux/opensource/tinfoil
+https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "Luke Smith"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC7YOGHUfC1Tb6E4pudI9STA "Mental Outlaw"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ "SomeOrdinaryGamers"
+--others
+https://www.youtube.com/feeds/videos.xml?channel_id=UCVYamHliCI9rw1tHR1xbkfw "Dave Lee"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCzQUP1qoWDoEbmsQxvdjxgQ "PowerfulJRE"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCAuUUnT6oDeKwE6v1NGQxug "TED"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q "Kurzgesagt – In a Nutshell"
 --comedy
 https://www.youtube.com/feeds/videos.xml?channel_id=UC4muYPMCSYigqIwRjVWkQ2Q "Abhishek Upmanyu"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCKnZHF24IV9PT0cdSdHoWug "Anubhav Singh Bassi"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCFhk_JAfHa_ONUwUNKDtl3A "KuchBhiMehta"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCNJUhkpXnF1GcItcztJM-Ww "Karunesh Talwar"
 https://www.youtube.com/feeds/videos.xml?channel_id=UC6E6CgKiRlUxwmEW1Sd9_vQ "Raunaq Rajani"
---others
-https://www.youtube.com/feeds/videos.xml?channel_id=UCzQUP1qoWDoEbmsQxvdjxgQ "PowerfulJRE"
-https://www.youtube.com/feeds/videos.xml?channel_id=UC6-ymYjG0SU0jUWnWh9ZzEQ "Wisecrack"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCAuUUnT6oDeKwE6v1NGQxug "TED"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCI9DUIgtRGHNH_HmSTcfUbA "The Closer Look"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCJkMlOu7faDgqh4PfzbpLdg "Nerdwriter1"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCL_f53ZEJxp8TtlOkHwMV9Q "Jordan B Peterson"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCimiUgDLbi6P17BdaCZpVbg "exurb1a"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q "Kurzgesagt – In a Nutshell"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCsooa4yRKGN_zEE8iknghZA "TED-Ed"
 --art
-https://www.youtube.com/feeds/videos.xml?channel_id=UC3tC6Ai-v_BpqsMR8zqa07g "Trojan Horse Was a Unicorn"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCDyqxplQ3PQcCJhEW-GLgXg "Ahmed Aldoori"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCI8GDFj5BQCQrSHITFebzkA "moderndayjames"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCKfG25IfoxX8AT0JjmG2H0Q "Bobby Chiu"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCNPLX1hfy3Q8zr4eKvmhLGQ "The Drawing Database"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCOzPkdDPBOrEKyUrRSCZv0A "Level Up!"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCPa7bvOg_r54NaQb7GJA9Eg "WLOP"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCUQTqWAaSzhAKRanOpes1nA "Sinix Design"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCsDxB-CSMQ0Vu_hTag7-2UQ "Marco Bucci"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCzZPlxdKOnqz7wZwSywD3wg "Ctrl+Paint"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCbxgFFYD1WtzxCp60aPrnug "ImagineFX"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCUQTqWAaSzhAKRanOpes1nA "Sinix Design"
