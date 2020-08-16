@@ -25,7 +25,7 @@ endif
 " Vim Plug
 call plug#begin('~/.vim/autoload')
 Plug 'itchyny/lightline.vim'
-Plug 'aditya-azad/candle-grey'
+Plug 'sainnhe/sonokai'
 Plug 'mhinz/vim-startify'
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'airblade/vim-gitgutter'
@@ -216,7 +216,10 @@ set nohlsearch
 
 " Theme settings
 syntax on
-colorscheme candle-grey
+if has('termguicolors')
+  set termguicolors
+endif
+colorscheme sonokai
 
 " Statusline
 set laststatus=2
