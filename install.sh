@@ -70,8 +70,8 @@ install_software() {
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
   # oh my zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  # yay, neovim, git, tmux, newsboat, alacritty
-  sudo pacman -S yay neovim newsboat git tmux alacritty
+  # yay, neovim, git, tmux, newsboat, alacritty, keepass
+  sudo pacman -S yay neovim newsboat git tmux alacritty keepass
   # brave
   yay -S brave-bin
   print_green "[*] Installing done"
