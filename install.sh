@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPTS_DIR=$(dirname $(readlink -f "$0"))/scripts
+
 CONFIG_DIR=$(dirname $(readlink -f "$0"))/configs
 CONFIG_DOT_CONFIG=$CONFIG_DIR/.config
 
@@ -76,7 +78,10 @@ install_software() {
   # yay, neovim, git, tmux, newsboat, alacritty, keepass
   sudo pacman -S yay neovim newsboat git tmux alacritty keepass
   # brave
-  yay -S brave-bin
+   yay -S brave-bin
+  # hack font
+  chmod +x $SCRIPTS_DIR/hack-font.sh
+  $SCRIPTS_DIR/hack-font.sh latest
   print_green "[*] Installing done"
 }
 
