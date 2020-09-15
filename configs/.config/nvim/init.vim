@@ -1,7 +1,7 @@
 filetype plugin on
 
-source ./plugins.vim
-source ./keybindings.vim
+source <sfile>:h/plugins.vim
+source <sfile>:h/keybindings.vim
 
 set t_Co=256
 set noshowmode

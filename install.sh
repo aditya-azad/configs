@@ -1,7 +1,10 @@
 #!/bin/bash
 
-CONFIGDIR=./configs
-HOMEDIR=~
+CONFIG_DIR=$(dirname $(readlink -f "$0"))/configs
+CONFIG_DOT_CONFIG=$CONFIG_DIR/.config
+
+HOME_DIR=/home/$USER
+USER_DOT_CONFIG=$HOME_DIR/.config
 
 print_help () {
   echo "Enter some arguments"
@@ -20,25 +23,25 @@ print_green () {
 config_env() {
   print_green "[*] Configuring"
   # tmux
-  ln "$CONFIGDIR/.tmux.conf" "$HOMEDIR/"
+  ln "$CONFIG_DIR/.tmux.conf" "$HOME_DIR/"
   # zsh
-  ln "$CONFIGDIR/.zshrc" "$HOMEDIR/.zshrc"
+  ln "$CONFIG_DIR/.zshrc" "$HOME_DIR/.zshrc"
   # profile
-  ln "$CONFIGDIR/.profile" "$HOMEDIR/.profile"
+  ln "$CONFIG_DIR/.profile" "$HOME_DIR/.profile"
   # alacritty
-  mkdir "$HOMEDIR/.configs/alacritty"
-  for entry in "$CONFIGDIR/.configs/alacritty"/*; do
-    ln "$entry" "$HOMEDIR/.configs/alacritty/"
+  mkdir "$USER_DOT_CONFIG/alacritty"
+  for entry in "$CONFIG_DOT_CONFIG/alacritty"/*; do
+    ln "$entry" "$USER_DOT_CONFIG/alacritty"
   done
   # newsboat
-  mkdir "$HOMEDIR/.newsboat"
-  for entry in "$CONFIGDIR/.newsboat"/*; do
-    ln "$entry" "$HOMEDIR/.newsboat/"
+  mkdir "$HOME_DIR/.newsboat"
+  for entry in "$CONFIG_DIR/.newsboat"/*; do
+    ln "$entry" "$HOME_DIR/.newsboat"
   done
   # nvim
-  mkdir "$HOMEDIR/.configs/nvim"
-  for entry in "$CONFIGDIR/.configs/nvim"/*; do
-    ln "$entry" "$HOMEDIR/.configs/nvim/"
+  mkdir "$USER_DOT_CONFIG/nvim/"
+  for entry in "$CONFIG_DOT_CONFIG/nvim"/*; do
+    ln "$entry" "$USER_DOT_CONFIG/nvim"
   done
   print_green "[*] Configuring done"
 }
@@ -46,21 +49,21 @@ config_env() {
 clean_configs() {
   print_green "[*] Cleaning configs"
   # tmux
-  rm "$HOMEDIR/.tmux.conf"
+  rm "$HOME_DIR/.tmux.conf"
   # zsh
-  rm "$HOMEDIR/.zshrc"
+  rm "$HOME_DIR/.zshrc"
   # profile
-  rm "$HOMEDIR/.profile"
+  rm "$HOME_DIR/.profile"
   # vim
-  sudo rm "$HOMEDIR/.vim" -r
-  rm "$HOMEDIR/.vimrc"
-  sudo rm "$HOMEDIR/.configs/nvim" -r
+  sudo rm "$HOME_DIR/.vim" -r
+  rm "$HOME_DIR/.vimrc"
+  sudo rm "$USER_DOT_CONFIG/nvim" -r
   # newsboat
-  sudo rm -r "$HOMEDIR/.newsboat"
+  sudo rm -r "$HOME_DIR/.newsboat"
   # ranger
-  sudo rm "$HOMEDIR/.configs/ranger" -r
+  sudo rm "$USER_DOT_CONFIG/ranger" -r
   # alacritty
-  sudo rm "$HOMEDIR/.configs/alacritty" -r
+  sudo rm "$USER_DOT_CONFIG/alacritty" -r
   print_green "[*] Cleaning configs done"
 }
 
