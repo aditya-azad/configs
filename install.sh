@@ -62,8 +62,6 @@ clean_configs() {
   sudo rm "$USER_DOT_CONFIG/nvim" -r
   # newsboat
   sudo rm -r "$HOME_DIR/.newsboat"
-  # ranger
-  sudo rm "$USER_DOT_CONFIG/ranger" -r
   # alacritty
   sudo rm "$USER_DOT_CONFIG/alacritty" -r
   print_green "[*] Cleaning configs done"
