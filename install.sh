@@ -57,13 +57,13 @@ clean_configs() {
   # profile
   rm "$HOME_DIR/.profile"
   # vim
-  sudo rm "$HOME_DIR/.vim" -r
+  rm "$HOME_DIR/.vim" -rf
   rm "$HOME_DIR/.vimrc"
-  sudo rm "$USER_DOT_CONFIG/nvim" -r
+  rm "$USER_DOT_CONFIG/nvim" -rf
   # newsboat
-  sudo rm -r "$HOME_DIR/.newsboat"
+  rm "$HOME_DIR/.newsboat" -rf
   # alacritty
-  sudo rm "$USER_DOT_CONFIG/alacritty" -r
+  rm "$USER_DOT_CONFIG/alacritty" -rf
   print_green "[*] Cleaning configs done"
 }
 
