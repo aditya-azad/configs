@@ -21,10 +21,12 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
+" Editor enhancements
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdtree'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'mhinz/vim-startify'
+" Common utils
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -32,8 +34,12 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'lilydjwg/colorizer'
+" Language specific
+"" JS/TS
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+"" C/C++
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()
 
 " COC
@@ -41,17 +47,17 @@ let g:coc_global_extensions = [
       \ 'coc-tsserver',
       \ 'coc-prettier',
       \ 'coc-eslint',
-      \ 'coc-cssmodules',
-      \ 'coc-css',
-      \ 'coc-html',
       \ 'coc-emoji',
       \ 'coc-xml',
       \ 'coc-yaml',
       \ 'coc-json',
+      \ 'coc-cssmodules',
+      \
+      \ 'coc-css',
+      \ 'coc-html',
       \ 'coc-vimlsp',
       \ 'coc-python',
-      \ 'coc-clangd',
-      \ 'coc-go',
+      \ 'coc-clangd'
       \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
