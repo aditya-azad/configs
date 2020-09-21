@@ -38,6 +38,8 @@ Plug 'lilydjwg/colorizer'
 "" JS/TS
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+"" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 "" C/C++
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()
@@ -57,7 +59,8 @@ let g:coc_global_extensions = [
       \ 'coc-html',
       \ 'coc-vimlsp',
       \ 'coc-python',
-      \ 'coc-clangd'
+      \ 'coc-clangd',
+      \ 'coc-go'
       \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
