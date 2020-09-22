@@ -42,8 +42,16 @@ config_env() {
   done
   # nvim
   mkdir "$USER_DOT_CONFIG/nvim/"
+  mkdir "$USER_DOT_CONFIG/nvim/snips"
   for entry in "$CONFIG_DOT_CONFIG/nvim"/*; do
-    ln "$entry" "$USER_DOT_CONFIG/nvim"
+    # copy over snippents
+    if [ $entry -ef "$CONFIG_DOT_CONFIG/nvim/snips" ]; then
+      for f in $entry/*; do
+        ln "$f" "$USER_DOT_CONFIG/nvim/snips"
+      done
+    else
+      ln "$entry" "$USER_DOT_CONFIG/nvim"
+    fi
   done
   print_green "[*] Configuring done"
 }
@@ -73,10 +81,10 @@ install_software() {
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
   # oh my zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  # yay, neovim, git, tmux, newsboat, alacritty, keepass
-  sudo pacman -S yay neovim newsboat git tmux alacritty keepass
-  # brave
-   yay -S brave-bin
+  # install pacman softwares
+  sudo pacman -S yay neovim newsboat git tmux alacritty keepass xclip
+  # install yay softwares
+  yay -S brave-bin
   # hack font
   chmod +x $SCRIPTS_DIR/hack-font.sh
   $SCRIPTS_DIR/hack-font.sh latest
