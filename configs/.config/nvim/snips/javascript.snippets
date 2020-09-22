@@ -1,13 +1,10 @@
+# Functions
 snippet f "Create normal function" b
-function $1($2) {
-	$3
-}
+function $1($2) { $3 }
 endsnippet
 
 snippet fe "Create function expression" b
-${1:var} $2 = function($3) {
-	$4
-}
+${1:var} $2 = function($3) { $4 }
 endsnippet
 
 snippet fa "Create arrow function" b
@@ -16,4 +13,13 @@ endsnippet
 
 snippet faa "Create anonymous arrow function" b
 ($1) => { $1 }
+endsnippet
+
+# Loops
+snippet for "Create basic for loop" b
+for (let $1 = ${2:N}; $1 < ${3:N}; ${4:$1}) { $5 }
+endsnippet
+
+snippet if "Create if statement"
+if ($1) { $2 }
 endsnippet
