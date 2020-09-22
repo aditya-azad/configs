@@ -133,6 +133,9 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 " set filetypes as typescript.tsx
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
+" C/C++ flie specific settings
+autocmd BufRead,BufNewFile *.c,*.h,*.cc,*.cpp,*.hpp setlocal ts=4 sw=4 sts=4
+
 """""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""""
 
 " leader set
