@@ -63,6 +63,10 @@ let g:ale_fixers = {
 \   'javascript': ['prettier', 'eslint'],
 \}
 
+let g:ale_linters = {
+\   'go': ['gometalinter', 'gofmt'],
+\}
+
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
 

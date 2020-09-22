@@ -24,6 +24,7 @@ alias lal="ls -la"
 alias r="ranger"
 alias v="nvim"
 alias nb="newsboat"
+alias x="xdg-open"
 
 # commands
 alias sdn="shutdown now"
