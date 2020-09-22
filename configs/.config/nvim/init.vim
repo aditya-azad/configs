@@ -60,7 +60,6 @@ let g:UltiSnipsSnippetDirectories=[fnamemodify($MYVIMRC, ':p:h')."/snips"]
 let g:ale_hover_cursor = 1
 let g:ale_completion_enabled = 1
 let g:ale_fixers = {
-\   '*': ['remove_trailing_lines'],
 \   'javascript': ['prettier', 'eslint'],
 \}
 
