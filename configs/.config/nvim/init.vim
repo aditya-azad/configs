@@ -29,11 +29,13 @@ Plug 'mhinz/vim-startify'
 " Common utils
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'airblade/vim-gitgutter'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'lilydjwg/colorizer'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'dense-analysis/ale'
 " Language specific
 "" JS/TS
 Plug 'leafgarland/typescript-vim'
@@ -44,50 +46,24 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()
 
-" COC
-let g:coc_global_extensions = [
-      \ 'coc-tsserver',
-      \ 'coc-prettier',
-      \ 'coc-eslint',
-      \ 'coc-emoji',
-      \ 'coc-xml',
-      \ 'coc-yaml',
-      \ 'coc-json',
-      \ 'coc-cssmodules',
-      \
-      \ 'coc-css',
-      \ 'coc-html',
-      \ 'coc-vimlsp',
-      \ 'coc-python',
-      \ 'coc-clangd',
-      \ 'coc-go'
-      \ ]
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" trigger completion.
-inoremap <silent><expr> <c-p> coc#refresh()
-" Shows documentation
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-" provider config
-let g:loaded_python_provider=0 " python 2 support disabled
-let g:loaded_ruby_provider=0
-
 " Git gutter
 let g:gitgutter_map_keys = 0
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetDirectories=[fnamemodify($MYVIMRC, ':p:h')."/snips"]
+
+" ALE
+let g:ale_hover_cursor = 1
+let g:ale_completion_enabled = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines'],
+\   'javascript': ['prettier', 'eslint'],
+\}
+
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
 
@@ -160,7 +136,7 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
 """""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""""
 
-" Leader set
+" leader set
 let mapleader=" "
 
 " Shortcut to cd into home directory (useful for windows)
@@ -168,9 +144,6 @@ nmap <leader>cdh :cd ~/<CR>
 
 " Fix indentation in file
 nmap <leader>ff gg=G<C-o><C-o>
-
-" Prettier
-nmap <silent> <Leader>pf :CocCommand prettier.formatFile<CR>
 
 " Copy the contents of file
 nmap YY :%y+<CR>
@@ -181,31 +154,30 @@ nmap <silent> <leader>j :wincmd j<CR>
 nmap <silent> <leader>k :wincmd k<CR>
 nmap <silent> <leader>l :wincmd l<CR>
 
-" COC
-nmap <silent> <Leader>gd <Plug>(coc-definition)
-nmap <silent> <Leader>gy <Plug>(coc-type-definition)
-nmap <silent> <Leader>gi <Plug>(coc-implementation)
-nmap <silent> <Leader>gr <Plug>(coc-references)
-nmap <silent> <leader>rn <Plug>(coc-rename)
-nnoremap <silent> gh :call <SID>show_documentation()<CR>
+" ALE
+nmap <silent> <leader>gd :ALEGoToDefinition<CR>
+nmap <silent> <leader>gf :ALEFindReferences<CR>
 
 " Fugitive
-nmap <Leader>ga :Git add
-nmap <Leader>gaa :Git add .<CR>
-nmap <Leader>gpl :Git pull<CR>
-nmap <Leader>gps :Git push<CR>
-nmap <Leader>gs :Git status<CR>
-nmap <Leader>gc :Git commit<CR>
+nmap <leader>ga :Git add
+nmap <leader>gaa :Git add .<CR>
+nmap <leader>gpl :Git pull<CR>
+nmap <leader>gps :Git push<CR>
+nmap <leader>gs :Git status<CR>
+nmap <leader>gc :Git commit<CR>
 
 " FZF
 map <C-f> :Files<CR>
 
 " vimrc
-nnoremap <Leader>ve :e $MYVIMRC<CR>
-nnoremap <Leader>vr :source $MYVIMRC<CR>
+nnoremap <leader>ve :e $MYVIMRC<CR>
+nnoremap <leader>vr :source $MYVIMRC<CR>
 
 " Delete hidden buffers
 nnoremap <leader>db :DeleteHiddenBuffers<CR>
 
 " Nerdtree
 map <silent> <leader>o :NERDTreeToggle<CR>
+
+" UlitSnips
+nmap <leader>es :UltiSnipsEdit<CR>

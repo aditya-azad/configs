@@ -1,0 +1,19 @@
+snippet f "Create normal function" b
+function $1($2) {
+	$3
+}
+endsnippet
+
+snippet fe "Create function expression" b
+${1:var} $2 = function($3) {
+	$4
+}
+endsnippet
+
+snippet fa "Create arrow function" b
+${1:var} $2 = ($3) => { $4 }
+endsnippet
+
+snippet faa "Create anonymous arrow function" b
+($1) => { $1 }
+endsnippet
