@@ -17,7 +17,7 @@ ${1:var} $2 = ($3)${4::} => {
 }
 endsnippet
 
-snippet faa "Create anonymous arrow function" b
+snippet faa "Create anonymous arrow function"
 ($1)${2::} => { ${VISUAL}$0 }
 endsnippet
 
@@ -74,8 +74,8 @@ case $1:
 endsnippet
 
 # Statements
-snippet r "Create return statement"
-return $1;
+snippet p "Create print statement"
+console.log("${VISUAL}$0"$1);
 endsnippet
 
 # React
