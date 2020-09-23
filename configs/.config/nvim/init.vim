@@ -42,8 +42,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 "" Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-"" C/C++
-Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()
 
 " Git gutter
