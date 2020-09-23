@@ -15,7 +15,8 @@ GOTO End
 :Copyfrom
 copy %NVIM_HOME%\init.vim %NVIM_CONFIG%\
 robocopy %NVIM_HOME%\snips\ %NVIM_CONFIG%\snips\ /E /it /is
-git commit -a -m "Updated nvim config"
+git add .
+git commit -m "Updated nvim config"
 git push
 GOTO End
 
