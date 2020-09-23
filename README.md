@@ -1,6 +1,6 @@
 # Configs
 
-All my linux config files in one place.
+All my config files in one place.<br>
 These configs are subject to change as my preferences change.
 
 ## Usage
