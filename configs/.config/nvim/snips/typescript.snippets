@@ -1,24 +1,24 @@
 # Functions
 snippet f "Create normal function" b
-function $1($2)${3::} {
+function $1($2)$3 {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet fe "Create function expression" b
-${1:var} $2 = function($3)${4::} {
+${1:var} $2 = function($3)$4 {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet fa "Create arrow function" b
-${1:var} $2 = ($3)${4::} => {
+${1:var} $2 = ($3)$4 => {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet faa "Create anonymous arrow function"
-($1)${2::} => { ${VISUAL}$0 }
+($1)$2 => { ${VISUAL}$0 }
 endsnippet
 
 # Loops
@@ -75,7 +75,7 @@ endsnippet
 
 # Statements
 snippet p "Create print statement"
-console.log("${VISUAL}$0"$1);
+console.log(${VISUAL}$0);
 endsnippet
 
 # React
