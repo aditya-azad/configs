@@ -33,8 +33,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'lilydjwg/colorizer'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'dense-analysis/ale'
 " Language specific
 "" JS/TS
@@ -46,13 +44,6 @@ call plug#end()
 
 " Git gutter
 let g:gitgutter_map_keys = 0
-
-" UltiSnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories=[fnamemodify($MYVIMRC, ':p:h')."/snips"]
 
 " ALE
 let g:ale_hover_cursor = 1
@@ -191,6 +182,3 @@ nnoremap <leader>db :DeleteHiddenBuffers<CR>
 
 " Nerdtree
 map <silent> <leader>o :NERDTreeToggle<CR>
-
-" UlitSnips
-nmap <leader>es :UltiSnipsEdit<CR>
