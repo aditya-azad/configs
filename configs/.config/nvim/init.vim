@@ -1,4 +1,4 @@
-""""""""""""""""""""""""""""""""" PLUGINS """""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""" VIMPLUG SETUP """""""""""""""""""""""""""""""
 
 " Install Vim Plug (nvim for windows)
 if has("win32")
@@ -21,70 +21,24 @@ endif
 
 " Vim Plug
 call plug#begin('~/.vim/autoload')
-" Editor enhancements
+" Visual enhancements
 Plug 'itchyny/lightline.vim'
-Plug 'preservim/nerdtree'
-Plug 'morhetz/gruvbox'
-Plug 'mhinz/vim-startify'
-Plug 'ryanoasis/vim-devicons'
 Plug 'sheerun/vim-polyglot'
-" Common utils
+Plug 'gruvbox-community/gruvbox'
+Plug 'lilydjwg/colorizer'
+" Navigation enhancements
+Plug 'preservim/nerdtree'
 Plug 'arithran/vim-delete-hidden-buffers'
+" Code enhancements
+Plug 'nvim-lua/completion-nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'townk/vim-autoclose'
+" Speed enhancem
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'lilydjwg/colorizer'
-Plug 'townk/vim-autoclose'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Language specific
-"" Go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
-
-" Git gutter
-let g:gitgutter_map_keys = 0
-
-" COC
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" extentsions
-let g:coc_global_extensions = [
-\ 'coc-tsserver',
-\ 'coc-prettier',
-\
-\ 'coc-cssmodules',
-\ 'coc-css',
-\ 'coc-html',
-\
-\ 'coc-python',
-\ 'coc-clangd',
-\ 'coc-vimlsp',
-\
-\ 'coc-yaml',
-\ 'coc-json',
-\ ]
-
-" Nerdtree
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeIgnore = []
-let g:NERDTreeStatusline = ''
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" after a re-source, fix syntax matching issues (concealing brackets):
-if exists('g:loaded_webdevicons')
-    call webdevicons#refresh()
-endif
-
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
 
@@ -143,13 +97,6 @@ set wildmenu
 set wildmode=longest,list,full
 set nohlsearch
 
-" Theme settings
-syntax on
-if has('termguicolors')
-  set termguicolors
-endif
-colorscheme gruvbox
-
 " Statusline
 set laststatus=2
 let g:lightline = {}
@@ -163,6 +110,42 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
 " C/C++ flie specific settings
 autocmd BufRead,BufNewFile *.c,*.h,*.cc,*.cpp,*.hpp setlocal ts=4 sw=4 sts=4
+
+" Theme settings (must be done before)
+syntax on
+if has('termguicolors')
+  set termguicolors
+endif
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+let g:gruvbox_invert_selection='0'
+colorscheme gruvbox
+
+""""""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
+
+" Git gutter
+let g:gitgutter_map_keys = 0
+
+" Nerdtree
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Completion
+set completeopt=menuone,noinsert,noselect
+
+" LSP
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach }
+lua require'nvim_lsp'.clangd.setup{ on_attach=require'completion'.on_attach }
+lua require'nvim_lsp'.gopls.setup{ on_attach=require'completion'.on_attach }
+lua require'nvim_lsp'.rust_analyzer.setup{ on_attach=require'completion'.on_attach }
+
 
 """""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""""
 
@@ -192,11 +175,14 @@ nmap <leader>gps :Git push<CR>
 nmap <leader>gs :Git status<CR>
 nmap <leader>gc :Git commit<CR>
 
-" COC
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" LSP
+nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
+nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
+nnoremap <leader>vsh :lua vim.lsp.buf.signature_help()<CR>
+nnoremap <leader>vrr :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vca :lua vim.lsp.buf.code_action()<CR>
 
 " Prettier
 map <silent> <leader>p :Prettier<CR>
@@ -214,3 +200,4 @@ nnoremap <leader>db :DeleteHiddenBuffers<CR>
 
 " Nerdtree
 map <silent> <leader>o :NERDTreeToggle<CR>
+
