@@ -24,8 +24,10 @@ call plug#begin('~/.vim/autoload')
 " Editor enhancements
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdtree'
-Plug 'KeitaNakamura/neodark.vim'
+Plug 'morhetz/gruvbox'
 Plug 'mhinz/vim-startify'
+Plug 'ryanoasis/vim-devicons'
+Plug 'sheerun/vim-polyglot'
 " Common utils
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'airblade/vim-gitgutter'
@@ -33,11 +35,9 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'lilydjwg/colorizer'
-Plug 'dense-analysis/ale'
+Plug 'townk/vim-autoclose'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Language specific
-"" JS/TS
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
 "" Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
@@ -45,16 +45,45 @@ call plug#end()
 " Git gutter
 let g:gitgutter_map_keys = 0
 
-" ALE
-let g:ale_hover_cursor = 1
-let g:ale_completion_enabled = 1
-let g:ale_fixers = {
-\   'javascript': ['prettier', 'eslint'],
-\}
+" COC
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" extentsions
+let g:coc_global_extensions = [
+\ 'coc-tsserver',
+\ 'coc-prettier',
+\
+\ 'coc-cssmodules',
+\ 'coc-css',
+\ 'coc-html',
+\
+\ 'coc-python',
+\ 'coc-clangd',
+\ 'coc-vimlsp',
+\
+\ 'coc-yaml',
+\ 'coc-json',
+\ ]
 
-let g:ale_linters = {
-\   'go': ['gometalinter', 'gofmt'],
-\}
+" Nerdtree
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" after a re-source, fix syntax matching issues (concealing brackets):
+if exists('g:loaded_webdevicons')
+    call webdevicons#refresh()
+endif
 
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
@@ -63,7 +92,7 @@ filetype plugin on
 set t_Co=256
 set noshowmode
 set relativenumber
-set guifont=Hack:h11
+set number
 set hidden
 set formatoptions-=cro
 set nocompatible
@@ -94,6 +123,14 @@ set nowritebackup
 set mouse=a
 set clipboard^=unnamed,unnamedplus
 
+" set font
+let os=substitute(system('uname'), '\n', '', '')
+if has("win32") || os =='Darwin' || os == 'Mac'
+  set guifont=Hack:h11
+else
+  set guifont=Hack 11
+endif
+
 " Remove trailing space on save
 autocmd BufWritePre * %s/\s\+$//e
 
@@ -111,14 +148,12 @@ syntax on
 if has('termguicolors')
   set termguicolors
 endif
-let g:neodark#use_256color = 0
-let g:neodark#background = '#202020'
-colorscheme neodark
+colorscheme gruvbox
 
 " Statusline
 set laststatus=2
 let g:lightline = {}
-let g:lightline.colorscheme = 'neodark'
+let g:lightline.colorscheme = 'gruvbox'
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
@@ -128,15 +163,6 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
 " C/C++ flie specific settings
 autocmd BufRead,BufNewFile *.c,*.h,*.cc,*.cpp,*.hpp setlocal ts=4 sw=4 sts=4
-
-" Autoclose the parentheses and other things
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 
 """""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""""
 
@@ -158,10 +184,6 @@ nmap <silent> <leader>j :wincmd j<CR>
 nmap <silent> <leader>k :wincmd k<CR>
 nmap <silent> <leader>l :wincmd l<CR>
 
-" ALE
-nmap <silent> <leader>gd :ALEGoToDefinition<CR>
-nmap <silent> <leader>gf :ALEFindReferences<CR>
-
 " Fugitive
 nmap <leader>ga :Git add
 nmap <leader>gaa :Git add .<CR>
@@ -169,6 +191,16 @@ nmap <leader>gpl :Git pull<CR>
 nmap <leader>gps :Git push<CR>
 nmap <leader>gs :Git status<CR>
 nmap <leader>gc :Git commit<CR>
+
+" COC
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Prettier
+map <silent> <leader>p :Prettier<CR>
+
 
 " FZF
 map <C-f> :Files<CR>
