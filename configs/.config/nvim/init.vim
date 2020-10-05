@@ -38,6 +38,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
+" Language specific
+"" Go
+Plug 'tweekmonster/gofmt.vim'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
@@ -137,7 +140,7 @@ let g:NERDTreeStatusline = ''
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Completion
-set completeopt=menuone,noinsert,noselect
+set completeopt=noselect,menuone
 
 " LSP
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
