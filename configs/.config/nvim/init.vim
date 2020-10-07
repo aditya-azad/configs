@@ -192,7 +192,7 @@ map <silent> <leader>p :Prettier<CR>
 
 
 " FZF
-map <C-f> :Files<CR>
+map <C-f> :GFiles<CR>
 
 " vimrc
 nnoremap <leader>ve :e $MYVIMRC<CR>
