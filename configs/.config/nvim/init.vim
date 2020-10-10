@@ -51,7 +51,6 @@ set noshowmode
 set relativenumber
 set number
 set hidden
-set formatoptions-=cro
 set nocompatible
 set encoding=UTF-8
 set linebreak
@@ -204,3 +203,5 @@ nnoremap <leader>db :DeleteHiddenBuffers<CR>
 " Nerdtree
 map <silent> <leader>o :NERDTreeToggle<CR>
 
+" Run the highlighted line in bash and return the result here
+noremap Q !!sh<CR>
