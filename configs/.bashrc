@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
-alias r='ranger'
+alias r='vifm'
 alias v='nvim'
 alias sdn='shutdown now'
 alias nb='newsboat'
