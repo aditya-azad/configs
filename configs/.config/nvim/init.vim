@@ -24,7 +24,6 @@ call plug#begin('~/.vim/autoload')
 " Visual enhancements
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
-Plug 'gruvbox-community/gruvbox'
 Plug 'joshdick/onedark.vim'
 Plug 'lilydjwg/colorizer'
 " Navigation enhancements
