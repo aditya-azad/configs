@@ -1,5 +1,10 @@
 #!/bin/sh
 
-echo ""
+wget -q --spider https://google.com
 
-ping -q -c 1 1.1.1.1 >/dev/null || { echo "dis" && exit 1; }
+
+if [ $? -eq 0 ]; then # Online
+  echo ""
+else # Offline
+  echo ""
+fi
