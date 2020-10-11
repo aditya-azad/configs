@@ -25,6 +25,7 @@ call plug#begin('~/.vim/autoload')
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'gruvbox-community/gruvbox'
+Plug 'joshdick/onedark.vim'
 Plug 'lilydjwg/colorizer'
 " Navigation enhancements
 Plug 'preservim/nerdtree'
@@ -99,7 +100,7 @@ set nohlsearch
 " Statusline
 set laststatus=2
 let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.colorscheme = 'onedark'
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
@@ -115,13 +116,15 @@ syntax on
 if has('termguicolors')
   set termguicolors
 endif
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" enable transparency in terminals
+if (has("autocmd") && !has("gui_running"))
+  augroup colorset
+    autocmd!
+    let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+    autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
+  augroup END
 endif
-let g:gruvbox_invert_selection='0'
-set background=dark
-colorscheme gruvbox
+colorscheme onedark
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
 
