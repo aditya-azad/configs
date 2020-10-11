@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+date=$(date "+%I:%M %p")
+echo " $date"

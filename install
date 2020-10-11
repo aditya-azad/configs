@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 SCRIPTS_DIR=$(dirname $(readlink -f "$0"))/scripts
 
@@ -26,15 +26,12 @@ config_env() {
   print_green "[*] Configuring"
   # tmux
   ln "$CONFIG_DIR/.tmux.conf" "$HOME_DIR/"
-  # zsh
-  ln "$CONFIG_DIR/.zshrc" "$HOME_DIR/.zshrc"
+  # xinitrc
+  ln "$CONFIG_DIR/.xinitrc" "$HOME_DIR/.xinitrc"
+  # bashrc
+  ln "$CONFIG_DIR/.bashrc" "$HOME_DIR/.bashrc"
   # profile
   ln "$CONFIG_DIR/.profile" "$HOME_DIR/.profile"
-  # alacritty
-  mkdir "$USER_DOT_CONFIG/alacritty"
-  for entry in "$CONFIG_DOT_CONFIG/alacritty"/*; do
-    ln "$entry" "$USER_DOT_CONFIG/alacritty"
-  done
   # newsboat
   mkdir "$HOME_DIR/.newsboat"
   for entry in "$CONFIG_DIR/.newsboat"/*; do
@@ -60,8 +57,10 @@ clean_configs() {
   print_green "[*] Cleaning configs"
   # tmux
   rm "$HOME_DIR/.tmux.conf"
-  # zsh
-  rm "$HOME_DIR/.zshrc"
+  # xinitrc
+  rm "$HOME_DIR/.xinitrc"
+  # bashrc
+  rm "$HOME_DIR/.bashrc"
   # profile
   rm "$HOME_DIR/.profile"
   # vim
@@ -70,8 +69,6 @@ clean_configs() {
   rm "$USER_DOT_CONFIG/nvim" -rf
   # newsboat
   rm "$HOME_DIR/.newsboat" -rf
-  # alacritty
-  rm "$USER_DOT_CONFIG/alacritty" -rf
   print_green "[*] Cleaning configs done"
 }
 
@@ -85,10 +82,6 @@ install_software() {
   sudo pacman -S yay neovim newsboat git tmux alacritty keepass xclip
   # install yay softwares
   yay -S brave-bin
-  # hack font
-  chmod +x $SCRIPTS_DIR/hack-font.sh
-  $SCRIPTS_DIR/hack-font.sh latest
-  print_green "[*] Installing done"
 }
 
 if [ -z "$@" ]; then

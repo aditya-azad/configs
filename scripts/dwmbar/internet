@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo ""
+
+ping -q -c 1 1.1.1.1 >/dev/null || { echo "dis" && exit 1; }

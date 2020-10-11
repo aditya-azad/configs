@@ -1,0 +1,9 @@
+#!/bin/sh
+
+used() {
+  df -h "$1" | awk 'NR==2 { print $3 "/" $2 " GB" }' | sed 's/G\//\//g;s/G / /g'
+}
+
+root="$(used /)"
+
+echo " $root"

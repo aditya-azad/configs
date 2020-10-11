@@ -69,7 +69,6 @@ set smartindent
 set smarttab
 set expandtab
 set undolevels=1000
-set background=dark
 set backspace=indent,eol,start
 set updatetime=100
 set shortmess+=I
@@ -81,10 +80,8 @@ set clipboard^=unnamed,unnamedplus
 
 " set font
 let os=substitute(system('uname'), '\n', '', '')
-if has("win32") || os =='Darwin' || os == 'Mac'
+if has("win32")
   set guifont=Hack:h11
-else
-  set guifont=Hack 11
 endif
 
 " Remove trailing space on save
@@ -123,6 +120,7 @@ if exists('+termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 let g:gruvbox_invert_selection='0'
+set background=dark
 colorscheme gruvbox
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
