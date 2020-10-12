@@ -26,7 +26,6 @@
 (use-package all-the-icons :ensure t)
 (use-package projectile :ensure t)
 (use-package helm-projectile :ensure t)
-(use-package doom-modeline :ensure t)
 
 ;; evil mode
 (evil-mode t)
@@ -43,8 +42,6 @@
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq projectile-switch-project-action 'neotree-projectile-action)
 (setq neo-smart-open t)
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; General config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -120,8 +117,6 @@
 (set-frame-font "Hack 11" nil t)
 
 ;; modeline
-(doom-modeline-mode 1)
-(setq doom-modeline-major-mode-icon t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -158,7 +153,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(doom-modeline helm-projectile projectile all-the-icons neotree undo-tree atom-one-dark-theme helm evil use-package)))
+   '(helm-projectile projectile all-the-icons neotree undo-tree atom-one-dark-theme helm evil use-package))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
