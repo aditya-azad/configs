@@ -8,6 +8,7 @@
 alias ls='ls --color=auto'
 alias r='vifm'
 alias v='nvim'
+alias e='emacs'
 alias sdn='shutdown now'
 alias nb='newsboat'
 alias sx='startx'
