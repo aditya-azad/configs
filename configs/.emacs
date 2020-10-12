@@ -20,18 +20,31 @@
 ;; install packages
 (use-package evil :ensure t)
 (use-package helm :ensure t)
-(use-package dracula-theme :ensure t)
+(use-package atom-one-dark-theme :ensure t)
 (use-package undo-tree :ensure t)
+(use-package neotree :ensure t)
+(use-package all-the-icons :ensure t)
+(use-package projectile :ensure t)
+(use-package helm-projectile :ensure t)
+(use-package doom-modeline :ensure t)
 
-;; run evil mode at strtup
-(require 'evil)
+;; evil mode
 (evil-mode t)
 
-;; enable undo tree mode
+;; undo tree
 (global-undo-tree-mode)
 
-;; enable helm mode
+;; helm, projectile
 (helm-mode 1)
+(projectile-mode +1)
+(helm-projectile-on)
+
+;; neotree
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+(setq projectile-switch-project-action 'neotree-projectile-action)
+(setq neo-smart-open t)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; General config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -79,6 +92,9 @@
 ;; remove trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; maximize on startup
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Filetype specific ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq two-tab-width 2)
@@ -97,36 +113,55 @@
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
 
-;; set theme
-(load-theme 'dracula t)
+;; theme
+(load-theme 'atom-one-dark t)
 
-;; line numbers
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode))
+;; font
+(set-frame-font "Hack 11" nil t)
+
+;; modeline
+(doom-modeline-mode 1)
+(setq doom-modeline-major-mode-icon t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; evil mode leader key
+(evil-set-leader 'normal (kbd "SPC") nil)
 ;; evaluate current buffer
 (global-set-key (kbd "C-c C-r") 'eval-buffer)
-
 ;; rebind u to undo tree
-(define-key evil-normal-state-map (kbd "u") (kbd "C-x u"))
-
+(define-key evil-normal-state-map (kbd "C-r") (kbd "C-x u"))
 ;; use helm for M-x
 (global-set-key (kbd "M-x") 'helm-M-x)
+;; neotree
+(evil-define-key 'normal 'global (kbd "<leader>o") 'neotree-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
+(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+;; projectile
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Cutom set ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; set font faces
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Hack" :foundry "outline" :slant normal :weight normal :height 98 :width normal)))))
+;; .emacs file
+(set-register ?e (cons 'file "~/.emacs"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Cutom set ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(undo-tree helm evil use-package)))
+ '(package-selected-packages
+   '(doom-modeline helm-projectile projectile all-the-icons neotree undo-tree atom-one-dark-theme helm evil use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
