@@ -13,9 +13,11 @@ GOTO End
 
 :Copyfrom
 copy %NVIM_HOME%\init.vim %NVIM_CONFIG%\
+pushd ..\
 git add .
 git commit -m "Updated nvim config"
 git push
+popd
 GOTO End
 
 :Noarg

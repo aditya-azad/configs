@@ -186,9 +186,8 @@ nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vca :lua vim.lsp.buf.code_action()<CR>
 
-" Prettier
-map <silent> <leader>p :Prettier<CR>
-
+" Delete without putting it in clipboard
+vnoremap <silent> <leader>d "_d
 
 " FZF
 map <C-f> :GFiles<CR>
