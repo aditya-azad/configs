@@ -66,23 +66,25 @@ install_software() {
   cd dwm
   make
   sudo make install
+  make clean
   cd ..
   # dwmblocks
   cd dwmblocks
   make
   sudo make install
+  make clean
   cd ..
-  popd
   # st
   cd st
   make
   sudo make install
+  make clean
   cd ..
-  popd
   # dmenu
   cd dmenu
   make
   sudo make install
+  make clean
   cd ..
   popd
 
