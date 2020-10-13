@@ -26,6 +26,7 @@
 (use-package all-the-icons :ensure t)
 (use-package projectile :ensure t)
 (use-package helm-projectile :ensure t)
+(use-package flycheck :ensure t)
 
 ;; evil mode
 (evil-mode t)
@@ -42,6 +43,9 @@
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq projectile-switch-project-action 'neotree-projectile-action)
 (setq neo-smart-open t)
+
+;; flycheck
+(global-flycheck-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; General config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -92,6 +96,9 @@
 ;; maximize on startup
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
+;; show corresponding bracket
+(show-paren-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Filetype specific ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq two-tab-width 2)
@@ -116,8 +123,6 @@
 ;; font
 (set-frame-font "Hack 11" nil t)
 
-;; modeline
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; evil mode leader key
@@ -133,7 +138,7 @@
 (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
 (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
 (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "R") 'neotree-refresh)
 (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
 (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
 (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
@@ -153,10 +158,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm-projectile projectile all-the-icons neotree undo-tree atom-one-dark-theme helm evil use-package))
+   '(flycheck helm-projectile projectile all-the-icons neotree undo-tree atom-one-dark-theme helm evil use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+;;; .emacs ends here
