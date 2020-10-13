@@ -1,5 +1,5 @@
 //Modify this file to change what commands output to your statusbar, and recompile using the make command.
-# define PATH(name)		"~/Documents/configs/scripts/dwmbar/"name
+# define PATH(name)		"~/.local/share/dwmblocksscripts/"name
 
 static const Block blocks[] = {
 	/*Icon*/	/*Command*/				/*Update Interval*/	/*Update Signal*/

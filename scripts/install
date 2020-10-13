@@ -1,0 +1,172 @@
+#!/bin/bash
+
+CONFIGS_DIR=$(dirname $(readlink -f "."))
+
+print_help () {
+  echo "This script is used to automatically rice base arch install"
+  echo "Enter at least one argument: "
+  echo "u : Update mirror list using reflector (pacman)"
+  echo "d : Install dwm blocks scripts"
+  echo "i : Install all software (pacman)"
+  echo "c : Install the configs"
+  echo "r : Remove current configs"
+}
+
+print_green () {
+  local green="\033[0;32m"
+  local nc="\033[0m"
+  echo -e "$green $1 $nc"
+  echo -n -E ""
+}
+
+install_software() {
+  print_green "[*] Updating existing packages"
+  sudo pacman -Syu
+
+  print_green "[*] Installing pacman software"
+  sudo pacman -S \
+    neovim \
+    newsboat \
+    git \
+    keepass \
+    xclip \
+    feh \
+    network-manager \
+    dunst \
+    libnotify \
+    xorg-xrandr \
+    unzip \
+    zip \
+    sxiv \
+    alsa-utils \
+    mpd \
+    mpv \
+    ttf-font-awesome \
+    zathura \
+    zathura-pdf-poppler \
+    picom \
+    ranger
+
+  print_green "[*] Installing yay helper"
+  pushd ~/
+  git clone https://aur.archlinux.org/yay-git.git
+  cd yay-git
+  makepkg -si
+  cd ..
+  rm -rf yay-git
+  popd
+
+  print_green "[*] Installing yay softwares"
+  yay -S \
+    brave-bin
+
+  print_green "[*] Installing suckless softwares"
+  pushd $CONFIGS_DIR/softwares
+  # dwm
+  cd dwm
+  make
+  sudo make install
+  cd ..
+  # dwmblocks
+  cd dwmblocks
+  make
+  sudo make install
+  cd ..
+  popd
+  # st
+  cd st
+  make
+  sudo make install
+  cd ..
+  popd
+  # dmenu
+  cd dmenu
+  make
+  sudo make install
+  cd ..
+  popd
+
+  print_green "[*] Installing nvm"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+}
+
+update_mirrorlist() {
+  print_green "[*] Updating mirrorslist"
+  sudo pacman -S reflector
+  ./fix-pacman-mirrors
+}
+
+remove_configs() {
+  print_green "[*] Cleaning configs"
+  # xinitrc
+  rm "$HOME/.xinitrc"
+  # bash
+  rm "$HOME/.bashrc"
+  rm "$HOME/.bash_profile"
+  # vim
+  rm "$HOME/.vim" -rf
+  rm "$HOME/.vimrc"
+  rm "$HOME/.config/nvim" -rf
+  # emacs
+  rm "$HOME/.emacs"
+  rm "$HOME/.emacs.d" -rf
+  # newsboat
+  rm "$HOME/.newsboat" -rf
+  # dunst
+  rm "$HOME/.config/dunst" -rf
+}
+
+install_configs() {
+  print_green "[*] Configuring"
+  # xinitrc
+  ln "$CONFIGS_DIR/configs/.xinitrc" "$HOME/.xinitrc"
+  # bash
+  ln "$CONFIGS_DIR/configs/.bashrc" "$HOME/.bashrc"
+  ln "$CONFIGS_DIR/configs/.bash_profile" "$HOME/.bash_profile"
+  # vim
+  mkdir "$HOME/.config/nvim/"
+  for entry in "$CONFIGS_DIR/configs/.config/nvim"/*; do
+    ln "$entry" "$HOME/.config/nvim"
+  done
+  # emacs
+  ln "$CONFIGS_DIR/configs/.emacs" "$HOME/.emacs"
+  # newsboat
+  mkdir "$HOME/.newsboat"
+  for entry in "$CONFIGS_DIR/configs/.newsboat"/*; do
+    ln "$entry" "$HOME/.newsboat"
+  done
+  # dunst
+  mkdir "$HOME/.config/dunst"
+  for entry in "$CONFIGS_DIR/configs/.config/dunst"/*; do
+    ln "$entry" "$HOME/.config/dunst"
+  done
+
+  source ~/.bash_profile
+}
+
+install_dwmblocks_configs() {
+  mkdir -p $HOME/.local/share/dwmblocksscripts
+  for entry in "$CONFIGS_DIR/scripts/dwmbar"/*; do
+    ln "$entry" "$HOME/.local/share/dwmblocksscripts"
+  done
+}
+
+if [ -z "$@" ]; then
+  print_help
+else
+  for arg in $@; do # loop over all arguments
+    if [ $arg == "u" ]; then
+      update_mirrorlist
+    elif [ $arg == "i" ]; then
+      install_software
+    elif [ $arg == "d" ]; then
+      install_dwmblocks_configs
+    elif [ $arg == "c" ]; then
+      install_configs
+    elif [ $arg == "r" ]; then
+      remove_configs
+    else
+      print_green "[*] Wrong argument \" $arg \"!"
+    fi
+  done
+fi

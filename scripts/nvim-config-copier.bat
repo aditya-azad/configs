@@ -1,7 +1,7 @@
 @echo off
 
 set NVIM_HOME=C:\Users\aditya\AppData\Local\nvim
-set NVIM_CONFIG=.\configs\.config\nvim
+set NVIM_CONFIG=..\configs\.config\nvim
 
 IF %1.==. GOTO Noarg
 IF "%1" == "f" GOTO Copyfrom
