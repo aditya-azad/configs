@@ -1,12 +1,11 @@
 #!/bin/bash
 
-CONFIGS_DIR=$(dirname $(readlink -f "."))
+CONFIGS_DIR=$(dirname $(readlink -f "."))/configs
 
 print_help () {
   echo "This script is used to automatically rice base arch install"
   echo "Enter at least one argument: "
   echo "u : Update mirror list using reflector (pacman)"
-  echo "d : Install dwm blocks scripts"
   echo "i : Install all software (pacman)"
   echo "c : Install the configs"
   echo "r : Remove current configs"
@@ -146,13 +145,6 @@ install_configs() {
   source ~/.bash_profile
 }
 
-install_dwmblocks_configs() {
-  mkdir -p $HOME/.local/share/dwmblocksscripts
-  for entry in "$CONFIGS_DIR/scripts/dwmbar"/*; do
-    ln "$entry" "$HOME/.local/share/dwmblocksscripts"
-  done
-}
-
 if [ -z "$@" ]; then
   print_help
 else
@@ -161,8 +153,6 @@ else
       update_mirrorlist
     elif [ $arg == "i" ]; then
       install_software
-    elif [ $arg == "d" ]; then
-      install_dwmblocks_configs
     elif [ $arg == "c" ]; then
       install_configs
     elif [ $arg == "r" ]; then
