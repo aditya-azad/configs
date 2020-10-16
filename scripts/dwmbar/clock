@@ -1,4 +1,0 @@
-#!/bin/bash
-
-date=$(date "+%I:%M %p")
-echo " $date"
