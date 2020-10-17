@@ -205,5 +205,5 @@ map <silent> <leader>o :NERDTreeToggle<CR>
 " Run the highlighted line in bash and return the result here
 noremap Q !!sh<CR>
 
-" Execute last executed command
-nnoremap <leader>b :<Up><CR>
+" Execute bulid file
+nnoremap <leader>b :! ./build<CR>
