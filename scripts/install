@@ -32,14 +32,14 @@ install_configs() {
   print_green "[*] Configuring"
   # vim
   mkdir "$HOME/.config/nvim/"
-  for entry in "$CONFIGS_DIR/configs/.config/nvim"/*; do
+  for entry in "$CONFIGS_DIR/.config/nvim"/*; do
     ln "$entry" "$HOME/.config/nvim"
   done
   # emacs
-  ln "$CONFIGS_DIR/configs/.emacs" "$HOME/.emacs"
+  ln "$CONFIGS_DIR/.emacs" "$HOME/.emacs"
   # newsboat
   mkdir "$HOME/.newsboat"
-  for entry in "$CONFIGS_DIR/configs/.newsboat"/*; do
+  for entry in "$CONFIGS_DIR/.newsboat"/*; do
     ln "$entry" "$HOME/.newsboat"
   done
 }
