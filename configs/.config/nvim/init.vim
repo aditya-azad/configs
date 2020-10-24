@@ -27,8 +27,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'joshdick/onedark.vim'
 Plug 'lilydjwg/colorizer'
 " Navigation enhancements
-Plug 'preservim/nerdtree'
 Plug 'arithran/vim-delete-hidden-buffers'
+Plug 'tpope/vim-vinegar'
 " Code enhancements
 Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -37,6 +37,7 @@ Plug 'townk/vim-autoclose'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 " Language specific
 "" Go
@@ -130,13 +131,27 @@ colorscheme onedark
 " Git gutter
 let g:gitgutter_map_keys = 0
 
-" Nerdtree
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeIgnore = []
-let g:NERDTreeStatusline = ''
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Netrw
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_browse_split = 2
+let g:netrw_winsize = 25
+let g:NetrwIsOpen=0
+function! ToggleNetrw()
+  if g:NetrwIsOpen
+    let i = bufnr("$")
+    while (i >= 1)
+      if (getbufvar(i, "&filetype") == "netrw")
+        silent exe "bwipeout " . i
+      endif
+      let i-=1
+    endwhile
+    let g:NetrwIsOpen=0
+  else
+    let g:NetrwIsOpen=1
+    silent Lexplore
+  endif
+endfunction
 
 " Completion
 set completeopt=noselect,menuone
@@ -169,6 +184,12 @@ nmap <silent> <leader>j :wincmd j<CR>
 nmap <silent> <leader>k :wincmd k<CR>
 nmap <silent> <leader>l :wincmd l<CR>
 
+" Resizing
+nnoremap <silent> L :exe "vertical resize +5"<CR>
+nnoremap <silent> H :exe "vertical resize -5"<CR>
+nnoremap <silent> J :exe "resize +5"<CR>
+nnoremap <silent> K :exe "resize -5"<CR>
+
 " Fugitive
 nmap <leader>ga :Git add
 nmap <leader>gaa :Git add .<CR>
@@ -186,21 +207,22 @@ nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vca :lua vim.lsp.buf.code_action()<CR>
 
-" Delete without putting it in clipboard
-vnoremap <silent> <leader>d "_d
-
-" FZF
-map <C-f> :GFiles<CR>
+" FZF and Rg
+map <leader>f :GFiles<CR>
+map <leader>F :Rg<CR>
 
 " vimrc
 nnoremap <leader>ve :e $MYVIMRC<CR>
 nnoremap <leader>vr :source $MYVIMRC<CR>
 
+" Delete without putting it in clipboard
+vnoremap <silent> <leader>d "_d
+
 " Delete hidden buffers
 nnoremap <leader>db :DeleteHiddenBuffers<CR>
 
-" Nerdtree
-map <silent> <leader>o :NERDTreeToggle<CR>
+" Netrw
+map <silent> <leader>o :call ToggleNetrw()<CR>
 
 " Run the highlighted line in bash and return the result here
 noremap Q !!sh<CR>
