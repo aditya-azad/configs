@@ -28,7 +28,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'lilydjwg/colorizer'
 " Navigation enhancements
 Plug 'arithran/vim-delete-hidden-buffers'
-Plug 'tpope/vim-vinegar'
+Plug 'scrooloose/nerdtree'
 " Code enhancements
 Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -131,30 +131,17 @@ colorscheme onedark
 " Git gutter
 let g:gitgutter_map_keys = 0
 
-" Netrw
-let g:netrw_liststyle = 3
-let g:netrw_banner = 0
-let g:netrw_browse_split = 2
-let g:netrw_winsize = 25
-let g:NetrwIsOpen=0
-function! ToggleNetrw()
-  if g:NetrwIsOpen
-    let i = bufnr("$")
-    while (i >= 1)
-      if (getbufvar(i, "&filetype") == "netrw")
-        silent exe "bwipeout " . i
-      endif
-      let i-=1
-    endwhile
-    let g:NetrwIsOpen=0
-  else
-    let g:NetrwIsOpen=1
-    silent Lexplore
-  endif
-endfunction
-
 " Completion
 set completeopt=noselect,menuone
+
+" NerdTree
+" Close vim when nerd tree is the last window
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+" Open nerd tree automatically if no files are specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " LSP
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
@@ -221,8 +208,8 @@ vnoremap <silent> <leader>d "_d
 " Delete hidden buffers
 nnoremap <leader>db :DeleteHiddenBuffers<CR>
 
-" Netrw
-map <silent> <leader>o :call ToggleNetrw()<CR>
+" NerdTree
+map <silent> <leader>o :NERDTreeToggle<CR>
 
 " Run the highlighted line in bash and return the result here
 noremap Q !!sh<CR>
