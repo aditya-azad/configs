@@ -39,6 +39,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+" Others
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(1) } }
 " Language specific
 "" Go
 Plug 'tweekmonster/gofmt.vim'
@@ -139,9 +141,6 @@ set completeopt=noselect,menuone
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
-" Open nerd tree automatically if no files are specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " LSP
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
