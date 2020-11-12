@@ -39,8 +39,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-" Others
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(1) } }
 " Language specific
 "" Go
 Plug 'tweekmonster/gofmt.vim'
@@ -80,6 +78,8 @@ set noundofile
 set nowritebackup
 set mouse=a
 set clipboard^=unnamed,unnamedplus
+set undodir=~/.vimundo
+set undofile
 
 " set font
 let os=substitute(system('uname'), '\n', '', '')
