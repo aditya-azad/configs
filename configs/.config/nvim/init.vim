@@ -33,6 +33,7 @@ Plug 'airblade/vim-rooter'
 " Code enhancements
 Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'tjdevries/lsp_extensions.nvim'
 " Speed enhancem
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
