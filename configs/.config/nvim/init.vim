@@ -29,19 +29,20 @@ Plug 'lilydjwg/colorizer'
 " Navigation enhancements
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'scrooloose/nerdtree'
+Plug 'airblade/vim-rooter'
 " Code enhancements
 Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'townk/vim-autoclose'
 " Speed enhancem
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 " Language specific
 "" Go
 Plug 'tweekmonster/gofmt.vim'
+"" Rust
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
@@ -130,11 +131,15 @@ colorscheme onedark
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
 
+" Rooter
+let g:rooter_patterns = ['.git', 'Makefile', '*.sln', 'package.json']
+let g:rooter_change_directory_for_non_project_files = 'current'
+
 " Git gutter
 let g:gitgutter_map_keys = 0
 
 " Completion
-set completeopt=noselect,menuone
+set completeopt=noselect,menuone,noinsert
 
 " NerdTree
 " Close vim when nerd tree is the last window
