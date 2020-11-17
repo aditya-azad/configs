@@ -7,3 +7,6 @@ auto-save-list
 tramp
 .\#*
 *.swp
+
+configs/.newsboat/cache.db
+configs/.newsboat/history.cmdline
