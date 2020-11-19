@@ -31,9 +31,7 @@ Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-rooter'
 " Code enhancements
-Plug 'nvim-lua/completion-nvim'
-Plug 'neovim/nvim-lspconfig'
-Plug 'tjdevries/lsp_extensions.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Speed enhancem
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -131,6 +129,47 @@ endif
 colorscheme onedark
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
+" COC
+let g:coc_global_extensions = [
+      \ 'coc-tsserver',
+      \ 'coc-prettier',
+      \ 'coc-eslint',
+      \ 'coc-cssmodules',
+      \ 'coc-css',
+      \ 'coc-html',
+      \ 'coc-emoji',
+      \ 'coc-xml',
+      \ 'coc-yaml',
+      \ 'coc-json',
+      \ 'coc-vimlsp',
+      \ 'coc-python',
+      \ 'coc-clangd',
+      \ 'coc-go',
+      \ 'coc-rls'
+      \ ]
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" trigger completion.
+inoremap <silent><expr> <c-p> coc#refresh()
+" Shows documentation
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+" provider config
+let g:loaded_python_provider=0 " python 2 support disabled
+let g:loaded_ruby_provider=0
 
 " Rooter
 let g:rooter_patterns = ['.git', 'Makefile', '*.sln', 'package.json']
@@ -147,14 +186,6 @@ set completeopt=noselect,menuone,noinsert
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
-
-" LSP
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach }
-lua require'nvim_lsp'.clangd.setup{ on_attach=require'completion'.on_attach }
-lua require'nvim_lsp'.gopls.setup{ on_attach=require'completion'.on_attach }
-lua require'nvim_lsp'.rust_analyzer.setup{ on_attach=require'completion'.on_attach }
-
 
 """""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""""
 
@@ -190,14 +221,13 @@ nmap <leader>gps :Git push<CR>
 nmap <leader>gs :Git status<CR>
 nmap <leader>gc :Git commit<CR>
 
-" LSP
-nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
-nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
-nnoremap <leader>vsh :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <leader>vrr :lua vim.lsp.buf.references()<CR>
-nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
-nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>vca :lua vim.lsp.buf.code_action()<CR>
+" COC
+nmap <silent> <Leader>gd <Plug>(coc-definition)
+nmap <silent> <Leader>gy <Plug>(coc-type-definition)
+nmap <silent> <Leader>gi <Plug>(coc-implementation)
+nmap <silent> <Leader>gr <Plug>(coc-references)
+nmap <silent> <leader>rn <Plug>(coc-rename)
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
 
 " FZF and Rg
 map <leader>f :GFiles<CR>
