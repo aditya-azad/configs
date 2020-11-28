@@ -15,37 +15,71 @@
 (eval-when-compile
   (require 'use-package))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;; Packages configs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;; Packages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; install packages
-(use-package evil :ensure t)
-(use-package helm :ensure t)
-(use-package atom-one-dark-theme :ensure t)
-(use-package undo-tree :ensure t)
-(use-package neotree :ensure t)
+(use-package evil-collection
+  :ensure t
+  :init
+  (setq evil-want-keybinding nil)
+  :config
+  (setq evil-collection-mode-list '(dired))
+  (evil-collection-init))
+
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode t)
+  ;; evil mode leader key
+  (evil-set-leader 'normal (kbd "SPC") nil)
+  ;; rebind u to undo tree
+  (define-key evil-normal-state-map (kbd "C-r") (kbd "C-x u"))
+  ;; panes
+  (define-key evil-normal-state-map (kbd "<leader>l") (kbd "C-w l"))
+  (define-key evil-normal-state-map (kbd "<leader>j") (kbd "C-w j"))
+  (define-key evil-normal-state-map (kbd "<leader>k") (kbd "C-w k"))
+  (define-key evil-normal-state-map (kbd "<leader>h") (kbd "C-w h"))
+  (evil-define-key 'normal 'global (kbd "<leader>o") (lambda() (interactive)(dired "."))))
+
+(use-package helm
+  :ensure t
+  :config
+  (helm-mode 1)
+  (global-set-key (kbd "M-x") 'helm-M-x))
+
+(use-package ample-theme :ensure t)
+
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
+
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (add-to-list 'projectile-globally-ignored-directories "*node_modules")
+  (setq projectile-sort-order 'recently-active)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package helm-projectile
+  :ensure t
+  :config (helm-projectile-on))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
+
+(use-package web-mode :ensure t)
+
 (use-package all-the-icons :ensure t)
-(use-package projectile :ensure t)
-(use-package helm-projectile :ensure t)
-(use-package flycheck :ensure t)
 
-;; evil mode
-(evil-mode t)
+(use-package doom-themes :ensure t)
 
-;; undo tree
-(global-undo-tree-mode)
-
-;; helm, projectile
-(helm-mode 1)
-(projectile-mode +1)
-(helm-projectile-on)
-
-;; neotree
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-(setq projectile-switch-project-action 'neotree-projectile-action)
-(setq neo-smart-open t)
-
-;; flycheck
-(global-flycheck-mode)
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; General config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -72,6 +106,7 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
+;; TODO: FIGURE THIS OUT, MAYBE USE TAB INDICATORS
 ;; use spaces instead of tabs (unless the file is already using one over the other)
 (setq-default indent-tabs-mode t)
 (defun infer-indentation-style ()
@@ -84,7 +119,7 @@
 (add-hook 'find-file-hook 'infer-indentation-style)
 
 ;; set default tab width
-(setq defualt-tab-width 2)
+(setq-default tab-width 2)
 
 ;; scroll settings
 (setq scroll-step            1
@@ -99,16 +134,17 @@
 ;; show corresponding bracket
 (show-paren-mode)
 
+;; disable bells
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Filetype specific ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq two-tab-width 2)
-(setq four-tab-width 4)
-
 ;; c/c++
-(defvaralias 'c-basic-offset 'four-tab-width)
+(setq-default c-basic-offset 4)
 
 ;; javascript
-(defvaralias 'js-indent-level 'two-tab-width)
+(setq-default js-indent-level 2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Visual configs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -118,51 +154,20 @@
 (toggle-scroll-bar -1)
 
 ;; theme
-(load-theme 'atom-one-dark t)
+(load-theme 'doom-one t)
 
 ;; font
-(set-frame-font "Hack 11" nil t)
+(set-frame-font "Hack NF 11" nil t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; evil mode leader key
-(evil-set-leader 'normal (kbd "SPC") nil)
 ;; evaluate current buffer
 (global-set-key (kbd "C-c C-r") 'eval-buffer)
-;; rebind u to undo tree
-(define-key evil-normal-state-map (kbd "C-r") (kbd "C-x u"))
-;; use helm for M-x
-(global-set-key (kbd "M-x") 'helm-M-x)
-;; neotree
-(evil-define-key 'normal 'global (kbd "<leader>o") 'neotree-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
-(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "R") 'neotree-refresh)
-(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-;; projectile
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; .emacs file
+;; C-x r j <register>
 (set-register ?e (cons 'file "~/.emacs"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Cutom set ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(flycheck helm-projectile projectile all-the-icons neotree undo-tree atom-one-dark-theme helm evil use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-;;; .emacs ends here
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
