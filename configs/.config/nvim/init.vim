@@ -113,6 +113,9 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " C/C++ flie specific settings
 autocmd BufRead,BufNewFile *.c,*.h,*.cc,*.cpp,*.hpp setlocal ts=4 sw=4 sts=4
 
+" go files seting
+autocmd BufRead,BufNewFile *.go setlocal ts=4 sw=4 sts=4
+
 " Theme settings (must be done before)
 syntax on
 if has('termguicolors')

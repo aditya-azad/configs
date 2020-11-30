@@ -58,13 +58,17 @@
   :ensure t
   :config
   (projectile-mode +1)
-  (add-to-list 'projectile-globally-ignored-directories "*node_modules")
+  (add-to-list 'projectile-globally-ignored-directories "node_modules")
+  (setq projectile-indexing-method 'alien)
+  (setq projectile-enable-caching t)
+  (setq projectile-completion-system 'helm)
   (setq projectile-sort-order 'recently-active)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (use-package helm-projectile
   :ensure t
-  :config (helm-projectile-on))
+  :config
+  (helm-projectile-on))
 
 (use-package flycheck
   :ensure t
@@ -106,7 +110,6 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
-;; TODO: FIGURE THIS OUT, MAYBE USE TAB INDICATORS
 ;; use spaces instead of tabs (unless the file is already using one over the other)
 (setq-default indent-tabs-mode t)
 (defun infer-indentation-style ()
@@ -159,6 +162,9 @@
 ;; font
 (set-frame-font "Hack NF 11" nil t)
 
+;; disable startup message
+(setq inhibit-startup-message t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; evaluate current buffer
@@ -171,3 +177,16 @@
 (set-register ?e (cons 'file "~/.emacs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(dired-toggle doom-modeline doom-themes all-the-icons web-mode flycheck helm-projectile projectile undo-tree ample-theme helm evil-collection use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
