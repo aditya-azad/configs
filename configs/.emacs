@@ -1,5 +1,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Repo setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; setup package repos
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
@@ -25,8 +24,7 @@
   (setq evil-collection-mode-list '(dired))
   (evil-collection-init))
 
-(use-package evil
-  :ensure t
+(use-package evil :ensure t
   :config
   (evil-mode t)
   ;; evil mode leader key
@@ -46,19 +44,17 @@
   (helm-mode 1)
   (global-set-key (kbd "M-x") 'helm-M-x))
 
-(use-package ample-theme :ensure t)
-
 (use-package undo-tree
   :ensure t
   :config
   (global-undo-tree-mode))
-
 
 (use-package projectile
   :ensure t
   :config
   (projectile-mode +1)
   (add-to-list 'projectile-globally-ignored-directories "node_modules")
+  (setq projectile-project-search-path '("~/Documents/projects/" ))
   (setq projectile-indexing-method 'alien)
   (setq projectile-enable-caching t)
   (setq projectile-completion-system 'helm)
@@ -75,7 +71,25 @@
   :config
   (global-flycheck-mode))
 
-(use-package web-mode :ensure t)
+(use-package web-mode
+  :ensure t
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
 
 (use-package all-the-icons :ensure t)
 
@@ -84,9 +98,6 @@
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
-
-(use-package auto-indent-mode
-  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; General config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -117,27 +128,21 @@
 (setq message-log-max 16384)
 
 ;; backup files settings
-(setq version-control t   ;; Use version numbers for backups.
-    kept-new-versions 10  ;; Number of newest versions to keep.
-    kept-old-versions 0   ;; Number of oldest versions to keep.
-    delete-old-versions t ;; Don't ask to delete excess backup versions.
-    backup-by-copying t)  ;; Copy all files, don't rename them.
-(setq vc-make-backup-files t) ;; backup versioned files
-(setq backup-directory-alist '(("" . "~/.tmp/emacs/backup/per-save"))) ;; Default and per-save backups go here
-(defun force-backup-of-buffer ()
-  ;; Make a special "per session" backup at the first save of each
-  ;; emacs session.
-  (when (not buffer-backed-up)
-    ;; Override the default parameters for per-session backups.
-    (let ((backup-directory-alist '(("" . "~/.tmp/emacs/backup/per-session")))
-          (kept-new-versions 3))
-      (backup-buffer)))
-  ;; Make a "per save" backup on each save.  The first save results in
-  ;; both a per-session and a per-save backup, to keep the numbering
-  ;; of per-save backups consistent.
-  (let ((buffer-backed-up nil))
-    (backup-buffer)))
-(add-hook 'before-save-hook  'force-backup-of-buffer)
+;; delete-auto-save-files
+(setq delete-auto-save-files t)
+;; Create the directory for backups if it doesn't exist
+(when (not (file-exists-p "~/.emacs_backups"))
+  (make-directory "~/.emacs_backups"))
+;; set backup directory
+(setq-default backup-directory-alist
+              '((".*" . "~/.emacs_backups")))
+(setq auto-save-file-name-transforms
+      '((".*" "~/.emacs_backups/" t)))
+;; delete old backups silently
+(setq delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
 
 ;; use spaces instead of tabs (unless the file is already using one over the other)
 (setq-default indent-tabs-mode t)
@@ -193,15 +198,12 @@
 ;; show corresponding bracket
 (show-paren-mode)
 
-;; display line numbers
-(global-display-line-numbers-mode)
-
 ;; display line numbers and columns numbers on mode-line
 (line-number-mode 1)
 (column-number-mode 1)
 
 ;; theme
-(load-theme 'doom-one t)
+(load-theme 'doom-oceanic-next t)
 
 ;; font
 (set-frame-font "Hack Nerd Font 11" nil t)
@@ -212,7 +214,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; evaluate current buffer
-(global-set-key (kbd "C-c C-r") 'eval-buffer)
+(global-set-key (kbd "C-x C-r") 'eval-buffer)
+;; open agenda
+(global-set-key (kbd "C-x C-a") 'org-agenda)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -220,17 +224,12 @@
 ;; C-x r j <register>
 (set-register ?e (cons 'file "~/.emacs"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(dired-toggle doom-modeline doom-themes all-the-icons web-mode flycheck helm-projectile projectile undo-tree ample-theme helm evil-collection use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; enable some modules
+(setq org-modules (quote (org-habit)))
+
+;; Default agenda directory
+(setq org-agenda-files (quote ("~/Documents/org/current/")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
