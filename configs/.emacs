@@ -85,7 +85,36 @@
   :ensure t
   :init (doom-modeline-mode 1))
 
+(use-package auto-indent-mode
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; General config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; prefer UTF-8 everywehere
+(set-charset-priority 'unicode)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
+;; garbage collection threshold is 50 mbs
+(setq gc-cons-threshold (* 50 1024 1024))
+
+;; set line number width limit to avoid bugs
+(setq line-number-display-limit-width 10000)
+
+;; enable syntax highlighting everywhere
+(global-font-lock-mode t)
+;; Allow font-lock-mode to do background parsing
+(setq jit-lock-defer-time nil
+      ;; jit-lock-stealth-nice 0.1
+      jit-lock-stealth-time 1
+      jit-lock-stealth-verbose nil)
+
+;; raise max number of logs in message buffer
+(setq message-log-max 16384)
 
 ;; backup files settings
 (setq version-control t   ;; Use version numbers for backups.
@@ -134,12 +163,16 @@
 ;; maximize on startup
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
-;; show corresponding bracket
-(show-paren-mode)
-
 ;; disable bells
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
+
+;; use y and n instead of yes and no in confirmation dialogues
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; confirm kill emacs window in GUI mode
+(when (window-system)
+  (setq confirm-kill-emacs 'yes-or-no-p))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Filetype specific ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -154,13 +187,24 @@
 ;; disable top bars and scroll bars
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(toggle-scroll-bar -1)
+(blink-cursor-mode -1)
+(set-scroll-bar-mode 'nil)
+
+;; show corresponding bracket
+(show-paren-mode)
+
+;; display line numbers
+(global-display-line-numbers-mode)
+
+;; display line numbers and columns numbers on mode-line
+(line-number-mode 1)
+(column-number-mode 1)
 
 ;; theme
 (load-theme 'doom-one t)
 
 ;; font
-(set-frame-font "Hack NF 11" nil t)
+(set-frame-font "Hack Nerd Font 11" nil t)
 
 ;; disable startup message
 (setq inhibit-startup-message t)
