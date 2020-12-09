@@ -175,10 +175,6 @@
 ;; use y and n instead of yes and no in confirmation dialogues
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; confirm kill emacs window in GUI mode
-(when (window-system)
-  (setq confirm-kill-emacs 'yes-or-no-p))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Filetype specific ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; c/c++
@@ -203,7 +199,7 @@
 (column-number-mode 1)
 
 ;; theme
-(load-theme 'doom-oceanic-next t)
+(load-theme 'doom-challenger-deep t)
 
 ;; font
 (set-frame-font "Hack Nerd Font 11" nil t)
@@ -233,3 +229,17 @@
 (setq org-agenda-files (quote ("~/Documents/org/current/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (doom-modeline doom-themes all-the-icons web-mode flycheck helm-projectile projectile undo-tree helm evil-collection use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
