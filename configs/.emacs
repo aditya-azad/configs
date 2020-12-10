@@ -31,11 +31,15 @@
   (evil-set-leader 'normal (kbd "SPC") nil)
   ;; rebind u to undo tree
   (define-key evil-normal-state-map (kbd "C-r") (kbd "C-x u"))
-  ;; panes
+  ;; window commands
   (define-key evil-normal-state-map (kbd "<leader>l") (kbd "C-w l"))
   (define-key evil-normal-state-map (kbd "<leader>j") (kbd "C-w j"))
   (define-key evil-normal-state-map (kbd "<leader>k") (kbd "C-w k"))
   (define-key evil-normal-state-map (kbd "<leader>h") (kbd "C-w h"))
+  (define-key evil-normal-state-map (kbd "L") 'enlarge-window-horizontally)
+  (define-key evil-normal-state-map (kbd "J") 'enlarge-window)
+  (define-key evil-normal-state-map (kbd "K") 'shrink-window)
+  (define-key evil-normal-state-map (kbd "H") 'shrink-window-horizontally)
   (evil-define-key 'normal 'global (kbd "<leader>o") (lambda() (interactive)(dired "."))))
 
 (use-package helm
