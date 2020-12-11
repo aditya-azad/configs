@@ -58,7 +58,6 @@
   :config
   (projectile-mode +1)
   (add-to-list 'projectile-globally-ignored-directories "node_modules")
-  (setq projectile-project-search-path '("~/Documents/projects/" ))
   (setq projectile-indexing-method 'alien)
   (setq projectile-enable-caching t)
   (setq projectile-completion-system 'helm)
@@ -113,6 +112,10 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
+;; default directory
+(if (string-equal system-type "windows-nt")
+    (setq default-directory "C:/Users/azada/Documents/" ))
 
 ;; garbage collection threshold is 50 mbs
 (setq gc-cons-threshold (* 50 1024 1024))
@@ -179,6 +182,19 @@
 ;; use y and n instead of yes and no in confirmation dialogues
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; evaluate current buffer
+(global-set-key (kbd "C-x C-r") 'eval-buffer)
+;; open agenda
+(global-set-key (kbd "C-x C-a") 'org-agenda)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; .emacs file
+;; C-x r j <register>
+(set-register ?e (cons 'file "~/.emacs"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Filetype specific ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; c/c++
@@ -206,23 +222,13 @@
 (load-theme 'doom-challenger-deep t)
 
 ;; font
-(set-frame-font "Hack Nerd Font 11" nil t)
+(if (string-equal system-type "windows-nt")
+    (set-frame-font "-outline-Hack-normal-normal-normal-mono-15-*-*-*-c-*-iso8859")
+  (set-frame-font "Hack Nerd Font 12"))
+
 
 ;; disable startup message
 (setq inhibit-startup-message t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;; Key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; evaluate current buffer
-(global-set-key (kbd "C-x C-r") 'eval-buffer)
-;; open agenda
-(global-set-key (kbd "C-x C-a") 'org-agenda)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; .emacs file
-;; C-x r j <register>
-(set-register ?e (cons 'file "~/.emacs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -230,20 +236,6 @@
 (setq org-modules (quote (org-habit)))
 
 ;; Default agenda directory
-(setq org-agenda-files (quote ("~/Documents/org/current/")))
+(setq org-agenda-files (quote ("C:/Users/azada/Documents/org/current/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (doom-modeline doom-themes all-the-icons web-mode flycheck helm-projectile projectile undo-tree helm evil-collection use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
