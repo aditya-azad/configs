@@ -187,6 +187,10 @@
 
 ;; evaluate current buffer
 (global-set-key (kbd "C-x C-r") 'eval-buffer)
+
+;; switch buffer menu
+(global-set-key (kbd "C-x C-b") 'switch-to-buffer)
+
 ;; open agenda
 (global-set-key (kbd "C-x C-a") 'org-agenda)
 

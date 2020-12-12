@@ -1,7 +1,7 @@
 @echo off
 
-set EMACS_HOME=C:\Users\aditya\AppData\Roaming
-set EMACS_CONFIG=..\configs\.config
+set EMACS_HOME=C:\Users\azada\AppData\Roaming
+set EMACS_CONFIG=..\configs
 
 IF %1.==. GOTO Noarg
 IF "%1" == "f" GOTO Copyfrom
