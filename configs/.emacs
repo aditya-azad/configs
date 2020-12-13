@@ -97,6 +97,22 @@
 
 (use-package all-the-icons :ensure t)
 
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(use-package org-roam :ensure t)
+(add-to-list 'exec-path "C:/Program Files/sqlite/sqlite3.exe")
+(add-hook 'after-init-hook 'org-roam-mode)
+(setq org-roam-directory "C:/Users/azada/Documents/notes")
+(setq org-roam-capture-templates
+      '(("d" "default" entry (function org-roam--capture-get-point)
+         "%?"
+         :file-name "${slug}"
+         :head "#+title: ${title}\n"
+         :unnarrowed t)))
+
 (use-package doom-themes :ensure t)
 
 (use-package doom-modeline
@@ -194,6 +210,13 @@
 ;; open agenda
 (global-set-key (kbd "C-x C-a") 'org-agenda)
 
+;; org roam
+(global-set-key (kbd "C-x n r") #'org-roam-buffer-toggle-display)
+(global-set-key (kbd "C-x n i") #'org-roam-insert)
+(global-set-key (kbd "C-x n f") #'org-roam-find-file)
+(global-set-key (kbd "C-x n b") #'org-roam-switch-to-buffer)
+(global-set-key (kbd "C-x n d") #'org-roam-find-directory)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; .emacs file
@@ -247,11 +270,13 @@
 
 ;; (WINDOWS SPECIFIC) TODO: FIND A WAY TO WRAP AROUND IF
 ;; add-to-list DOES NOT WORK IN IF
-
 ;; Add hunspell dictionary
 (add-to-list 'exec-path "C:/Program Files/hunspell/bin")
 (setq ispell-program-name (locate-file "hunspell"
                                        exec-path exec-suffixes 'file-executable-p))
+
+;; associate filetypes for spellcheck
+(add-hook 'text-mode-hook 'flyspell-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
