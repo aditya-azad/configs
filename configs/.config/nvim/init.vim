@@ -57,6 +57,8 @@ set encoding=UTF-8
 set linebreak
 set showmatch
 set novisualbell
+set listchars=tab:>-
+set list
 set noerrorbells
 set hlsearch
 set smartcase
@@ -68,7 +70,7 @@ set tabstop=2 softtabstop=2
 set shiftwidth=2
 set smartindent
 set smarttab
-set expandtab
+set noexpandtab
 set undolevels=1000
 set backspace=indent,eol,start
 set updatetime=100
@@ -82,10 +84,7 @@ set undodir=~/.vimundo
 set undofile
 
 " set font
-let os=substitute(system('uname'), '\n', '', '')
-if has("win32")
-  set guifont=Hack:h11
-endif
+set guifont=Hack:h11
 
 " Remove trailing space on save
 autocmd BufWritePre * %s/\s\+$//e
@@ -121,14 +120,7 @@ syntax on
 if has('termguicolors')
   set termguicolors
 endif
-" enable transparency in terminals
-if (has("autocmd") && !has("gui_running"))
-  augroup colorset
-    autocmd!
-    let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
-    autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
-  augroup END
-endif
+
 colorscheme onedark
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
@@ -148,7 +140,8 @@ let g:coc_global_extensions = [
       \ 'coc-python',
       \ 'coc-clangd',
       \ 'coc-go',
-      \ 'coc-rls'
+      \ 'coc-rls',
+      \ 'coc-markdownlint'
       \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
@@ -190,7 +183,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
-"""""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""
 
 " leader set
 let mapleader=" "
@@ -244,13 +237,10 @@ nnoremap <leader>vr :source $MYVIMRC<CR>
 vnoremap <silent> <leader>d "_d
 
 " Delete hidden buffers
-nnoremap <leader>db :DeleteHiddenBuffers<CR>
+nnoremap <F5> :DeleteHiddenBuffers<CR>
 
 " NerdTree
 map <silent> <leader>o :NERDTreeToggle<CR>
-
-" Run the highlighted line in bash and return the result here
-noremap Q !!sh<CR>
 
 " Execute bulid file
 nnoremap <leader>b :! ./build<CR>
