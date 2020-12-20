@@ -1,23 +1,66 @@
-;; General Config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+TITLE: Emacs Config
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :mkdirp yes
 
-;; Increase garbage collection threshhold
+Run *org-babel-tangle* to install the configs
+
+* Initial system config
+** Register files
+
+Use *C-x r j <register>* to open these files
+
+#+begin_src emacs-lisp
+
+(set-register ?e (cons 'file "C:/Users/azada/Documents/configs/emacs.org"))
+
+#+end_src
+
+** Garbage collection
+
+#+begin_src emacs-lisp
+
 (setq gc-cons-threshold (* 50 1000 1000))
 
-;; Backup and emacs files settings
-(setq user-emacs-directory "~/.cache/emacs/"
-      backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
-      url-history-file (expand-file-name "url/history" user-emacs-directory)
-      auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-emacs-directory)
-      projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory)
+#+end_src
+
+** Emacs files locations
+
+#+begin_src emacs-lisp
+
+(setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory)))
+			url-history-file (expand-file-name "url/history" user-emacs-directory)
+			auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-emacs-directory)
+			projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory)
 			delete-old-versions t
 			kept-new-versions 6
 			kept-old-versions 2
 			version-control t)
 
-;; Maximize on startup
+#+end_src
+
+** Org-babel config
+
+#+begin_src emacs-lisp
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+	 (python . t)))
+(setq org-confirm-babel-evaluate nil)
+
+#+end_src
+
+** Maximize on startup
+
+#+begin_src emacs-lisp
+
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
-;; Prefer UTF-8 everywehere
+#+end_src
+
+** UTF-8 everywhere
+
+#+begin_src emacs-lisp
+
 (set-charset-priority 'unicode)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -26,37 +69,73 @@
 (prefer-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 
-;; Set line number width limit to avoid bugs
+#+end_src
+
+** Line number width set
+
+#+begin_src emacs-lisp
+
 (setq line-number-display-limit-width 10000)
 
-;; Remove trailing whitespaces
+#+end_src
+
+** Trailing whitespace settings
+
+#+begin_src emacs-lisp
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Use y and n instead of yes and no in confirmation dialogues
+#+end_src
+
+** Confirmation dialog shortcut
+
+#+begin_src emacs-lisp
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Default tabs
+#+end_src
+
+** Tabs setting
+
+*** Default tab lengths
+
+#+begin_src emacs-lisp
+
 (setq-default tab-width 2)
 (setq-default evil-shift-width tab-width)
 
-;; Enable syntax highlighting everywhere
+#+end_src
+
+** Syntax highlight enable
+
+#+begin_src emacs-lisp
+
 (global-font-lock-mode t)
 ;; Allow font-lock-mode to do background parsing
 (setq jit-lock-defer-time nil
-      ;; jit-lock-stealth-nice 0.1
-      jit-lock-stealth-time 1
-      jit-lock-stealth-verbose nil)
+			;; jit-lock-stealth-nice 0.1
+			jit-lock-stealth-time 1
+			jit-lock-stealth-verbose nil)
 
-;; Initial Package Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+end_src
 
-;; Setup package sources
+* Packages setup
+** Sources
+
+#+begin_src emacs-lisp
+
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 												 ("org" . "https://orgmode.org/elpa/")
 												 ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
-;; Setup use-package
+#+end_src
+
+** use-package setup
+
+#+begin_src emacs-lisp
+
 (unless (package-installed-p 'use-package)
 	(package-refresh-contents)
 	(package-install 'use-package))
@@ -64,7 +143,12 @@
 	(require 'use-package)
 	(setq use-package-always-ensure t))
 
-;; Packages Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+end_src
+
+** Packages
+*** Evil mode
+
+#+begin_src emacs-lisp
 
 (use-package evil
 	:init
@@ -86,15 +170,13 @@
 	:config
 	(evil-collection-init))
 
-(use-package counsel
-	:bind (("M-x" . counsel-M-x)
-				 ("C-x b" . counsel-ibuffer)
-				 ("C-x C-f" . counsel-find-file)
-				 ("C-M-l" . counsel-imenu)
-				 :map minibuffer-local-map
-				 ("C-r" . 'counsel-minibuffer-history))
-	:custom
-	(counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only))
+(use-package evil-nerd-commenter)
+
+#+end_src
+
+*** Ivy
+
+#+begin_src emacs-lisp
 
 (use-package ivy
 	:after (counsel)
@@ -119,6 +201,28 @@
 	:init
 	(ivy-rich-mode 1))
 
+(use-package counsel
+	:bind (("M-x" . counsel-M-x)
+				 ("C-x b" . counsel-ibuffer)
+				 ("C-x C-f" . counsel-find-file)
+				 ("C-M-l" . counsel-imenu)
+				 :map minibuffer-local-map
+				 ("C-r" . 'counsel-minibuffer-history))
+	:custom
+	(counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only))
+
+
+(use-package ivy-xref
+	:init (if (< emacs-major-version 27)
+						(setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+					(setq xref-show-definitions-function #'ivy-xref-show-defs)))
+
+#+end_src
+
+*** Which key
+
+#+begin_src emacs-lisp
+
 (use-package which-key
 	:diminish which-key-mode
 	:init
@@ -127,9 +231,21 @@
 	(which-key-setup-side-window-bottom)
 	(setq which-key-idle-delay 1))
 
+#+end_src
+
+*** Rainbow delimiters
+
+#+begin_src emacs-lisp
+
 (use-package rainbow-delimiters
 	:diminish
 	:hook (prog-mode . rainbow-delimiters-mode))
+
+#+end_src
+
+*** Helpful
+
+#+begin_src emacs-lisp
 
 (use-package helpful
 	:after (counsel)
@@ -142,7 +258,14 @@
 	([remap describe-variable] . counsel-describe-variable)
 	([remap describe-key] . helpful-key))
 
-;; M-x all-the-icons-install-fonts to setup fonts if not done already
+#+end_src
+
+*** Theming
+
+Use *M-x all-the-icons-install-fonts* to install fonts the first time
+
+#+begin_src emacs-lisp
+
 (use-package all-the-icons)
 
 (use-package doom-themes)
@@ -150,6 +273,12 @@
 (use-package doom-modeline
 	:init
 	(doom-modeline-mode 1))
+
+#+end_src
+
+*** Projectile
+
+#+begin_src emacs-lisp
 
 (use-package projectile
 	:diminish (projectile-mode)
@@ -164,8 +293,22 @@
 (use-package counsel-projectile
 	:after (projectile))
 
-;; Use ? to bring up all the commands that can be run
+#+end_src
+
+*** Git
+
+#+begin_src emacs-lisp
+
 (use-package magit)
+
+(use-package forge
+	:disabled)
+
+#+end_src
+
+*** General
+
+#+begin_src emacs-lisp
 
 (use-package general
 	:config
@@ -177,8 +320,11 @@
 		:prefix "SPC"
 		:global-prefix "C-SPC"))
 
-(use-package forge
-	:disabled)
+#+end_src
+
+*** Org
+
+#+begin_src emacs-lisp
 
 (defun adi/org-mode-setup ()
 	(org-indent-mode)
@@ -200,6 +346,18 @@
 	(advice-add 'org-refile :after 'org-save-all-org-buffers)
 	(setq org-modules
 				'(org-habit)))
+
+;; org mode templates (typing <el <TAB> in org mode)
+(require 'org-tempo)
+
+(add-to-list 'org-structure-template-alist '("sh" . "src sh"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
+(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
+(add-to-list 'org-structure-template-alist '("json" . "src json"))
+
 
 (use-package org-superstar
 	:after org
@@ -226,21 +384,113 @@
 (use-package visual-fill-column
 	:hook (org-mode . adi/org-mode-visual-fill))
 
+#+end_src
+
+*** Undo tree
+
+#+begin_src emacs-lisp
+
 (use-package undo-tree
 	:config
 	(global-undo-tree-mode))
 
+#+end_src
+
+*** Hydra
+
+#+begin_src emacs-lisp
+
 (use-package hydra
-  :defer 1)
+	:defer 1)
+
+#+end_src
+
+*** Languages
+**** LSP
+
+#+begin_src emacs-lisp
+
+(use-package lsp-mode
+	:commands (lsp lsp-deferred)
+	:hook ((typescript-mode js2-mode web-mode) . lsp)
+	:init
+	(setq lsp-keymap-prefix "C-c l")
+	:config
+	(lsp-enable-which-key-integration t)
+	:bind
+	(:map lsp-mode-map
+				("TAB" . completion-at-point)))
+
+(use-package lsp-treemacs
+	:after (lsp))
+
+(use-package company
+	:after (lsp-mode)
+	:hook (lsp-mode . company-mode)
+	:bind
+	(:map lsp-mode-map
+				("<tab>" . company-indent-or-complete-common))
+	:custom
+	(company-minimum-prefix-length 1)
+	(company-idle-delay 0.0))
+
+(use-package flycheck
+	:defer t
+	:hook (lsp-mode . flycheck-mode))
+
+#+end_src
+
+**** Markdown
+
+#+begin_src emacs-lisp
 
 (use-package markdown-mode)
 
-;; Key Bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+end_src
+
+**** JavaScript/Typescript
+
+#+begin_src emacs-lisp
+
+(defun adi/set-js-indentation ()
+	(setq js-indent-level 2)
+	(setq evil-shift-width js-indent-level)
+	(setq-default tab-width 2))
+
+(use-package typescript-mode
+	:mode "\\.tsx?\\'"
+	:config
+	(setq typescript-indent-level 2))
+
+(use-package js2-mode
+	:mode "\\.jsx?\\'"
+	:config
+	;; Use js2-mode for Node scripts
+	(add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
+	;; Don't use built-in syntax checking
+	(setq js2-mode-show-strict-warnings nil)
+	;; Set up proper indentation in JavaScript and JSON files
+	(add-hook 'js2-mode-hook #'adi/set-js-indentation)
+	(add-hook 'json-mode-hook #'adi/set-js-indentation))
+
+(use-package prettier-js
+	:hook ((js2-mode . prettier-js-mode)
+				 (typescript-mode . prettier-js-mode))
+	:config
+	(setq prettier-js-show-errors nil))
+
+#+end_src
+
+* Key bindings
+
+#+begin_src emacs-lisp
 
 (general-define-key
  "<escape>" 'keyboard-escape-quit
  ;; counsel
- "C-M-j" 'counsel-switch-buffer)
+ "C-M-j" 'counsel-switch-buffer
+ ;; evil-nerd-commneter
+ "M-/" 'evilnc-comment-or-uncomment-lines)
 
 (adi/ctrl-c-keys
 	;; projectile
@@ -253,7 +503,15 @@
 	"k"   'windmove-up
 	"l"   'windmove-right
 	"h"   'windmove-left
+	;; lsp
+	"s"  '(:ignore t :which-key "lsp")
+	"sa" 'flymake-show-diagnostics-buffer
+	"sd" 'xref-find-definitions
+	"sr" 'lsp-treemacs-references
+	"ss" 'counsel-imenu
+	"sX" 'lsp-execute-code-action
 	;; org
+	"a"   '(:ignore t :which-key "org")
 	"aa"  'org-agenda
 	;; magit
 	"g"   '(:ignore t :which-key "git")
@@ -270,6 +528,7 @@
 	"gF"  'magit-fetch-all
 	"gr"  'magit-rebase
 	;; projectile
+	"p"  '(:ignore t :which-key "projectile")
 	"pf"  'counsel-projectile-find-file
 	"ps"  'counsel-projectile-switch-project
 	"pF"  'counsel-projectile-rg
@@ -277,61 +536,84 @@
 	"pc"  'projectile-compile-project
 	"pd"  'projectile-dired)
 
-;; Visual Settings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+end_src
 
-;; Disable bars
+* Visual config
+** Disable bars
+
+#+begin_src emacs-lisp
+
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (menu-bar-mode -1)
 
-;; Add a small border
+#+end_src
+
+** Border
+
+#+begin_src emacs-lisp
+
 (set-fringe-mode 10)
 
-;; Disable startup message
-(setq inhibit-startup-message t)
+#+end_src
 
-;; Set default face
-(set-face-attribute 'default nil :font "Hack" :height 110)
+** Line numbering
 
-;; Theme settings
-(load-theme 'doom-challenger-deep t)
+#+begin_src emacs-lisp
 
-;; Disable bells
-(setq visible-bell nil)
-(setq ring-bell-function 'ignore)
-
-;; Column number on mode line
 (column-number-mode)
+
+(dolist (mode '(text-mode-hook
+								prog-mode-hook
+								conf-mode-hook))
+	(add-hook mode (lambda () (display-line-numbers-mode 1))))
 
 ;; Override some modes which derive from the above
 (dolist (mode '(org-mode-hook))
 	(add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-;; Scroll settings
+#+end_src
+
+** Startup message
+
+#+begin_src emacs-lisp
+
+(setq inhibit-startup-message t)
+
+#+end_src
+
+** Fonts
+
+#+begin_src emacs-lisp
+
+(set-face-attribute 'default nil :font "Hack" :height 110)
+
+#+end_src
+
+** Theme
+
+#+begin_src emacs-lisp
+
+(load-theme 'doom-challenger-deep t)
+
+#+end_src
+
+** Bells
+
+#+begin_src emacs-lisp
+
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
+
+#+end_src
+
+** Scroll
+
+#+begin_src emacs-lisp
+
 (setq scroll-step            1
 			scroll-conservatively  10000)
 
-;; Register files ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; .emacs file
-;; C-x r j <register>
-(set-register ?e (cons 'file "~/.emacs.d/init.el"))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-	 '("a3b6a3708c6692674196266aad1cb19188a6da7b4f961e1369a68f06577afa16" default))
- '(package-selected-packages '(hydra visual-fill-column visual-fill use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+#+end_src
