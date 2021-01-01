@@ -11,6 +11,8 @@ Use *C-x r j <register>* to open these files
 #+begin_src emacs-lisp
 
 (set-register ?e (cons 'file "C:/Users/azada/Documents/configs/emacs.org"))
+(set-register ?n (cons 'file "C:/Users/azada/Documents/notes/index.org"))
+(set-register ?j (cons 'file "C:/Users/azada/Documents/notes/org/current/journal.org"))
 
 #+end_src
 
@@ -417,7 +419,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 
 (use-package lsp-mode
 	:commands (lsp lsp-deferred)
-	:hook ((typescript-mode js2-mode web-mode) . lsp)
+	:hook ((typescript-mode js2-mode web-mode rust-mode) . lsp)
 	:init
 	(setq lsp-keymap-prefix "C-c l")
 	:config
@@ -484,6 +486,18 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	:config
 	(setq prettier-js-show-errors nil))
 
+#+end_src
+
+**** Rust
+
+#+begin_src emacs-lisp
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :init (setq rust-format-on-save t))
+
+(use-package cargo
+  :ensure t
+  :defer t)
 #+end_src
 
 *** Cheat.sh
