@@ -3,6 +3,24 @@
 
 Run *org-babel-tangle* to install the configs
 
+* Variables
+
+#+begin_src emacs-lisp
+
+;; Config
+(setq adi-emacs-config-file "C:/Users/azada/Documents/configs/emacs.org")
+
+;; Projectile
+(setq adi-projectile-projects-directory "C:/Users/azada/Documents")
+
+;; Org
+(setq adi-org-agenda-files-directory "C:/Users/azada/Documents/notes/org/current/")
+(setq adi-org-journal-files-directory "C:/Users/azada/Documents/notes/org/journal/")
+(setq adi-todos-file "C:/Users/azada/Documents/notes/org/current/todos.org")
+(setq adi-notes-index-file "C:/Users/azada/Documents/notes/index.org")
+
+#+end_src
+
 * Initial system config
 ** Register files
 
@@ -10,9 +28,9 @@ Use *C-x r j <register>* to open these files
 
 #+begin_src emacs-lisp
 
-(set-register ?e (cons 'file "C:/Users/azada/Documents/configs/emacs.org"))
-(set-register ?n (cons 'file "C:/Users/azada/Documents/notes/index.org"))
-(set-register ?j (cons 'file "C:/Users/azada/Documents/notes/org/current/journal.org"))
+(set-register ?e (cons 'file (symbol-value 'adi-emacs-config-file)))
+(set-register ?n (cons 'file (symbol-value 'adi-notes-index-file)))
+(set-register ?j (cons 'file (symbol-value 'adi-todos-file)))
 
 #+end_src
 
@@ -98,7 +116,6 @@ Use *C-x r j <register>* to open these files
 #+end_src
 
 ** Tabs setting
-
 *** Default tab lengths
 
 #+begin_src emacs-lisp
@@ -291,8 +308,8 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	:config (projectile-mode)
 	:custom ((projectile-completion-system 'ivy))
 	:init
-	(when (file-directory-p "C:/Users/azada/Documents")
-		(setq projectile-project-search-path '("C:/Users/azada/Documents")))
+	(when (file-directory-p adi-projectile-projects-directory)
+	(setq projectile-project-search-path (list adi-projectile-projects-directory)))
 	(setq projectile-switch-project-action #'projectile-dired))
 
 ;; Use M-o to open more actions on the file when using find file in projectile
@@ -348,7 +365,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 				org-startup-folded 'content
 				org-cycle-separator-lines 2)
 	(setq org-agenda-files
-				'("C:/Users/azada/Documents/notes/org/current/"))
+				(list adi-org-agenda-files-directory))
 	(advice-add 'org-refile :after 'org-save-all-org-buffers)
 	(setq org-modules
 				'(org-habit)))
@@ -364,7 +381,6 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("json" . "src json"))
-
 
 (use-package org-superstar
 	:after org
@@ -507,6 +523,23 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 
 #+end_src
 
+* Custom functions
+** Journaling
+
+#+begin_src emacs-lisp
+
+(defun get-journal-file-today ()
+  "Return filename for today's journal entry."
+  (let ((daily-name (format-time-string "%Y-%m-%d")))
+    (expand-file-name (concat adi-org-journal-files-directory daily-name))))
+
+(defun journal-file-today ()
+  "Create and load a journal file based on today's date."
+  (interactive)
+  (find-file (get-journal-file-today)))
+
+#+end_src
+
 * Key bindings
 
 #+begin_src emacs-lisp
@@ -541,6 +574,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	;; org
 	"a"   '(:ignore t :which-key "org")
 	"aa"  'org-agenda
+  "aj"  'journal-file-today
 	;; magit
 	"g"   '(:ignore t :which-key "git")
 	"gs"  'magit-status
