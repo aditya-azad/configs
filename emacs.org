@@ -399,6 +399,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 									(org-level-8 . 1.1)))
 		(set-face-attribute (car face) nil :font "Hack" :weight 'regular :height (cdr face))))
 
+;; center the document
 (defun adi/org-mode-visual-fill ()
 	(setq visual-fill-column-width 100
 				visual-fill-column-center-text t)
@@ -530,7 +531,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 
 (defun get-journal-file-today ()
   "Return filename for today's journal entry."
-  (let ((daily-name (format-time-string "%Y-%m-%d")))
+  (let ((daily-name (format-time-string "%Y-%m-%d.org")))
     (expand-file-name (concat adi-org-journal-files-directory daily-name))))
 
 (defun journal-file-today ()
