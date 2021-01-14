@@ -15,9 +15,8 @@ Run *org-babel-tangle* to install the configs
 
 ;; Org
 (setq adi-org-agenda-files-directory "C:/Users/azada/Documents/notes/org/current/")
-(setq adi-org-journal-files-directory "C:/Users/azada/Documents/notes/org/journal/")
 (setq adi-todos-file "C:/Users/azada/Documents/notes/org/current/todos.org")
-(setq adi-notes-index-file "C:/Users/azada/Documents/notes/index.org")
+(setq adi-notes-index-file "C:/Users/azada/Documents/notes/index.md")
 
 #+end_src
 
@@ -521,23 +520,6 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 #+begin_src emacs-lisp
 
 (use-package cheat-sh)
-
-#+end_src
-
-* Custom functions
-** Journaling
-
-#+begin_src emacs-lisp
-
-(defun get-journal-file-today ()
-  "Return filename for today's journal entry."
-  (let ((daily-name (format-time-string "%Y-%m-%d.org")))
-    (expand-file-name (concat adi-org-journal-files-directory daily-name))))
-
-(defun journal-file-today ()
-  "Create and load a journal file based on today's date."
-  (interactive)
-  (find-file (get-journal-file-today)))
 
 #+end_src
 
