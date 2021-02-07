@@ -146,7 +146,6 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 " Git gutter
 let g:gitgutter_map_keys = 0
 
-
 " NerdTree
 " Close vim when nerd tree is the last window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -182,10 +181,10 @@ nnoremap <silent> K :exe "resize -5"<CR>
 " Fugitive
 nmap <leader>ga :Git add
 nmap <leader>gaa :Git add .<CR>
-nmap <leader>gpl :Git pull<CR>
-nmap <leader>gps :Git push<CR>
-nmap <leader>gs :Git status<CR>
-nmap <leader>gc :Git commit<CR>
+nmap <leader>gpl :Gpull<CR>
+nmap <leader>gps :Gpush<CR>
+nmap <leader>gs :G<CR>
+nmap <leader>gc :Gcommit<CR>
 
 " LSP
 nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
