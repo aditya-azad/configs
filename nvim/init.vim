@@ -24,18 +24,21 @@ call plug#begin('~/.vim/autoload')
 " Visual enhancements
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
-Plug 'joshdick/onedark.vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'lilydjwg/colorizer'
 " Navigation enhancements
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-rooter'
+Plug 'mhinz/vim-startify'
 " Code enhancements
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 " Speed enhancem
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 " Language specific
 "" Go
@@ -101,7 +104,7 @@ set nohlsearch
 " Statusline
 set laststatus=2
 let g:lightline = {}
-let g:lightline.colorscheme = 'onedark'
+let g:lightline.colorscheme = 'dracula'
 
 " Spell check on markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
@@ -121,50 +124,20 @@ if has('termguicolors')
   set termguicolors
 endif
 
-colorscheme onedark
+colorscheme dracula
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
-" COC
-let g:coc_global_extensions = [
-      \ 'coc-tsserver',
-      \ 'coc-prettier',
-      \ 'coc-eslint',
-      \ 'coc-cssmodules',
-      \ 'coc-css',
-      \ 'coc-html',
-      \ 'coc-emoji',
-      \ 'coc-xml',
-      \ 'coc-yaml',
-      \ 'coc-json',
-      \ 'coc-vimlsp',
-      \ 'coc-python',
-      \ 'coc-clangd',
-      \ 'coc-go',
-      \ 'coc-rls',
-      \ ]
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" trigger completion.
-inoremap <silent><expr> <c-p> coc#refresh()
-" Shows documentation
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-" provider config
-let g:loaded_python_provider=0 " python 2 support disabled
-let g:loaded_ruby_provider=0
+
+" LSP
+lua require'lspconfig'.tsserver.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.clangd.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.pyls.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.gopls.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.rust_analyzer.setup{ on_attach=require'completion'.on_attach }
+
+" Completion
+set completeopt=noselect,menuone,noinsert
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
 " Rooter
 let g:rooter_patterns = ['.git', 'Makefile', '*.sln', 'package.json']
@@ -173,8 +146,6 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 " Git gutter
 let g:gitgutter_map_keys = 0
 
-" Completion
-set completeopt=noselect,menuone,noinsert
 
 " NerdTree
 " Close vim when nerd tree is the last window
@@ -216,17 +187,21 @@ nmap <leader>gps :Git push<CR>
 nmap <leader>gs :Git status<CR>
 nmap <leader>gc :Git commit<CR>
 
-" COC
-nmap <silent> <Leader>gd <Plug>(coc-definition)
-nmap <silent> <Leader>gy <Plug>(coc-type-definition)
-nmap <silent> <Leader>gi <Plug>(coc-implementation)
-nmap <silent> <Leader>gr <Plug>(coc-references)
-nmap <silent> <leader>rn <Plug>(coc-rename)
-nnoremap <silent> gh :call <SID>show_documentation()<CR>
+" LSP
+nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
+nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
+nnoremap <leader>vsh :lua vim.lsp.buf.signature_help()<CR>
+nnoremap <leader>vrr :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vca :lua vim.lsp.buf.code_action()<CR>
+nnoremap <leader>vsd :lua vim.lsp.util.show_line_diagnostics(); vim.lsp.util.show_line_diagnostics()<CR>
 
-" FZF and Rg
-map <leader>f :GFiles<CR>
-map <leader>F :Rg<CR>
+" Telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " vimrc
 nnoremap <leader>ve :e $MYVIMRC<CR>
