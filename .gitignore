@@ -8,5 +8,4 @@ tramp
 .\#*
 *.swp
 
-configs/.newsboat/cache.db
-configs/.newsboat/history.cmdline
+nvim/auotload/

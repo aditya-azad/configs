@@ -123,6 +123,7 @@ syntax on
 if has('termguicolors')
   set termguicolors
 endif
+let g:dracula_colorterm = 0
 
 colorscheme dracula
 
