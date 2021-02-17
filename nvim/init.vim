@@ -218,3 +218,9 @@ map <silent> <leader>o :NERDTreeToggle<CR>
 
 " Execute bulid file
 nnoremap <leader>b :! ./build<CR>
+
+" Tabs
+nnoremap <leader>n :tabnext<CR>
+nnoremap <leader>p :tabprev<CR>
+nnoremap <leader>c :tabc<CR>
+nnoremap <C-t> :tabnew<CR>
