@@ -8,15 +8,21 @@ Run *org-babel-tangle* to install the configs
 #+begin_src emacs-lisp
 
 ;; Config
-(setq adi-emacs-config-file "C:/Users/azada/Documents/configs/emacs.org")
+(setq adi/emacs-config-file "D:/databases/new-workflow/configs/emacs/emacs.org")
 
 ;; Projectile
-(setq adi-projectile-projects-directory "C:/Users/azada/Documents")
+(setq adi/projectile-projects-directory "C:/Users/azada/Documents")
 
-;; Org
-(setq adi-org-agenda-files-directory "C:/Users/azada/Documents/notes/org/current/")
-(setq adi-todos-file "C:/Users/azada/Documents/notes/org/current/todos.org")
-(setq adi-notes-index-file "C:/Users/azada/Documents/notes/index.md")
+;; Journal / todos
+(setq adi/journal-files-current-directory "D:/databases/new-workflow/journal/")
+(setq adi/journal-journal-file (concat adi/journal-files-current-directory "journal.org"))
+(setq adi/journal-todo-file (concat adi/journal-files-current-directory "todo.org"))
+
+(setq adi/journal-collections-directory adi/journal-files-current-directory)
+
+;; Notes
+(setq adi/notes-directory "D:/databases/new-workflow/notes/")
+(setq adi/notes-index-file (concat adi/notes-directory "index.org"))
 
 #+end_src
 
@@ -27,9 +33,10 @@ Use *C-x r j <register>* to open these files
 
 #+begin_src emacs-lisp
 
-(set-register ?e (cons 'file (symbol-value 'adi-emacs-config-file)))
-(set-register ?n (cons 'file (symbol-value 'adi-notes-index-file)))
-(set-register ?j (cons 'file (symbol-value 'adi-todos-file)))
+(set-register ?e (cons 'file (symbol-value 'adi/emacs-config-file)))
+(set-register ?n (cons 'file (symbol-value 'adi/notes-index-file)))
+(set-register ?j (cons 'file (symbol-value 'adi/journal-journal-file)))
+(set-register ?t (cons 'file (symbol-value 'adi/journal-todo-file)))
 
 #+end_src
 
@@ -111,6 +118,15 @@ Use *C-x r j <register>* to open these files
 #+begin_src emacs-lisp
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+#+end_src
+
+** Tab bar
+
+#+begin_src emacs-lisp
+
+(tab-bar-mode 1)
+(setq tab-bar-new-tab-choice "*scratch*")
 
 #+end_src
 
@@ -307,8 +323,8 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	:config (projectile-mode)
 	:custom ((projectile-completion-system 'ivy))
 	:init
-	(when (file-directory-p adi-projectile-projects-directory)
-	(setq projectile-project-search-path (list adi-projectile-projects-directory)))
+	(when (file-directory-p adi/projectile-projects-directory)
+	(setq projectile-project-search-path (list adi/projectile-projects-directory)))
 	(setq projectile-switch-project-action #'projectile-dired))
 
 ;; Use M-o to open more actions on the file when using find file in projectile
@@ -349,25 +365,25 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 #+begin_src emacs-lisp
 
 (defun adi/org-mode-setup ()
-	(org-indent-mode)
-	(auto-fill-mode 0)
-	(visual-line-mode 1)
-	(setq evil-auto-indent nil)
-	(diminish org-indent-mode))
+  (org-indent-mode)
+  (setq org-startup-with-inline-images t)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (setq evil-auto-indent nil))
 
 (use-package org
-	:hook (org-mode . adi/org-mode-setup)
-	:config
-	(setq org-ellipsis " ▾"
-				org-hide-block-startup nil
-				org-agenda-block-separator ""
-				org-startup-folded 'content
-				org-cycle-separator-lines 2)
-	(setq org-agenda-files
-				(list adi-org-agenda-files-directory))
-	(advice-add 'org-refile :after 'org-save-all-org-buffers)
-	(setq org-modules
-				'(org-habit)))
+  :hook (org-mode . adi/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+        org-hide-block-startup nil
+        org-agenda-block-separator ""
+        org-startup-folded 'content
+        org-cycle-separator-lines 2)
+  (setq org-agenda-files
+        (list adi/journal-files-current-directory))
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+  (setq org-modules
+        '(org-habit)))
 
 ;; org mode templates (typing <el <TAB> in org mode)
 (require 'org-tempo)
@@ -382,30 +398,51 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 (add-to-list 'org-structure-template-alist '("json" . "src json"))
 
 (use-package org-superstar
-	:after org
-	:hook (org-mode . org-superstar-mode)
-	:custom
-	(org-superstar-remove-leading-stars t)
-	(org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●"))
-	:config
-	(dolist (face '((org-level-1 . 1.2)
-									(org-level-2 . 1.1)
-									(org-level-3 . 1.05)
-									(org-level-4 . 1.0)
-									(org-level-5 . 1.1)
-									(org-level-6 . 1.1)
-									(org-level-7 . 1.1)
-									(org-level-8 . 1.1)))
-		(set-face-attribute (car face) nil :font "Hack" :weight 'regular :height (cdr face))))
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●"))
+  :config
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Hack" :weight 'regular :height (cdr face))))
+
+(setq org-capture-templates
+  `(("j" "Journal" entry
+          (file+olp+datetree adi/journal-journal-file)
+          "\n* %<%I:%M %p> - Journal \n\n%?\n\n"
+          :empty-lines 1)
+    ("t" "Add task to today" entry
+          (file+datetree adi/journal-todo-file)
+          "* TODO %? %t\n")
+    ("i" "Add task to Inbox " entry
+          (file+headline adi/journal-todo-file "Inbox")
+          "* TODO %?\n")))
+
+;; autosave org files after agenda quit
+(advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)
+
+;; open collections directory
+(defun adi/get-collections ()
+  "Opens the collection user asks for"
+  (interactive)
+  (dired adi/journal-collections-directory))
 
 ;; center the document
 (defun adi/org-mode-visual-fill ()
-	(setq visual-fill-column-width 100
-				visual-fill-column-center-text t)
-	(visual-fill-column-mode t))
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode t))
 
 (use-package visual-fill-column
-	:hook (org-mode . adi/org-mode-visual-fill))
+  :hook (org-mode . adi/org-mode-visual-fill))
 
 #+end_src
 
@@ -516,13 +553,6 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
   :defer t)
 #+end_src
 
-*** Cheat.sh
-#+begin_src emacs-lisp
-
-(use-package cheat-sh)
-
-#+end_src
-
 * Key bindings
 
 #+begin_src emacs-lisp
@@ -536,9 +566,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 
 (adi/ctrl-c-keys
 	;; projectile
-	"p"   'projectile-command-map
-  ;; cheat-sh
-  "c"   'cheat-sh-search)
+	"p"   'projectile-command-map)
 
 (adi/leader-keys
 	;; default commands
@@ -547,6 +575,12 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	"k"   'windmove-up
 	"l"   'windmove-right
 	"h"   'windmove-left
+  ;; tabs
+	"t"  '(:ignore t :which-key "tabs")
+	"th"  'tab-previous
+	"tl"  'tab-next
+	"tn"  'tab-new
+	"tx"  'tab-close
 	;; lsp
 	"s"  '(:ignore t :which-key "lsp")
 	"sa" 'flymake-show-diagnostics-buffer
@@ -556,14 +590,15 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	"sX" 'lsp-execute-code-action
 	;; org
 	"a"   '(:ignore t :which-key "org")
-	"aa"  'org-agenda
-  "aj"  'journal-file-today
+	"aa"  'org-agenda-list
+  "ac"  'org-capture
+  "ad"  'adi/get-collections
 	;; magit
 	"g"   '(:ignore t :which-key "git")
 	"gs"  'magit-status
 	"gd"  'magit-diff-unstaged
 	"gc"  'magit-branch-or-checkout
-	"gl"   '(:ignore t :which-key "log")
+	"gl"  '(:ignore t :which-key "log")
 	"glc" 'magit-log-current
 	"glf" 'magit-log-buffer-file
 	"gb"  'magit-branch
@@ -641,7 +676,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 
 #+begin_src emacs-lisp
 
-(load-theme 'doom-challenger-deep t)
+(load-theme 'doom-palenight t)
 
 #+end_src
 

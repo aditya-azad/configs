@@ -8,4 +8,4 @@ tramp
 .\#*
 *.swp
 
-nvim/auotload/
+nvim/autoload/
