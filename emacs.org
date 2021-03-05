@@ -8,20 +8,13 @@ Run *org-babel-tangle* to install the configs
 #+begin_src emacs-lisp
 
 ;; Config
-(setq adi/emacs-config-file "D:/databases/new-workflow/configs/emacs/emacs.org")
+(setq adi/emacs-config-file "C:/Users/azada/Documents/configs/emacs.org")
 
 ;; Projectile
-(setq adi/projectile-projects-directory "C:/Users/azada/Documents")
-
-;; Journal / todos
-(setq adi/journal-files-current-directory "D:/databases/new-workflow/journal/")
-(setq adi/journal-journal-file (concat adi/journal-files-current-directory "journal.org"))
-(setq adi/journal-todo-file (concat adi/journal-files-current-directory "daily-log.org"))
-
-(setq adi/journal-collections-directory adi/journal-files-current-directory)
+(setq adi/projectile-projects-directory "C:/Users/azada/code")
 
 ;; Notes
-(setq adi/notes-directory "D:/databases/new-workflow/notes/")
+(setq adi/notes-directory "D:/databases/notes/")
 (setq adi/notes-index-file (concat adi/notes-directory "index.org"))
 
 #+end_src
@@ -35,8 +28,6 @@ Use *C-x r j <register>* to open these files
 
 (set-register ?e (cons 'file (symbol-value 'adi/emacs-config-file)))
 (set-register ?n (cons 'file (symbol-value 'adi/notes-index-file)))
-(set-register ?j (cons 'file (symbol-value 'adi/journal-journal-file)))
-(set-register ?t (cons 'file (symbol-value 'adi/journal-todo-file)))
 
 #+end_src
 
@@ -379,8 +370,6 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
         org-agenda-block-separator ""
         org-startup-folded 'content
         org-cycle-separator-lines 2)
-  (setq org-agenda-files
-        (list adi/journal-files-current-directory))
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   (setq org-modules
         '(org-habit)))
@@ -413,27 +402,6 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
     (set-face-attribute (car face) nil :font "Hack" :weight 'regular :height (cdr face))))
-
-(setq org-capture-templates
-  `(("j" "Journal" entry
-          (file+olp+datetree adi/journal-journal-file)
-          "\n* %<%I:%M %p> - Journal \n\n%?\n\n"
-          :empty-lines 1)
-    ("t" "Add task to today's log" entry
-          (file+datetree adi/journal-todo-file)
-          "* TODO %? %t\n")
-    ("i" "Add task to inbox" entry
-          (file+headline adi/journal-todo-file "Inbox")
-          "* TODO %?\n")))
-
-;; autosave org files after agenda quit
-(advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)
-
-;; open collections directory
-(defun adi/get-collections ()
-  "Opens the collection user asks for"
-  (interactive)
-  (dired adi/journal-collections-directory))
 
 ;; center the document
 (defun adi/org-mode-visual-fill ()
@@ -588,11 +556,6 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 	"sr" 'lsp-treemacs-references
 	"ss" 'counsel-imenu
 	"sX" 'lsp-execute-code-action
-	;; org
-	"a"   '(:ignore t :which-key "org")
-	"aa"  'org-agenda-list
-  "ac"  'org-capture
-  "ad"  'adi/get-collections
 	;; magit
 	"g"   '(:ignore t :which-key "git")
 	"gs"  'magit-status
