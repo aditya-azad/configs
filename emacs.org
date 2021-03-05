@@ -16,7 +16,7 @@ Run *org-babel-tangle* to install the configs
 ;; Journal / todos
 (setq adi/journal-files-current-directory "D:/databases/new-workflow/journal/")
 (setq adi/journal-journal-file (concat adi/journal-files-current-directory "journal.org"))
-(setq adi/journal-todo-file (concat adi/journal-files-current-directory "todo.org"))
+(setq adi/journal-todo-file (concat adi/journal-files-current-directory "daily-log.org"))
 
 (setq adi/journal-collections-directory adi/journal-files-current-directory)
 
@@ -419,10 +419,10 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
           (file+olp+datetree adi/journal-journal-file)
           "\n* %<%I:%M %p> - Journal \n\n%?\n\n"
           :empty-lines 1)
-    ("t" "Add task to today" entry
+    ("t" "Add task to today's log" entry
           (file+datetree adi/journal-todo-file)
           "* TODO %? %t\n")
-    ("i" "Add task to Inbox " entry
+    ("i" "Add task to inbox" entry
           (file+headline adi/journal-todo-file "Inbox")
           "* TODO %?\n")))
 
@@ -472,7 +472,7 @@ Use *M-x all-the-icons-install-fonts* to install fonts the first time
 
 (use-package lsp-mode
 	:commands (lsp lsp-deferred)
-	:hook ((typescript-mode js2-mode web-mode rust-mode) . lsp)
+	:hook ((typescript-mode js2-mode web-mode rust-mode c++-mode) . lsp)
 	:init
 	(setq lsp-keymap-prefix "C-c l")
 	:config
