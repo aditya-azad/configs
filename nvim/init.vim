@@ -45,7 +45,18 @@ Plug 'tpope/vim-fugitive'
 Plug 'tweekmonster/gofmt.vim'
 "" Rust
 Plug 'rust-lang/rust.vim'
+"" Org
+Plug 'jceb/vim-orgmode'
+Plug 'vim-scripts/utl.vim'
 call plug#end()
+
+""""""""""""""""""""""""""""""" QUICK ACCESS """""""""""""""""""""""""""""""
+
+if has("win32")
+  nnoremap <leader>xn :e D:\databases\notes\index.org<CR>
+else
+  nnoremap <leader>xn :e ~\notes\index.org<CR>
+endif
 
 """""""""""""""""""""""""""""""""""""" GENERAL """"""""""""""""""""""""""""""""
 
@@ -224,3 +235,5 @@ nnoremap <leader>n :tabnext<CR>
 nnoremap <leader>p :tabprev<CR>
 nnoremap <leader>c :tabc<CR>
 nnoremap <C-t> :tabnew<CR>
+
+
