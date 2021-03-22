@@ -24,7 +24,6 @@ call plug#begin('~/.vim/autoload')
 " Visual enhancements
 Plug 'sheerun/vim-polyglot'
 Plug 'morhetz/gruvbox'
-Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 " Navigation enhancements
 Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'scrooloose/nerdtree'

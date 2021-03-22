@@ -9,3 +9,4 @@ tramp
 *.swp
 
 nvim/autoload/
+tags
