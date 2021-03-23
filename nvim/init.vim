@@ -192,6 +192,7 @@ nnoremap <leader>pt :CtrlPTag<CR>
 
 " directores
 nmap <leader>cdc :cd ~/code<CR>
+nmap <leader>cdn :cd D:/databases/notes<CR>
 
 " files
 nnoremap <leader>ve :e $MYVIMRC<CR>
