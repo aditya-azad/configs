@@ -29,7 +29,6 @@ Plug 'arithran/vim-delete-hidden-buffers'
 Plug 'scrooloose/nerdtree'
 " Code enhancements
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 " Language specific
@@ -126,9 +125,6 @@ let g:gutentags_project_root = [
 let g:gutentags_ctags_exclude = [
   \'node_modules', '_build', 'build', 'CMakeFiles', '.mypy_cache', 'venv',
   \'*.md', '*.tex', '*.css', '*.html', '*.json', '*.xml', '*.xmls', '*.ui']
-
-" Git gutter
-let g:gitgutter_map_keys = 0
 
 " NerdTree
 " Close vim when nerd tree is the last window
