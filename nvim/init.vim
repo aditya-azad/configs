@@ -24,13 +24,20 @@ call plug#begin('~/.vim/autoload')
 " Visual enhancements
 Plug 'sheerun/vim-polyglot'
 Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "Do :TSInstall all after download
 " Navigation enhancements
 Plug 'arithran/vim-delete-hidden-buffers'
-Plug 'scrooloose/nerdtree'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 " Code enhancements
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 " Language specific
 "" Go
 Plug 'tweekmonster/gofmt.vim'
@@ -89,9 +96,10 @@ set undodir=~/.vimundo
 set undofile
 set formatoptions-=cro
 set completeopt=noselect,menuone,noinsert
+set termguicolors
 
 " set font
-set guifont=Hack:h11
+set guifont="Hack NF":h12
 
 " Remove trailing space on save
 autocmd BufWritePre * %s/\s\+$//e
@@ -109,29 +117,50 @@ set nohlsearch
 autocmd BufRead,BufNewFile *.md setlocal spell
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
+" Completion
+set completeopt=noselect,menuone,noinsert
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
-" CtrlP
-let g:ctrlp_map = '<leader>pp'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['node_modules', 'Makefile']
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" Airline
+let g:airline_theme = 'gruvbox'
 
-" Guttentags
-set tags=./tags
-let g:gutentags_ctags_exclude_wildignore = 1
-let g:gutentags_project_root = [
-  \'.git', 'Makefile' ]
-let g:gutentags_ctags_exclude = [
-  \'node_modules', '_build', 'build', 'CMakeFiles', '.mypy_cache', 'venv',
-  \'*.md', '*.tex', '*.css', '*.html', '*.json', '*.xml', '*.xmls', '*.ui']
+" LSP
+lua require'lspconfig'.tsserver.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.pyls.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.gopls.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.rust_analyzer.setup{ on_attach=require'completion'.on_attach }
 
-" NerdTree
-" Close vim when nerd tree is the last window
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" Styling
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
+" NvimTree
+let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ]
+let g:nvim_tree_gitignore = 1
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_indent_markers = 1
+let g:nvim_tree_add_trailing = 1
+let g:nvim_tree_show_icons = {
+    \ 'git': 1,
+    \ 'folders': 1,
+    \ 'files': 1,
+    \ }
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "✗",
+    \   'staged': "✓",
+    \   'unmerged': "",
+    \   'renamed': "➜",
+    \   'untracked': "★",
+    \   'deleted': ""
+    \   },
+    \ 'folder': {
+    \   'default': "",
+    \   'open': "",
+    \   'empty': "",
+    \   'empty_open': "",
+    \   'symlink': "",
+    \   'symlink_open': "",
+    \   }
+    \ }
 
 " Theme
 set bg=dark
@@ -171,8 +200,8 @@ nmap <leader>gc :Gcommit<CR>
 " Delete hidden buffers
 nnoremap <F5> :DeleteHiddenBuffers<CR>
 
-" NerdTree
-map <silent> <leader>o :NERDTreeToggle<CR>
+" NvimTree
+map <silent> <leader>o :NvimTreeToggle<CR>
 
 " Tabs
 map tc <Nop>
@@ -181,8 +210,22 @@ nnoremap <leader>tp :tabprev<CR>
 nnoremap <leader>tc :tabc<CR>
 nnoremap <leader>tt :tabnew<CR>
 
-" Ctags
-nnoremap <leader>pt :CtrlPTag<CR>
+" LSP
+nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
+nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
+nnoremap <leader>vsh :lua vim.lsp.buf.signature_help()<CR>
+nnoremap <leader>vrr :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vca :lua vim.lsp.buf.code_action()<CR>
+nnoremap <leader>vsd :lua vim.lsp.util.show_line_diagnostics(); vim.lsp.util.show_line_diagnostics()<CR>
+
+" Telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 
 """"""""""""""""""""""""""""" QUICK ACCESS """""""""""""""""""""""""""""""
 

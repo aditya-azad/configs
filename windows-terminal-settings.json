@@ -5,7 +5,7 @@
   "copyFormatting": false,
   "profiles": {
     "defaults": {
-      "fontFace": "Hack",
+      "fontFace": "Hack NF",
       "fontSize": 11,
       "scrollbarState": "hidden"
     },
@@ -23,11 +23,10 @@
         "hidden": false
       },
       {
-        "guid": "{26b30263-74e9-4146-b80e-11632e86d42c}",
-        "name": "VS Dev Prompt",
-        "commandline": "cmd.exe /k \"D:\\Program Files\\Visual Studio 2019\\Common7\\Tools\\VsDevCmd.bat\"",
+        "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
         "hidden": false,
-        "startingDirectory": "C:\\Users\\Aditya"
+        "name": "Ubuntu",
+        "source": "Windows.Terminal.Wsl"
       }
     ]
   },
