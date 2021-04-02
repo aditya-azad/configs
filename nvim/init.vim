@@ -23,7 +23,7 @@ endif
 call plug#begin('~/.vim/autoload')
 " Visual enhancements
 Plug 'sheerun/vim-polyglot'
-Plug 'morhetz/gruvbox'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kyazdani42/nvim-web-devicons'
@@ -72,7 +72,6 @@ set novisualbell
 set listchars=tab:>-
 set list
 set noerrorbells
-set hlsearch
 set smartcase
 set ignorecase
 set incsearch
@@ -96,9 +95,9 @@ set undodir=~/.vimundo
 set undofile
 set formatoptions-=cro
 set completeopt=noselect,menuone,noinsert
-set termguicolors
 
-" set font
+" Theming
+set termguicolors
 set guifont="Hack NF":h12
 
 " Remove trailing space on save
@@ -117,12 +116,10 @@ set nohlsearch
 autocmd BufRead,BufNewFile *.md setlocal spell
 
 """"""""""""""""""""""""""""" PLUGIN CONFIG """"""""""""""""""""""""""""""
+
 " Completion
 set completeopt=noselect,menuone,noinsert
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-
-" Airline
-let g:airline_theme = 'gruvbox'
 
 " LSP
 lua require'lspconfig'.tsserver.setup{ on_attach=require'completion'.on_attach }
@@ -167,7 +164,8 @@ set bg=dark
 if !has('gui_running')
   set t_Co=256
 endif
-colorscheme gruvbox
+colorscheme dracula
+let g:airline_theme = 'dracula'
 
 """""""""""""""""""""""""""" KEYBINDINGS"""""""""""""""""""""""""""""
 
