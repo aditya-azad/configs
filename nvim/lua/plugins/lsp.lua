@@ -40,3 +40,9 @@ for _, lang in ipairs(servers) do
         root_dir = vim.loop.cwd
     }
 end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false
+  }
+)

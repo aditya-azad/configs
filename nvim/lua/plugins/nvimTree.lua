@@ -8,9 +8,9 @@ g.nvim_tree_add_trailing = 1
 g.nvim_tree_disable_window_picker = 0
 
 g.nvim_tree_show_icons = {
-  git = 1,
-  folders = 1,
-  files = 1
+  git = 0,
+  folders = 0,
+  files = 0
 }
 
 vim.api.nvim_set_keymap('', '<leader>o', [[:NvimTreeToggle<CR>]], {})

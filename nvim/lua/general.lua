@@ -40,11 +40,18 @@ opt('o', 'softtabstop', 2)
 opt('o', 'listchars', 'tab:» ,extends:›,precedes:‹,nbsp:·,trail:·')
 opt('w', 'list', true)
 
-opt('o', 'backupdir', '~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp')
-opt('o', 'directory', '~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp')
+
+opt('o', 'swapfile', true)
+opt('o', 'backup', true)
+opt('o', 'undofile', true)
+opt('o', 'backupdir', 'C:/Users/azada/AppData/Local/nvim/.tmp/backup//')
+opt('o', 'directory', 'C:/Users/azada/AppData/Local/nvim/.tmp/swap//')
+opt('o', 'undodir', 'C:/Users/azada/AppData/Local/nvim/.tmp/undo//')
 
 opt('o', 'clipboard', 'unnamedplus')
 
 opt('o', 'backspace', 'indent,eol,start')
 
 opt('o', 'completeopt', 'menuone,noselect')
+
+opt('o', 'shortmess', 'cI')
