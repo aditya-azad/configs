@@ -1,0 +1,6 @@
+vim.api.nvim_set_keymap('n', '<leader>ga', [[:Git add<CR>]], {})
+vim.api.nvim_set_keymap('n', '<leader>gaa', [[:Git add .<CR>]], {})
+vim.api.nvim_set_keymap('n', '<leader>gpl', [[:Gpull<CR>]], {})
+vim.api.nvim_set_keymap('n', '<leader>gps', [[:Gpush<CR>]], {})
+vim.api.nvim_set_keymap('n', '<leader>gs', [[:G<CR>]], {})
+vim.api.nvim_set_keymap('n', '<leader>gc', [[:Gcommit<CR>]], {})
