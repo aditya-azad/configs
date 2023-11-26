@@ -79,11 +79,6 @@ vim.opt.undodir = os.getenv('HOME') .. '/.vim-tmp/undo'
 vim.opt.backupdir = os.getenv('HOME') .. '/.vim-tmp/backup'
 vim.opt.directory = os.getenv('HOME') .. '/.vim-tmp/swap'
 
--- colors
-
-vim.opt.termguicolors = true
-vim.cmd.colorscheme("catppuccin")
-
 -- scroll
 
 vim.opt.scrolloff = 8
