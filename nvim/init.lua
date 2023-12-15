@@ -7,20 +7,7 @@ function SetTabWidth(width)
     print("Switching tab width to " .. width .. "...")
 end
 
-function ToggleExpandTab()
-    if (vim.opt.expandtab:get()) then
-        vim.opt.expandtab = false
-        print("Switching to tabs...")
-    else
-        vim.opt.expandtab = true
-        print("Switching to spaces...")
-    end
-end
-
-function P(v)
-    print(vim.inspect(v))
-    return v
-end
+---------------------------------------------------------------------- settings
 
 -- general
 
@@ -45,7 +32,7 @@ vim.opt.wrap = false
 vim.opt.formatoptions = 'qln'
 vim.opt.list = true
 vim.opt.listchars = {
-    tab = '→ ',
+    tab = '>-',
     space = '.',
     extends = '~',
 }
@@ -63,10 +50,6 @@ vim.opt.shortmess = 'filnxtToOFc'
 -- mouse
 
 vim.opt.mouse = 'a'
-
--- font
-
-vim.opt.guifont = 'Hack:h10'
 
 -- numbers and side column
 
@@ -127,7 +110,6 @@ vim.keymap.set('n', 'N', 'Nzzzv')
 vim.keymap.set('x', '<leader>p', '\"_dp')
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
-vim.keymap.set('n', '<leader>et', '<cmd>lua ToggleExpandTab()<CR>')
 vim.keymap.set('n', '<leader>tw4', '<cmd>lua SetTabWidth(4)<CR>')
 vim.keymap.set('n', '<leader>tw2', '<cmd>lua SetTabWidth(2)<CR>')
 
@@ -153,7 +135,6 @@ require('packer').startup(function(use)
     use('lewis6991/gitsigns.nvim')
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
-    use('hrsh7th/cmp-nvim-lua')
     use({
         'catppuccin/nvim',
         as = 'catppuccin'
@@ -193,21 +174,21 @@ require('gitsigns').setup {
     signs = {
         add          = { text = '│' },
         change       = { text = '│' },
-        delete       = { text = '_' },
-        topdelete    = { text = '‾' },
+        delete       = { text = '-' },
+        topdelete    = { text = '-' },
         changedelete = { text = '~' },
-        untracked    = { text = '┆' },
+        untracked    = { text = '|' },
     },
-    signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-    numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-    linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-    word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+    signcolumn = true,
+    numhl      = false,
+    linehl     = false,
+    word_diff  = false,
     watch_gitdir = {
         interval = 1000,
         follow_files = true
     },
     attach_to_untracked = true,
-    current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+    current_line_blame = false,
     current_line_blame_opts = {
         virt_text = true,
         virt_text_pos = 'eol',
@@ -217,10 +198,9 @@ require('gitsigns').setup {
     current_line_blame_formatter = '    ~ <author>, <author_time:%Y-%m-%d %I:%M%p> - <summary>',
     sign_priority = 6,
     update_debounce = 100,
-    status_formatter = nil, -- Use default
-    max_file_length = 4000000000, -- Disable if file is longer than this (in lines)
+    status_formatter = nil,
+    max_file_length = 4000000000,
     preview_config = {
-        -- Options passed to nvim_open_win
         border = 'single',
         style = 'minimal',
         relative = 'cursor',
@@ -267,8 +247,8 @@ cmp.setup({
         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
         ['<C-j>'] = cmp.mapping.scroll_docs(4),
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
-        ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-        ['<C-y>'] = nil,
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = nil,
         ['<C-Space>'] = nil,
         ['<S-Tab>'] = nil,
         ['<Enter>'] = nil,
@@ -305,8 +285,6 @@ end)
 
 -- lsp servers
 
-lsp_config.lua_ls.setup(lsp.nvim_lua_ls())
-
 lsp_config.pylsp.setup{
     root_dir = lsp_config.util.root_pattern('.git'),
     settings = {
@@ -338,7 +316,7 @@ lsp_config.tsserver.setup{}
 
 lsp_config.gopls.setup{}
 
-lsp_config.rust_analyzer.setup{}
+lsp_config.clangd.setup{}
 
 lsp.setup()
 
@@ -377,4 +355,3 @@ require'nvim-treesitter.configs'.setup {
 -- undotree
 
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
-
