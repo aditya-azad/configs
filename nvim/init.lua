@@ -98,7 +98,7 @@ vim.opt.scrolloff = 8
 
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>ev', ':e $MYVIMRC<CR>')
-vim.keymap.set('n', '<leader>o', ':Ex <CR>')
+vim.keymap.set('n', '<leader>o', ':NvimTreeToggle<CR>')
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('n', 'J', 'mzJ`z')
@@ -135,6 +135,7 @@ require('packer').startup(function(use)
     use('lewis6991/gitsigns.nvim')
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
+    use('nvim-tree/nvim-tree.lua')
     use({
         'catppuccin/nvim',
         as = 'catppuccin'
@@ -355,3 +356,7 @@ require'nvim-treesitter.configs'.setup {
 -- undotree
 
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+
+-- nvim tree
+
+require'nvim-tree'.setup()
