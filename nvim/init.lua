@@ -319,6 +319,8 @@ lsp_config.gopls.setup{}
 
 lsp_config.clangd.setup{}
 
+lsp_config.rust_analyzer.setup{}
+
 lsp.setup()
 
 -- telescope
