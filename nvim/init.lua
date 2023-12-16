@@ -321,6 +321,8 @@ lsp_config.clangd.setup{}
 
 lsp_config.rust_analyzer.setup{}
 
+lsp_config.tailwindcss.setup{}
+
 lsp.setup()
 
 -- telescope
