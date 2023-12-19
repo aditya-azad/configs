@@ -137,6 +137,7 @@ require('packer').startup(function(use)
     use('tpope/vim-fugitive')
     use('nvim-tree/nvim-tree.lua')
     use('hrsh7th/cmp-nvim-lua')
+    use('nvim-tree/nvim-web-devicons')
     use({
         'catppuccin/nvim',
         as = 'catppuccin'
