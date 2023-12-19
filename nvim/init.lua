@@ -32,7 +32,7 @@ vim.opt.wrap = false
 vim.opt.formatoptions = 'qln'
 vim.opt.list = true
 vim.opt.listchars = {
-    tab = '>-',
+    tab = '→ ',
     space = '.',
     extends = '~',
 }
@@ -136,10 +136,12 @@ require('packer').startup(function(use)
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
     use('nvim-tree/nvim-tree.lua')
+    use('hrsh7th/cmp-nvim-lua')
     use({
         'catppuccin/nvim',
         as = 'catppuccin'
     })
+    use('nvim-lualine/lualine.nvim')
     use({
         'nvim-telescope/telescope.nvim',
         tag='0.1.2',
@@ -263,10 +265,10 @@ require("luasnip.loaders.from_vscode").lazy_load()
 -- lsp
 
 lsp.set_sign_icons({
-    error = 'E',
-    warn = 'W',
-    info = 'I',
-    hint = 'H'
+    error = ' ',
+    warn = ' ',
+    info = ' ',
+    hint = ' ⚑'
 })
 
 lsp.on_attach(function(_, bufnr)
@@ -364,3 +366,9 @@ vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 -- nvim tree
 
 require'nvim-tree'.setup()
+
+-- lualine
+
+require('lualine').setup {
+    extensions = { 'nvim-tree', 'fugitive' }
+}
