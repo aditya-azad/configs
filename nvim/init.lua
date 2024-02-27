@@ -293,6 +293,20 @@ end)
 
 -- lsp servers
 
+--- low level
+
+lsp_config.clangd.setup{}
+
+lsp_config.zls.setup{}
+
+lsp_config.rust_analyzer.setup{}
+
+--- mid level
+
+lsp_config.gopls.setup{}
+
+--- scripting
+
 lsp_config.pylsp.setup{
     root_dir = lsp_config.util.root_pattern(".git"),
     settings = {
@@ -322,11 +336,9 @@ lsp_config.pylsp.setup{
 
 lsp_config.tsserver.setup{}
 
-lsp_config.gopls.setup{}
+lsp_config.phpactor.setup{}
 
-lsp_config.clangd.setup{}
-
-lsp_config.rust_analyzer.setup{}
+--- libs
 
 lsp_config.tailwindcss.setup{}
 
