@@ -88,6 +88,7 @@ vim.opt.directory = os.getenv("HOME") .. "/.vim-tmp/swap"
 
 vim.opt.termguicolors = true
 vim.o.background = "dark"
+vim.opt.colorcolumn = "80"
 
 -- scroll
 
@@ -335,8 +336,6 @@ lsp_config.pylsp.setup{
 }
 
 lsp_config.tsserver.setup{}
-
-lsp_config.phpactor.setup{}
 
 --- libs
 
