@@ -294,19 +294,11 @@ end)
 
 -- lsp servers
 
---- low level
-
 lsp_config.clangd.setup{}
-
-lsp_config.zls.setup{}
 
 lsp_config.rust_analyzer.setup{}
 
---- mid level
-
 lsp_config.gopls.setup{}
-
---- scripting
 
 lsp_config.pylsp.setup{
     root_dir = lsp_config.util.root_pattern(".git"),
@@ -316,7 +308,7 @@ lsp_config.pylsp.setup{
             configurationSources = {"flake8"},
             plugins = {
                 -- formatter options
-                yapf = { enabled = true },
+                yapf = { enabled = false },
                 autopep8 = { enabled = false },
                 black = { enabled = false },
                 pyls_isort = { enabled = false },
@@ -327,7 +319,7 @@ lsp_config.pylsp.setup{
                 pylint = { enabled = false, executable = "pylint" },
                 mccabe = { enable = false },
                 -- static type checker
-                pylsp_mypy = { enabled = false },
+                pylsp_mypy = { enabled = true },
                 -- auto-completion options
                 jedi_completion = { fuzzy = false },
             }
@@ -336,8 +328,6 @@ lsp_config.pylsp.setup{
 }
 
 lsp_config.tsserver.setup{}
-
---- libs
 
 lsp_config.tailwindcss.setup{}
 
