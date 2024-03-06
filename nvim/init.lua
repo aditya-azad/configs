@@ -32,12 +32,12 @@ vim.opt.wrap = false
 vim.opt.formatoptions = "qln"
 vim.opt.list = true
 vim.opt.listchars = {
-    tab = "→ ",
+    tab = "> ",
     space = ".",
     extends = "~",
 }
 vim.opt.fillchars = {
-    vert = "│",
+    vert = "|",
 }
 
 -- searching
@@ -138,11 +138,6 @@ require("lazy").setup({
     "hrsh7th/cmp-nvim-lua",
     {
         "nvim-tree/nvim-tree.lua",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
-    { 
-        "nvim-lualine/lualine.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" }
     },
     {
         "catppuccin/nvim",
@@ -181,8 +176,8 @@ require("lazy").setup({
 
 require("gitsigns").setup {
     signs = {
-        add          = { text = "│" },
-        change       = { text = "│" },
+        add          = { text = "|" },
+        change       = { text = "|" },
         delete       = { text = "-" },
         topdelete    = { text = "-" },
         changedelete = { text = "~" },
@@ -232,6 +227,28 @@ vim.diagnostic.config({
     virtual_text = true,
 })
 
+lsp.set_sign_icons({
+    error = "E",
+    warn = "W",
+    info = "I",
+    hint = "H"
+})
+
+lsp.on_attach(function(_, bufnr)
+    local opts = {buffer = bufnr, remap = false}
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+    vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format() end, opts)
+    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
+    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+end)
+
 -- cmp
 
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
@@ -267,30 +284,6 @@ cmp.setup({
 -- luasnip
 
 require("luasnip.loaders.from_vscode").lazy_load()
-
--- lsp
-
-lsp.set_sign_icons({
-    error = " ",
-    warn = " ",
-    info = " ",
-    hint = " ⚑"
-})
-
-lsp.on_attach(function(_, bufnr)
-    local opts = {buffer = bufnr, remap = false}
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format() end, opts)
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-end)
 
 -- lsp servers
 
@@ -339,10 +332,10 @@ local telescope_builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>fa", telescope_builtin.find_files, {})
 vim.keymap.set("n", "<leader>ff", telescope_builtin.git_files, {})
 vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
+vim.keymap.set("n", "<leader>fc", telescope_builtin.git_commits, {})
+vim.keymap.set("n", "<leader>fq", telescope_builtin.diagnostics, {})
+vim.keymap.set("n", "<leader>fp", telescope_builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", {})
-vim.keymap.set("n", "<leader>fp", function()
-    telescope_builtin.grep_string({ search = vim.fn.input("Grep > ") });
-end)
 
 -- treesitter
 
@@ -371,10 +364,43 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 -- nvim tree
 
-require"nvim-tree".setup()
-
--- lualine
-
-require("lualine").setup {
-    extensions = { "nvim-tree", "fugitive" }
-}
+require"nvim-tree".setup({
+    renderer = {
+        icons = {
+            show = {
+                file = false,
+                folder = false,
+                folder_arrow = true,
+                git = true,
+                modified = true,
+                diagnostics = true,
+                bookmarks = true,
+            },
+            glyphs = {
+                default = " ",
+                symlink = "S",
+                bookmark = "B",
+                modified = "M",
+                folder = {
+                    arrow_closed = ">",
+                    arrow_open = "v",
+                    default = " ",
+                    open = " ",
+                    empty = " ",
+                    empty_open = " ",
+                    symlink = " ",
+                    symlink_open = " ",
+                },
+                git = {
+                    unstaged = "US",
+                    staged = "S",
+                    unmerged = "UM",
+                    renamed = "R",
+                    untracked = "UT",
+                    deleted = "D",
+                    ignored = "I",
+                },
+            },
+        },
+    }
+})

@@ -4,18 +4,16 @@
 size = 10.0
 
 [font.bold]
-family = "Hack Nerd Font"
+family = "Fira Code"
 style = "Bold"
 
 [font.bold_italic]
-family = "Hack Nerd Font"
+family = "Fira Code"
 style = "Bold Italic"
 
 [font.italic]
-family = "Hack Nerd Font"
+family = "Fira Code"
 style = "Italic"
 
 [font.normal]
-family = "Hack Nerd Font"
-style = "Regular"
-
+family = "Fira Code"
