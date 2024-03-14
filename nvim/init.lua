@@ -312,7 +312,7 @@ lsp_config.pylsp.setup{
                 pylint = { enabled = false, executable = "pylint" },
                 mccabe = { enable = false },
                 -- static type checker
-                pylsp_mypy = { enabled = true },
+                pylsp_mypy = { enabled = false },
                 -- auto-completion options
                 jedi_completion = { fuzzy = false },
             }
@@ -366,6 +366,17 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 require"nvim-tree".setup({
     renderer = {
+        indent_markers = {
+            enable = true,
+            inline_arrows = true,
+            icons = {
+                corner = "+",
+                edge = "|",
+                item = "|",
+                bottom = "-",
+                none = " ",
+            },
+        },
         icons = {
             show = {
                 file = false,
@@ -392,11 +403,11 @@ require"nvim-tree".setup({
                     symlink_open = " ",
                 },
                 git = {
-                    unstaged = "US",
+                    unstaged = "U",
                     staged = "S",
-                    unmerged = "UM",
+                    unmerged = "P",
                     renamed = "R",
-                    untracked = "UT",
+                    untracked = "N",
                     deleted = "D",
                     ignored = "I",
                 },
