@@ -49,7 +49,7 @@ vim.opt.shortmess = "filnxtToOFc"
 
 -- mouse
 
-vim.opt.mouse = "a"
+vim.opt.mouse = ""
 
 -- numbers and side column
 
@@ -287,7 +287,9 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 -- lsp servers
 
-lsp_config.clangd.setup{}
+lsp_config.clangd.setup{
+    cmd = { "clangd-18" }
+}
 
 lsp_config.rust_analyzer.setup{}
 
@@ -298,13 +300,13 @@ lsp_config.pylsp.setup{
     settings = {
         single_file_support = false,
         pylsp = {
-            configurationSources = {"flake8"},
+            configurationSources = { "flake8" },
             plugins = {
                 -- formatter options
                 yapf = { enabled = false },
                 autopep8 = { enabled = false },
-                black = { enabled = false },
-                pyls_isort = { enabled = false },
+                black = { enabled = true },
+                pyls_isort = { enabled = true },
                 -- linter options
                 flake8 = { enable = true },
                 pyflakes = { enabled = true },
@@ -312,7 +314,7 @@ lsp_config.pylsp.setup{
                 pylint = { enabled = false, executable = "pylint" },
                 mccabe = { enable = false },
                 -- static type checker
-                pylsp_mypy = { enabled = false },
+                pylsp_mypy = { enabled = true },
                 -- auto-completion options
                 jedi_completion = { fuzzy = false },
             }
