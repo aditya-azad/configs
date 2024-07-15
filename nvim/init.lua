@@ -7,6 +7,18 @@ function SetTabWidth(width)
     print("Switching tab width to " .. width .. "...")
 end
 
+function ToggleWordWrap()
+    if vim.wo.wrap == false then
+        vim.wo.wrap = true
+        vim.wo.linebreak = true
+        print("Word wrap on...")
+    else
+        vim.wo.wrap = false
+        vim.wo.linebreak = false
+        print("Word wrap off...")
+    end
+end
+
 ---------------------------------------------------------------------- settings
 
 -- general
@@ -111,6 +123,7 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>")
 vim.keymap.set("n", "<leader>tw4", "<cmd>lua SetTabWidth(4)<CR>")
 vim.keymap.set("n", "<leader>tw2", "<cmd>lua SetTabWidth(2)<CR>")
+vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>")
 
 ------------------------------------------------------------------------ plugins
 
