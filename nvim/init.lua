@@ -131,14 +131,14 @@ vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -182,12 +182,16 @@ require("lazy").setup({
             "rafamadriz/friendly-snippets"
         }
     },
+    {
+        "aditya-azad/nettle",
+        dir = "~/code/nettle/"
+    }
 })
 
 -- git signs
 
 require("gitsigns").setup {
-    signs = {
+    signs                        = {
         add          = { text = "|" },
         change       = { text = "|" },
         delete       = { text = "-" },
@@ -195,36 +199,33 @@ require("gitsigns").setup {
         changedelete = { text = "~" },
         untracked    = { text = "|" },
     },
-    signcolumn = true,
-    numhl      = false,
-    linehl     = false,
-    word_diff  = false,
-    watch_gitdir = {
+    signcolumn                   = true,
+    numhl                        = false,
+    linehl                       = false,
+    word_diff                    = false,
+    watch_gitdir                 = {
         interval = 1000,
         follow_files = true
     },
-    attach_to_untracked = true,
-    current_line_blame = false,
-    current_line_blame_opts = {
+    attach_to_untracked          = true,
+    current_line_blame           = false,
+    current_line_blame_opts      = {
         virt_text = true,
         virt_text_pos = "eol",
         delay = 1,
         ignore_whitespace = false,
     },
     current_line_blame_formatter = "    ~ <author>, <author_time:%Y-%m-%d %I:%M%p> - <summary>",
-    sign_priority = 6,
-    update_debounce = 100,
-    status_formatter = nil,
-    max_file_length = 4000000000,
-    preview_config = {
+    sign_priority                = 6,
+    update_debounce              = 100,
+    status_formatter             = nil,
+    max_file_length              = 4000000000,
+    preview_config               = {
         border = "single",
         style = "minimal",
         relative = "cursor",
         row = 0,
         col = 1
-    },
-    yadm = {
-        enable = false
     },
 }
 
@@ -247,7 +248,7 @@ lsp.set_sign_icons({
 })
 
 lsp.on_attach(function(_, bufnr)
-    local opts = {buffer = bufnr, remap = false}
+    local opts = { buffer = bufnr, remap = false }
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format() end, opts)
@@ -263,7 +264,7 @@ end)
 
 -- cmp
 
-local cmp_select = {behavior = cmp.SelectBehavior.Select}
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 cmp.setup({
     snippet = {
@@ -275,7 +276,7 @@ cmp.setup({
         { name = "path" },
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
-        { name = "buffer", max_item_count = 3 },
+        { name = "buffer",  max_item_count = 3 },
         { name = "luasnip" },
     },
     mapping = {
@@ -299,15 +300,15 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 -- lsp servers
 
-lsp_config.clangd.setup{
+lsp_config.clangd.setup {
     cmd = { "clangd-18" }
 }
 
-lsp_config.rust_analyzer.setup{}
+lsp_config.rust_analyzer.setup {}
 
-lsp_config.gopls.setup{}
+lsp_config.gopls.setup {}
 
-lsp_config.pylsp.setup{
+lsp_config.pylsp.setup {
     root_dir = lsp_config.util.root_pattern(".git"),
     settings = {
         single_file_support = false,
@@ -334,9 +335,33 @@ lsp_config.pylsp.setup{
     }
 }
 
-lsp_config.tsserver.setup{}
+lsp_config.tsserver.setup {}
 
-lsp_config.tailwindcss.setup{}
+lsp_config.tailwindcss.setup {}
+
+lsp_config.lua_ls.setup {
+    on_init = function(client)
+        local path = client.workspace_folders[1].name
+        if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+            return
+        end
+
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            runtime = {
+                version = 'LuaJIT'
+            },
+            workspace = {
+                checkThirdParty = false,
+                library = {
+                    vim.env.VIMRUNTIME
+                }
+            }
+        })
+    end,
+    settings = {
+        Lua = {}
+    }
+}
 
 lsp.setup()
 
@@ -353,7 +378,7 @@ vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", {})
 
 -- treesitter
 
-require"nvim-treesitter.configs".setup {
+require "nvim-treesitter.configs".setup {
     sync_install = false,
     auto_install = true,
     highlight = {
@@ -378,7 +403,7 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 -- nvim tree
 
-require"nvim-tree".setup({
+require "nvim-tree".setup({
     renderer = {
         indent_markers = {
             enable = true,
