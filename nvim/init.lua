@@ -1,3 +1,29 @@
+-------------------------------------------------------------- custom functions
+
+function SetTabWidth(width)
+    vim.opt.tabstop = width
+    vim.opt.softtabstop = width
+    vim.opt.shiftwidth = width
+    print("Switching tab width to " .. width .. "...")
+end
+
+function ToggleWordWrap()
+    if vim.wo.wrap == false then
+        vim.wo.wrap = true
+        vim.wo.linebreak = true
+        print("Word wrap on...")
+    else
+        vim.wo.wrap = false
+        vim.wo.linebreak = false
+        print("Word wrap off...")
+    end
+end
+
+function P(v)
+    print(vim.inspect(v))
+    return v
+end
+
 ---------------------------------------------------------------------- settings
 
 -- general
@@ -181,7 +207,10 @@ require("lazy").setup({
 -- git signs
 
 require("nettle").setup {
-    baseDir = "~/code/nettle/notes"
+    baseDir = "~/code/nettle/notes",
+    keymaps = {
+        create_note = "<leader>zn"
+    }
 }
 
 require("gitsigns").setup {
@@ -440,34 +469,3 @@ require "nvim-tree".setup({
         },
     }
 })
-
--------------------------------------------------------------- custom functions
-
-function SetTabWidth(width)
-    vim.opt.tabstop = width
-    vim.opt.softtabstop = width
-    vim.opt.shiftwidth = width
-    print("Switching tab width to " .. width .. "...")
-end
-
-function ToggleWordWrap()
-    if vim.wo.wrap == false then
-        vim.wo.wrap = true
-        vim.wo.linebreak = true
-        print("Word wrap on...")
-    else
-        vim.wo.wrap = false
-        vim.wo.linebreak = false
-        print("Word wrap off...")
-    end
-end
-
-function P(v)
-    print(vim.inspect(v))
-    return v
-end
-
-function R(name)
-    require("plenary.reload").reload_module(name)
-    return require(name)
-end
