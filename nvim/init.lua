@@ -109,7 +109,7 @@ vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>")
 -- lazy nvim
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -160,6 +160,16 @@ require("lazy").setup({
             "saadparwaiz1/cmp_luasnip",
             "rafamadriz/friendly-snippets"
         }
+    },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            library = {
+                { path = "luvit-meta/library", words = { "vim%.uv" } },
+            },
+        },
+        dependencies = { "Bilal2453/luvit-meta" }
     },
     {
         "aditya-azad/nettle",
@@ -319,31 +329,23 @@ lsp_config.pylsp.setup {
     }
 }
 
-lsp_config.tsserver.setup {}
+lsp_config.ts_ls.setup {}
 
 lsp_config.tailwindcss.setup {}
 
 lsp_config.lua_ls.setup {
-    on_init = function(client)
-        local path = client.workspace_folders[1].name
-        if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-            return
-        end
-
-        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-            runtime = {
-                version = 'LuaJIT'
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' },
             },
             workspace = {
-                checkThirdParty = false,
-                library = {
-                    vim.env.VIMRUNTIME
-                }
-            }
-        })
-    end,
-    settings = {
-        Lua = {}
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            telemetry = {
+                enable = false,
+            },
+        }
     }
 }
 
