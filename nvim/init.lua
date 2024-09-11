@@ -174,7 +174,7 @@ require("lazy").setup({
     {
         "aditya-azad/nettle",
         dir = "~/code/nettle/",
-        dependencies = { "nvim-lua/plenary.nvim" }
+        dependencies = { "nvim-telescope/telescope.nvim" }
     }
 })
 
