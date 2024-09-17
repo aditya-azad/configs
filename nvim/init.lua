@@ -207,9 +207,11 @@ require("lazy").setup({
 -- git signs
 
 require("nettle").setup {
-    baseDir = "~/code/nettle/notes",
+    baseDir = "~/database/workspace/zettlekasten",
+    template = "# \n\n```\nsource:\nindex:\nrelated:\n```\n\n",
     keymaps = {
-        create_note = "<leader>zn"
+        create_note = "<leader>zn",
+        goto_note = "<leader>zg"
     }
 }
 
