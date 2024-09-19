@@ -210,8 +210,9 @@ require("nettle").setup {
     baseDir = "~/database/workspace/zettlekasten",
     template = "# \n\n```\nsource:\nindex:\nrelated:\n```\n\n",
     keymaps = {
-        create_note = "<leader>zn",
-        goto_note = "<leader>zg"
+        create_note = "<leader>zc",
+        goto_note = "<leader>zgn",
+        goto_fleeting = "<leader>zgf"
     }
 }
 
