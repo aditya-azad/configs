@@ -197,24 +197,9 @@ require("lazy").setup({
         },
         dependencies = { "Bilal2453/luvit-meta" }
     },
-    {
-        "aditya-azad/nettle",
-        dir = "~/code/nettle/",
-        dependencies = { "nvim-telescope/telescope.nvim" }
-    }
 })
 
 -- git signs
-
-require("nettle").setup {
-    baseDir = "~/database/workspace/zettlekasten",
-    template = "# \n\n```\nsource:\nindex:\nrelated:\n```\n\n",
-    keymaps = {
-        create_note = "<leader>zc",
-        goto_note = "<leader>zgn",
-        goto_fleeting = "<leader>zgf"
-    }
-}
 
 require("gitsigns").setup {
     signs                        = {
