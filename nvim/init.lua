@@ -19,6 +19,16 @@ function ToggleWordWrap()
     end
 end
 
+function ToggleColors()
+    if vim.o.background == "dark" then
+        vim.o.background = "light"
+        print("Switching to light theme...")
+    else
+        vim.o.background = "dark"
+        print("Switching to dark theme...")
+    end
+end
+
 function P(v)
     print(vim.inspect(v))
     return v
@@ -129,6 +139,7 @@ vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left>
 vim.keymap.set("n", "<leader>tw4", "<cmd>lua SetTabWidth(4)<CR>")
 vim.keymap.set("n", "<leader>tw2", "<cmd>lua SetTabWidth(2)<CR>")
 vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>")
+vim.keymap.set("n", "<leader>tc", "<cmd>lua ToggleColors()<CR>")
 
 ------------------------------------------------------------------------ plugins
 
@@ -349,6 +360,8 @@ lsp_config.pylsp.setup {
 lsp_config.ts_ls.setup {}
 
 lsp_config.tailwindcss.setup {}
+
+lsp_config.zls.setup {}
 
 lsp_config.lua_ls.setup {
     settings = {
