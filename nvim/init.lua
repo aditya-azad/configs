@@ -125,8 +125,6 @@ vim.opt.scrolloff = 8
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>ev", ":e $MYVIMRC<CR>")
 vim.keymap.set("n", "<leader>o", ":NvimTreeToggle<CR>")
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "H", ":help <C-r><C-w><CR>")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
