@@ -157,7 +157,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    "wbthomason/packer.nvim",
     "lewis6991/gitsigns.nvim",
     "mbbill/undotree",
     "tpope/vim-fugitive",
