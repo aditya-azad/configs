@@ -182,6 +182,10 @@ require("lazy").setup({
         build = ":TSUpdate"
     },
     {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' }
+    },
+    {
         "VonHeikemen/lsp-zero.nvim",
         branch = "v3.x",
         dependencies = {
@@ -254,6 +258,13 @@ local lsp = require("lsp-zero").preset({})
 local cmp = require("cmp")
 local cmp_action = require("lsp-zero").cmp_action()
 local lsp_config = require("lspconfig")
+
+lsp.set_sign_icons({
+    error = " ",
+    warn = " ",
+    info = " ",
+    hint = " ⚑"
+})
 
 vim.diagnostic.config({
     virtual_text = true,
@@ -421,49 +432,25 @@ require "nvim-tree".setup({
         indent_markers = {
             enable = true,
             inline_arrows = true,
-            icons = {
-                corner = "+",
-                edge = "|",
-                item = "|",
-                bottom = "-",
-                none = " ",
-            },
         },
         icons = {
             show = {
-                file = false,
-                folder = false,
+                file = true,
+                folder = true,
                 folder_arrow = true,
                 git = true,
                 modified = true,
                 diagnostics = true,
                 bookmarks = true,
             },
-            glyphs = {
-                default = " ",
-                symlink = "S",
-                bookmark = "B",
-                modified = "M",
-                folder = {
-                    arrow_closed = ">",
-                    arrow_open = "v",
-                    default = " ",
-                    open = " ",
-                    empty = " ",
-                    empty_open = " ",
-                    symlink = " ",
-                    symlink_open = " ",
-                },
-                git = {
-                    unstaged = "U",
-                    staged = "S",
-                    unmerged = "P",
-                    renamed = "R",
-                    untracked = "N",
-                    deleted = "D",
-                    ignored = "I",
-                },
-            },
         },
+    }
+})
+
+-- lualine
+
+require "lualine".setup({
+    options = {
+        theme = "catppuccin"
     }
 })
