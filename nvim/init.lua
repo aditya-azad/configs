@@ -159,7 +159,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     "mbbill/undotree",
-    "tpope/vim-fugitive",
     "hrsh7th/cmp-nvim-lua",
     {
         "nvim-tree/nvim-tree.lua",
@@ -200,6 +199,22 @@ require("lazy").setup({
         }
     },
     {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "sindrets/diffview.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        config = true
+    },
+    {
+        "Exafunction/codeium.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+        }
+    },
+    {
         "folke/lazydev.nvim",
         ft = "lua",
         opts = {
@@ -214,13 +229,21 @@ require("lazy").setup({
 -- git signs
 
 require("gitsigns").setup {
-    signs                        = {
-        add          = { text = "|" },
-        change       = { text = "|" },
-        delete       = { text = "-" },
-        topdelete    = { text = "-" },
-        changedelete = { text = "~" },
-        untracked    = { text = "|" },
+    signs = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
+    },
+    signs_staged = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
     },
     signcolumn                   = true,
     numhl                        = false,
@@ -268,13 +291,6 @@ lsp.set_sign_icons({
 
 vim.diagnostic.config({
     virtual_text = true,
-})
-
-lsp.set_sign_icons({
-    error = "E",
-    warn = "W",
-    info = "I",
-    hint = "H"
 })
 
 lsp.on_attach(function(_, bufnr)
@@ -400,6 +416,16 @@ vim.keymap.set("n", "<leader>fq", telescope_builtin.diagnostics, {})
 vim.keymap.set("n", "<leader>fp", telescope_builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", {})
 
+-- neogit
+
+vim.api.nvim_create_user_command('G', function()
+    vim.cmd(":Neogit kind=split_above_all")
+end, {})
+
+-- codeium
+
+require "codeium".setup({})
+
 -- treesitter
 
 require "nvim-treesitter.configs".setup {
@@ -451,6 +477,10 @@ require "nvim-tree".setup({
 
 require "lualine".setup({
     options = {
-        theme = "catppuccin"
+        theme = "catppuccin",
+        disabled_filetypes = { 
+            statusline = { "NvimTree" },
+            winbar = {}
+        }
     }
 })
