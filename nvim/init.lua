@@ -325,6 +325,7 @@ cmp.setup({
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
         { name = "buffer",  max_item_count = 3 },
+        { name = "codeium" },
         { name = "luasnip" },
     },
     mapping = {
