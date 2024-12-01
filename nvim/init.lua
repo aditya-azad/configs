@@ -59,12 +59,14 @@ vim.opt.wrap = false
 vim.opt.formatoptions = "qln"
 vim.opt.list = true
 vim.opt.listchars = {
-    tab = "> ",
-    space = ".",
-    extends = "~",
+    tab = "» ",
+    space = "·",
+    trail = "·",
+    extends = ">",
+    precedes = "<",
 }
 vim.opt.fillchars = {
-    vert = "|",
+    vert = "┃",
 }
 
 -- searching
