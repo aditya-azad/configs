@@ -126,7 +126,7 @@ vim.opt.scrolloff = 8
 
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>ev", ":e $MYVIMRC<CR>", { desc = "Open vimrc" })
-vim.keymap.set("n", "<leader>o", ":Oil --float<CR>", { desc = "Open explorer" })
+vim.keymap.set("n", "-", ":Oil --float<CR>", { desc = "Open explorer" })
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Remove new line character from end" })
 vim.keymap.set("n", "H", ":help <C-r><C-w><CR>", { desc = "Vim help" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll own" })
