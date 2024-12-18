@@ -213,8 +213,7 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "sindrets/diffview.nvim",
             "nvim-telescope/telescope.nvim",
-        },
-        config = true
+        }
     },
     {
         "Exafunction/codeium.nvim",
@@ -453,8 +452,25 @@ vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", { desc = "Search h
 
 -- neogit
 
+local neogit = require("neogit")
+
+neogit.setup {
+    kind = "floating",
+    commit_editor = {
+        kind = "floating",
+        show_staged_diff = true,
+    },
+    commit_select_view = {
+        kind = "floating",
+    },
+    integrations = {
+        telescope = true,
+    },
+}
+
+
 vim.api.nvim_create_user_command('G', function()
-    vim.cmd(":Neogit kind=split_above_all")
+    vim.cmd(":Neogit kind=floating")
 end, {})
 
 -- codeium
