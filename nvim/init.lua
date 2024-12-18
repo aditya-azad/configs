@@ -125,21 +125,22 @@ vim.opt.scrolloff = 8
 -- general keymaps
 
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>ev", ":e $MYVIMRC<CR>")
-vim.keymap.set("n", "<leader>o", ":NvimTreeToggle<CR>")
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "H", ":help <C-r><C-w><CR>")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("x", "<leader>p", "\"_dp")
+vim.keymap.set("n", "<leader>ev", ":e $MYVIMRC<CR>", { desc = "Open vimrc" })
+vim.keymap.set("n", "<leader>o", ":Oil --float<CR>", { desc = "Open explorer" })
+vim.keymap.set("n", "J", "mzJ`z", { desc = "Remove new line character from end" })
+vim.keymap.set("n", "H", ":help <C-r><C-w><CR>", { desc = "Vim help" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll own" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next search" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search" })
+vim.keymap.set("x", "<leader>p", "\"_dp", { desc = "Paste without copying selected" })
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>")
-vim.keymap.set("n", "<leader>tw4", "<cmd>lua SetTabWidth(4)<CR>")
-vim.keymap.set("n", "<leader>tw2", "<cmd>lua SetTabWidth(2)<CR>")
-vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>")
-vim.keymap.set("n", "<leader>tc", "<cmd>lua ToggleColors()<CR>")
+vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
+    { desc = "Search replace word under the cursor" })
+vim.keymap.set("n", "<leader>tw4", "<cmd>lua SetTabWidth(4)<CR>", { desc = "Set tab width to 4" })
+vim.keymap.set("n", "<leader>tw2", "<cmd>lua SetTabWidth(2)<CR>", { desc = "Set tab width to 2" })
+vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>", { desc = "Toggle word wrapping" })
+vim.keymap.set("n", "<leader>tc", "<cmd>lua ToggleColors()<CR>", { desc = "Toggle light and dark theme" })
 
 ------------------------------------------------------------------------ plugins
 
@@ -162,8 +163,14 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     "mbbill/undotree",
     "hrsh7th/cmp-nvim-lua",
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
     {
-        "nvim-tree/nvim-tree.lua",
+        'stevearc/oil.nvim',
+        ---@module 'oil'
+        ---@type oil.SetupOpts
+        opts = {},
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     {
         "catppuccin/nvim",
@@ -226,12 +233,25 @@ require("lazy").setup({
         },
         dependencies = { "Bilal2453/luvit-meta" }
     },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
+        },
+    },
 })
 
 -- git signs
 
 require("gitsigns").setup {
-    signs = {
+    signs                        = {
         add          = { text = '┃' },
         change       = { text = '┃' },
         delete       = { text = '_' },
@@ -239,7 +259,7 @@ require("gitsigns").setup {
         changedelete = { text = '~' },
         untracked    = { text = '┆' },
     },
-    signs_staged = {
+    signs_staged                 = {
         add          = { text = '┃' },
         change       = { text = '┃' },
         delete       = { text = '_' },
@@ -277,6 +297,11 @@ require("gitsigns").setup {
     },
 }
 
+-- mason
+
+require "mason".setup()
+require "mason-lspconfig".setup()
+
 -- lsp
 
 local lsp = require("lsp-zero").preset({})
@@ -296,18 +321,27 @@ vim.diagnostic.config({
 })
 
 lsp.on_attach(function(_, bufnr)
-    local opts = { buffer = bufnr, remap = false }
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format() end, opts)
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end,
+        { buffer = bufnr, remap = false, desc = "Go to definition" })
+    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, { buffer = bufnr, remap = false, desc = "Hover" })
+    vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format() end,
+        { buffer = bufnr, remap = false, desc = "Format file" })
+    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
+        { buffer = bufnr, remap = false, desc = "List symbols in workspace" })
+    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
+        { buffer = bufnr, remap = false, desc = "Hover diagnostics" })
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end,
+        { buffer = bufnr, remap = false, desc = "Next diagnostic" })
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end,
+        { buffer = bufnr, remap = false, desc = "Previous diagnostic" })
+    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end,
+        { buffer = bufnr, remap = false, desc = "Code Actions" })
+    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end,
+        { buffer = bufnr, remap = false, desc = "Find references" })
+    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end,
+        { buffer = bufnr, remap = false, desc = "Rename references" })
+    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end,
+        { buffer = bufnr, remap = false, desc = "Signature help" })
 end)
 
 -- cmp
@@ -336,8 +370,8 @@ cmp.setup({
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
         ["<C-k>"] = cmp.mapping.scroll_docs(-4),
         ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
         ["<Tab>"] = nil,
-        ["<C-Space>"] = nil,
         ["<S-Tab>"] = nil,
         ["<Enter>"] = nil,
     },
@@ -388,8 +422,6 @@ lsp_config.ts_ls.setup {}
 
 lsp_config.tailwindcss.setup {}
 
-lsp_config.zls.setup {}
-
 lsp_config.lua_ls.setup {
     settings = {
         Lua = {
@@ -411,13 +443,13 @@ lsp.setup()
 -- telescope
 
 local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>fa", telescope_builtin.find_files, {})
-vim.keymap.set("n", "<leader>ff", telescope_builtin.git_files, {})
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
-vim.keymap.set("n", "<leader>fc", telescope_builtin.git_commits, {})
-vim.keymap.set("n", "<leader>fq", telescope_builtin.diagnostics, {})
-vim.keymap.set("n", "<leader>fp", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", {})
+vim.keymap.set("n", "<leader>fa", telescope_builtin.find_files, { desc = "Search all files" })
+vim.keymap.set("n", "<leader>ff", telescope_builtin.git_files, { desc = "Search git files" })
+vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, { desc = "Search buffers" })
+vim.keymap.set("n", "<leader>fc", telescope_builtin.git_commits, { desc = "Search git commits" })
+vim.keymap.set("n", "<leader>fq", telescope_builtin.diagnostics, { desc = "Open diagnostics" })
+vim.keymap.set("n", "<leader>fp", telescope_builtin.live_grep, { desc = "Live grep files" })
+vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", { desc = "Search help tags" })
 
 -- neogit
 
@@ -452,28 +484,25 @@ require "nvim-treesitter.configs".setup {
 
 -- undotree
 
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
 
--- nvim tree
+-- oil
 
-require "nvim-tree".setup({
-    renderer = {
-        indent_markers = {
-            enable = true,
-            inline_arrows = true,
-        },
-        icons = {
-            show = {
-                file = true,
-                folder = true,
-                folder_arrow = true,
-                git = true,
-                modified = true,
-                diagnostics = true,
-                bookmarks = true,
-            },
-        },
-    }
+require "oil".setup({
+    columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+    },
+    delete_to_trash = true,
+    constrain_cursor = "name",
+    view_options = {
+        show_hidden = true,
+        is_always_hidden = function(name, _)
+            return (name == "..")
+        end,
+    },
 })
 
 -- lualine
@@ -481,23 +510,23 @@ require "nvim-tree".setup({
 require "lualine".setup({
     options = {
         theme = "catppuccin",
-        disabled_filetypes = { 
+        disabled_filetypes = {
             statusline = { "NvimTree" },
             winbar = {}
         },
     },
     sections = {
-        lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = {
             {
-              'filename',
-              file_status = true,
-              path = 3
+                'filename',
+                file_status = true,
+                path = 3
             }
         },
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_y = {'progress'},
-        lualine_z = {'location'}
+        lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' }
     }
 })
