@@ -136,7 +136,7 @@ vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search" })
 vim.keymap.set("x", "<leader>p", "\"_dp", { desc = "Paste without copying selected" })
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
-    { desc = "Search replace word under the cursor" })
+    { desc = "Search replace word under cursor" })
 vim.keymap.set("n", "<leader>tw4", "<cmd>lua SetTabWidth(4)<CR>", { desc = "Set tab width to 4" })
 vim.keymap.set("n", "<leader>tw2", "<cmd>lua SetTabWidth(2)<CR>", { desc = "Set tab width to 2" })
 vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>", { desc = "Toggle word wrapping" })
