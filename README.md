@@ -28,3 +28,4 @@ All my configuration files in one place
 - maim
 - xclip
 - ripgrep
+- fzf
