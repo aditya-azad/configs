@@ -40,13 +40,13 @@ signal=1
 [separator]
 
 [DATE]
-command=date +"  %a, %d %b %Y "
+command=date +"   %a, %d %b %Y "
 interval=1
 
 [separator]
 
 [TIME]
-command=date +" 󰥔  %I:%M:%S %p"
+command=date +" 󰥔  %I:%M:%S %p "
 interval=1
 
 [separator]

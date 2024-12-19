@@ -1,9 +1,9 @@
 #!/bin/sh
 
-VOLUME_MUTE=""
-VOLUME_LOW=""
-VOLUME_MID=""
-VOLUME_HIGH=""
+VOLUME_MUTE="  "
+VOLUME_LOW="  "
+VOLUME_MID="  "
+VOLUME_HIGH="  "
 
 # Get the volume and mute status using pactl
 SINK_INFO=$(pactl get-sink-volume @DEFAULT_SINK@)

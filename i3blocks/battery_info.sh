@@ -11,13 +11,13 @@ then
 
     if [ "$IS_CHARGING" = "Charging" ]
     then
-        echo "󰂅 $BAT_LEVEL"
+        echo " 󰂅  $BAT_LEVEL"
     else
         if [ "${BAT_LEVEL%?}" -le 15 ]
         then
-            echo "󱃌 $BAT_LEVEL"
+            echo " 󱃌  $BAT_LEVEL"
         else
-            echo "󰁹 $BAT_LEVEL"
+            echo " 󰁹  $BAT_LEVEL"
         fi
     fi
 else

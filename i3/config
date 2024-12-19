@@ -55,6 +55,9 @@ floating_modifier $mod
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
 
+# don't focus on hover, only on click
+focus_follows_mouse no
+
 # terminal
 bindsym $mod+Return exec alacritty
 
