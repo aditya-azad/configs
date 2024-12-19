@@ -1,15 +1,30 @@
+# leader
 set $mod Mod4
 
+# font
 font pango:FiraCode Nerd Font 10
+
+# color scheme
+set $bg-color            #1a1b26
+set $inactive-bg-color   #16161e
+set $text-color          #a9b1d6
+set $inactive-text-color #565f89
+set $urgent-bg-color     #f7768e
+set $indicator-color     #7aa2f7
+
+client.focused          $bg-color           $bg-color          $text-color          $indicator-color
+client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
+client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $indicator-color
 
 # start xdg autostart .desktop files using dex
 exec --no-startup-id dex --autostart --environment i3
 
+# notification
+exec --no-startup-id dunst
+
 # display
 exec --no-startup-id ~/.screenlayout/home.sh
-
-# polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # short input hold delay
 exec --no-startup-id xset r rate 200 30
@@ -17,20 +32,21 @@ exec --no-startup-id xset r rate 200 30
 # background
 exec --no-startup-id nitrogen --restore
 
+# gaps
+gaps inner 8
+
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -n -i ~/code/configs/wallpapers/cat-colorful.png
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -n -t -c 000000
 bindsym $mod+Shift+semicolon exec --no-startup-id loginctl lock-session
 
 # network
 exec --no-startup-id nm-applet
 
 # use pactl to adjust volume in pulseaudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -RTMIN+10 i3blocks
 
 # use mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -50,6 +66,9 @@ bindsym $mod+Shift+q kill
 
 # program launcher
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
+
+# charger status
+exec --no-startup-id ~/.config/dunst/charger_notify.sh
 
 # change focus
 bindsym $mod+h focus left
@@ -161,3 +180,18 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+bar {
+        position top
+        status_command i3blocks
+        colors {
+                background #1a1b26
+                statusline #a9b1d6
+                separator #44475a
+                focused_workspace  #7aa2f7 #7aa2f7 #1a1b26
+                active_workspace   #3d59a1 #3d59a1 #1a1b26
+                inactive_workspace #1a1b26 #1a1b26 #a9b1d6
+                urgent_workspace   #f7768e #f7768e #1a1b26
+                binding_mode       #f7768e #f7768e #1a1b26
+        }
+}

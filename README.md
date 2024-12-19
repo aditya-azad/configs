@@ -12,7 +12,9 @@
 - fira code nerd font
 - arandr
 - nitrogen
-- polybar
+- acpi
+- i3blocks
+- lm-sensors
 
 ### Workflow
 

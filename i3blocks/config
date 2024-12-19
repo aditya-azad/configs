@@ -1,0 +1,52 @@
+full_text=|
+separator=false
+separator_block_width=8
+
+[separator]
+
+[DISK]
+command=df -h / | awk '/\//{ printf("   %4s/%s ", $4, $2) }'
+interval=2
+
+[separator]
+
+[BATTERY]
+command=~/.config/i3blocks/battery_info.sh
+interval=3
+
+[separator]
+
+[CPU]
+full_text=
+command=~/.config/i3blocks/cpu_info.sh
+interval=repeat
+
+[separator]
+
+[MEM]
+command=free -h | awk '/Mem:/ { printf("   %5s/%s \n", $3, $2) }'
+interval=1
+
+[SOUND_BURST]
+command=~/.config/i3blocks/sound_burst.sh
+interval=once
+
+[SOUND]
+full_text=
+command=~/.config/i3blocks/sound_info.sh
+interval=0
+signal=1
+
+[separator]
+
+[DATE]
+command=date +"  %a, %d %b %Y "
+interval=1
+
+[separator]
+
+[TIME]
+command=date +" 󰥔  %I:%M:%S %p"
+interval=1
+
+[separator]
