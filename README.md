@@ -1,11 +1,13 @@
-# All my configs
+# Configs
+
+All my configuration files in one place
 
 ## Software used
 
 ### OS
 
-- windows
-- ubuntu 22.04
+- Windows
+- Ubuntu 22.04
 
 ### Eye candy / Setup
 
@@ -25,3 +27,4 @@
 - autohotkey
 - maim
 - xclip
+- ripgrep
