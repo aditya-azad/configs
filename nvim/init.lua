@@ -43,6 +43,7 @@ vim.opt.hidden = true
 vim.opt.updatetime = 100
 vim.opt.clipboard:append { "unnamed", "unnamedplus" }
 vim.opt.backspace:append { "indent", "eol", "start" }
+vim.opt.mouse = "a"
 
 -- spacing
 
@@ -75,10 +76,6 @@ vim.opt.incsearch = true
 vim.opt.showmatch = true
 vim.opt.smartcase = true
 vim.opt.shortmess = "filnxtToOFc"
-
--- mouse
-
-vim.opt.mouse = ""
 
 -- numbers and side column
 
