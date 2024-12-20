@@ -508,6 +508,9 @@ require "oil".setup({
         "size",
         "mtime",
     },
+    keymaps = {
+        ["<Esc><Esc>"] = "actions.close",
+    },
     delete_to_trash = true,
     constrain_cursor = "name",
     view_options = {
