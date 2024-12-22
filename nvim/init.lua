@@ -165,6 +165,16 @@ require("lazy").setup({
     "nvim-telescope/telescope-ui-select.nvim",
     "tpope/vim-sleuth",
     {
+        "mfussenegger/nvim-dap",
+        dependencies = {
+            "leoluz/nvim-dap-go",
+            "rcarriga/nvim-dap-ui",
+            "theHamsta/nvim-dap-virtual-text",
+            "nvim-neotest/nvim-nio",
+            "williamboman/mason.nvim",
+        }
+    },
+    {
         'stevearc/oil.nvim',
         ---@module 'oil'
         ---@type oil.SetupOpts
@@ -442,6 +452,56 @@ lsp_config.lua_ls.setup {
 }
 
 lsp.setup()
+
+-- dap
+
+local dap = require("dap")
+local dap_ui = require("dapui")
+
+dap_ui.setup()
+
+-- local dap_go = require("dapui")
+-- dap_go.setup()
+
+-- local dap_py = require("dap-python")
+-- dap_py.setup("/path/to/venv/bin/python")
+
+local dap_virtual_text = require("nvim-dap-virtual-text")
+
+dap_virtual_text.setup {}
+
+vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+vim.keymap.set("n", "<leader>dc", dap.run_to_cursor, { desc = "Continue running till cursor" })
+
+vim.keymap.set("n", "<leader>d?", function()
+    dap_ui.eval(nil, { enter = true })
+end)
+
+vim.keymap.set("n", "<leader>d1", dap.continue, { desc = "Continue" })
+vim.keymap.set("n", "<leader>d2", dap.step_into, { desc = "Step Into" })
+vim.keymap.set("n", "<leader>d3", dap.step_over, { desc = "Step Over" })
+vim.keymap.set("n", "<leader>d4", dap.step_out, { desc = "Step Out" })
+vim.keymap.set("n", "<leader>d5", dap.step_back, { desc = "Step Back" })
+vim.keymap.set("n", "<leader>d6", dap.restart, { desc = "Restart debugging" })
+
+dap.listeners.before.attach.dapui_config = function()
+    dap_ui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+    dap_ui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+    dap_ui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+    dap_ui.close()
+end
+
+dap.adapters.lldb = {
+    type = "executable",
+    command = "/usr/bin/lldb-vscode-14",
+    name = "lldb",
+}
 
 -- telescope
 
