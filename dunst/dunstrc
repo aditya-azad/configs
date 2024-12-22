@@ -13,6 +13,8 @@ mouse_left_click = close_current
 mouse_middle_click = do_action
 mouse_right_click = do_action
 icon_position = off
+stack_duplicates = false
+hide_duplicate_count = true
 
 [urgency_low]
 background = "#1a1b26"

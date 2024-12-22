@@ -9,9 +9,11 @@ while true; do
     
     if [ "$charger_status" != "$previous_status" ]; then
         if [ "$charger_status" -eq 1 ]; then
-            dunstify -i "battery-charging" "Charger Connected"
+            dunstify -a Charger "Connected"
+            aplay ~/code/configs/dunst/power-plug.wav
         else
-            dunstify -i "battery" "Charger Disconnected"
+            dunstify -a Charger "Disconnected"
+            aplay ~/code/configs/dunst/power-unplug.wav
         fi
         previous_status="$charger_status"
     fi
