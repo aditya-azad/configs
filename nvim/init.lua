@@ -163,6 +163,7 @@ require("lazy").setup({
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
+    "tpope/vim-sleuth",
     {
         'stevearc/oil.nvim',
         ---@module 'oil'
