@@ -171,6 +171,11 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {}
+    },
+    {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
@@ -458,6 +463,10 @@ require("telescope").setup {
     }
 }
 require("telescope").load_extension("ui-select")
+
+-- todo comments
+
+vim.keymap.set("n", "<leader>ft", ":TodoTelescope<CR>", { desc = "Search over todo comments" })
 
 -- neogit
 
