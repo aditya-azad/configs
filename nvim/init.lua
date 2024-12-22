@@ -162,6 +162,7 @@ require("lazy").setup({
     "hrsh7th/cmp-nvim-lua",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "nvim-telescope/telescope-ui-select.nvim",
     {
         'stevearc/oil.nvim',
         ---@module 'oil'
@@ -295,8 +296,8 @@ require("gitsigns").setup {
 
 -- mason
 
-require "mason".setup()
-require "mason-lspconfig".setup()
+require("mason").setup()
+require("mason-lspconfig").setup()
 
 -- lsp
 
@@ -447,6 +448,17 @@ vim.keymap.set("n", "<leader>fq", telescope_builtin.diagnostics, { desc = "Open 
 vim.keymap.set("n", "<leader>fp", telescope_builtin.live_grep, { desc = "Live grep files" })
 vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", { desc = "Search help tags" })
 
+-- ui select
+
+require("telescope").setup {
+    extensions = {
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {}
+        }
+    }
+}
+require("telescope").load_extension("ui-select")
+
 -- neogit
 
 local neogit = require("neogit")
@@ -472,11 +484,11 @@ end, {})
 
 -- codeium
 
-require "codeium".setup({})
+require("codeium").setup({})
 
 -- treesitter
 
-require "nvim-treesitter.configs".setup {
+require("nvim-treesitter.configs").setup {
     sync_install = false,
     auto_install = true,
     highlight = {
@@ -501,7 +513,7 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
 
 -- oil
 
-require "oil".setup({
+require("oil").setup({
     columns = {
         "icon",
         "permissions",
@@ -523,7 +535,7 @@ require "oil".setup({
 
 -- lualine
 
-require "lualine".setup({
+require("lualine").setup({
     options = {
         theme = "catppuccin",
         disabled_filetypes = {
