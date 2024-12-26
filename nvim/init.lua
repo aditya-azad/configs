@@ -397,7 +397,7 @@ require("luasnip.loaders.from_vscode").lazy_load()
 -- lsp servers
 
 lsp_config.clangd.setup {
-    cmd = { "clangd-18" }
+    cmd = { "clangd" }
 }
 
 lsp_config.rust_analyzer.setup {}
@@ -417,10 +417,10 @@ lsp_config.pylsp.setup {
                 black = { enabled = true },
                 pyls_isort = { enabled = true },
                 -- linter options
-                flake8 = { enable = true },
-                pyflakes = { enabled = true },
-                pycodestyle = { enabled = true },
-                pylint = { enabled = false, executable = "pylint" },
+                flake8 = { enable = false },
+                pyflakes = { enabled = false },
+                pycodestyle = { enabled = false },
+                pylint = { enabled = true, executable = "pylint" },
                 mccabe = { enable = false },
                 -- static type checker
                 pylsp_mypy = { enabled = true },
