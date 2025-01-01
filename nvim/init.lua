@@ -546,18 +546,6 @@ neogit.setup {
         telescope = true,
     },
     mappings = {
-        commit_editor = {
-            ["<Esc><Esc>"] = "Abort",
-        },
-        commit_editor_I = {
-            ["<Esc><Esc>"] = "Abort",
-        },
-        rebase_editor = {
-            ["<Esc><Esc>"] = "Abort",
-        },
-        rebase_editor_I = {
-            ["<Esc><Esc>"] = "Abort",
-        },
         finder = {
             ["<Esc><Esc>"] = "Close",
         },
