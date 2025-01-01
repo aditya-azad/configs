@@ -458,6 +458,8 @@ lsp_config.ts_ls.setup {}
 
 lsp_config.tailwindcss.setup {}
 
+lsp_config.html.setup {}
+
 lsp_config.lua_ls.setup {
     settings = {
         Lua = {
