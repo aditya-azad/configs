@@ -427,6 +427,18 @@ lsp_config.rust_analyzer.setup {}
 
 lsp_config.gopls.setup {}
 
+lsp_config.djlsp.setup {}
+
+lsp_config.htmx.setup {}
+
+lsp_config.html.setup {
+    filetypes = { "htmldjango", "html", "templ" }
+}
+
+lsp_config.ts_ls.setup {}
+
+lsp_config.tailwindcss.setup {}
+
 lsp_config.pylsp.setup {
     root_dir = lsp_config.util.root_pattern(".git"),
     settings = {
@@ -440,10 +452,10 @@ lsp_config.pylsp.setup {
                 black = { enabled = true },
                 pyls_isort = { enabled = true },
                 -- linter options
-                flake8 = { enable = false },
-                pyflakes = { enabled = false },
+                flake8 = { enable = true },
+                pyflakes = { enabled = true },
                 pycodestyle = { enabled = false },
-                pylint = { enabled = true, executable = "pylint" },
+                pylint = { enabled = false, executable = "pylint" },
                 mccabe = { enable = false },
                 -- static type checker
                 pylsp_mypy = { enabled = true },
@@ -453,12 +465,6 @@ lsp_config.pylsp.setup {
         }
     }
 }
-
-lsp_config.ts_ls.setup {}
-
-lsp_config.tailwindcss.setup {}
-
-lsp_config.html.setup {}
 
 lsp_config.lua_ls.setup {
     settings = {
