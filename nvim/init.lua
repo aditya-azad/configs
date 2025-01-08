@@ -415,7 +415,7 @@ cmp.setup({
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
         ["<C-k>"] = cmp.mapping.scroll_docs(-4),
         ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-Space>"] = nil,
         ["<Tab>"] = nil,
         ["<S-Tab>"] = nil,
         ["<Enter>"] = nil,
@@ -621,15 +621,7 @@ require("nvim-treesitter.configs").setup {
         additional_vim_regex_highlighting = false,
     },
     indent = { enable = true },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = "<C-Space>",
-            node_incremental = "<C-Space>",
-            scope_incremental = "<C-Space>",
-            node_decremental = "<C-Backspace>",
-        },
-    },
+    incremental_selection = { enable = true, },
 }
 
 -- undotree
