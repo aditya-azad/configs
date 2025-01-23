@@ -32,9 +32,6 @@ exec --no-startup-id xset r rate 200 30
 # background
 exec --no-startup-id nitrogen --restore
 
-# gaps
-gaps inner 8
-
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -n -t -c 000000
@@ -185,7 +182,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 bar {
-        position top
+        position bottom
         status_command i3blocks
         colors {
                 background #1a1b26
