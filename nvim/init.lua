@@ -165,11 +165,6 @@ require("lazy").setup({
     "nvim-telescope/telescope-ui-select.nvim",
     "tpope/vim-sleuth",
     {
-        "aditya-azad/braum",
-        dir = "~/code/braum",
-        dev = true
-    },
-    {
         'MeanderingProgrammer/render-markdown.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
         ---@module 'render-markdown'
@@ -443,8 +438,6 @@ require("luasnip.loaders.from_vscode").lazy_load()
 lsp_config.clangd.setup {
     cmd = { "clangd" }
 }
-
-lsp_config.lemminx.setup {}
 
 lsp_config.rust_analyzer.setup {}
 
