@@ -2,17 +2,9 @@ full_text=|
 separator=false
 separator_block_width=8
 
-[separator]
-
 [DISK]
 command=df -h / | awk '/\//{ printf("   %4s/%s ", $4, $2) }'
 interval=2
-
-[separator]
-
-[BATTERY]
-command=~/.config/i3blocks/battery_info.sh
-interval=3
 
 [separator]
 
@@ -20,6 +12,12 @@ interval=3
 full_text=
 command=~/.config/i3blocks/cpu_info.sh
 interval=repeat
+
+[separator]
+
+[BATTERY]
+command=~/.config/i3blocks/battery_info.sh
+interval=3
 
 [separator]
 
