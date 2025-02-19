@@ -20,7 +20,9 @@ esac
 if [ "$MUTED" = "yes" ]; then
     ICON="$VOLUME_MUTE"
 else
-    if [ "$SOUND_LEVEL" -lt 34 ]; then
+    if [ "$SOUND_LEVEL" -eq 0 ]; then
+        ICON="$VOLUME_MUTE"
+    elif [ "$SOUND_LEVEL" -lt 34 ]; then
         ICON="$VOLUME_LOW"
     elif [ "$SOUND_LEVEL" -lt 67 ]; then
         ICON="$VOLUME_MID"
