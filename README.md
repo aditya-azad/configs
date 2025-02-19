@@ -17,6 +17,8 @@ All my configuration files in one place
 - acpi
 - i3blocks
 - lm-sensors
+- indicator-sound-switcher
+- pavucontrol
 
 ### Workflow
 

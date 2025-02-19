@@ -4,7 +4,7 @@ separator_block_width=8
 
 [DISK]
 command=df -h / | awk '/\//{ printf("   %4s/%s ", $4, $2) }'
-interval=2
+interval=5
 
 [separator]
 
@@ -17,13 +17,13 @@ interval=repeat
 
 [BATTERY]
 command=~/.config/i3blocks/battery_info.sh
-interval=3
+interval=2
 
 [separator]
 
 [MEM]
 command=free -h | awk '/Mem:/ { printf("   %5s/%s \n", $3, $2) }'
-interval=1
+interval=repeat
 
 [SOUND_BURST]
 command=~/.config/i3blocks/sound_burst.sh

@@ -67,8 +67,11 @@ bindsym $mod+Shift+q kill
 # program launcher
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
 
-# charger status
+# charger connection notification
 exec --no-startup-id ~/.config/dunst/charger_notify.sh
+
+# battery low notification
+exec --no-startup-id ~/.config/dunst/battery_low_notify.sh
 
 # change focus
 bindsym $mod+h focus left
