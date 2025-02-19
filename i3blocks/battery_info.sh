@@ -11,9 +11,9 @@ then
 
     if [ "$IS_CHARGING" -eq 0 ]
     then
-        echo " 󰁹  $BAT_LEVEL"
+        echo " 󰁹  $BAT_LEVEL "
     else
-        echo " 󰂅  $BAT_LEVEL"
+        echo " 󰂅  $BAT_LEVEL "
     fi
 else
     echo "BAT FAILED"
