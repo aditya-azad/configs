@@ -1,18 +1,20 @@
 #!/bin/bash
 
-THRESHOLD=15
-last_notification=0
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+previous_status=""
 
 while true; do
-    battery_level=$(acpi -b | grep -P -o '[0-9]+(?=%)' | head -n1)
-
-    if [ $battery_level -le $THRESHOLD ] && [ $last_notification -eq 0 ]; then
-        notify-send -a Battery -u critical "Battery Low"
-        last_notification=1
-    elif [ $battery_level -gt $THRESHOLD ] && [ $last_notification -eq 1 ]; then
-        last_notification=0
+    charger_status=$(cat /sys/class/power_supply/AC0/online)
+    
+    if [ "$charger_status" != "$previous_status" ]; then
+        if [ "$charger_status" -eq 1 ]; then
+            dunstify -a Charger "Connected"
+            aplay ~/code/configs/dunst/power-plug.wav
+        else
+            dunstify -a Charger "Disconnected"
+            aplay ~/code/configs/dunst/power-unplug.wav
+        fi
+        previous_status="$charger_status"
     fi
-
-    sleep 60
+    sleep 1
 done
-
