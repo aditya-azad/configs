@@ -73,6 +73,9 @@ exec --no-startup-id ~/.config/dunst/charger_notify.sh
 # battery low notification
 exec --no-startup-id ~/.config/dunst/battery_low_notify.sh
 
+# disable caps lock
+exec --no-startup-id setxkbmap -option caps:none
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
