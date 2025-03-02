@@ -28,6 +28,10 @@ All my configuration files in one place
 - neovim
 - alacritty
 - autohotkey
+- krita
+- inkscape
+- pureref
+- obsidian
 
 ## Usage
 
