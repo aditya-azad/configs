@@ -2,7 +2,7 @@
 
 All my configuration files in one place
 
-## Software used
+## Dependencies
 
 ### OSs
 
