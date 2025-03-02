@@ -4,33 +4,30 @@ All my configuration files in one place
 
 ## Software used
 
-### OS
+### OSs
 
 - Windows
 - Ubuntu 22.04
 
-### Eye candy / Setup
+### Software
 
-- fira code nerd font
-- arandr
-- nitrogen
-- acpi
+- i3
 - i3blocks
 - lm-sensors
 - indicator-sound-switcher
 - pavucontrol
-
-### Workflow
-
-- i3
+- blueman
+- acpi
+- flameshot
+- ripgrep
+- fzf
+- fira code nerd font
+- arandr
+- nitrogen
 - tmux
 - neovim
 - alacritty
 - autohotkey
-- maim
-- xclip
-- ripgrep
-- fzf
 
 ## Usage
 

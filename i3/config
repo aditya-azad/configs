@@ -21,7 +21,7 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 exec --no-startup-id dex --autostart --environment i3
 
 # notification
-exec --no-startup-id dunst
+exec_always --no-startup-id dunst
 
 # display
 exec --no-startup-id ~/.screenlayout/home.sh
@@ -59,7 +59,7 @@ focus_follows_mouse no
 bindsym $mod+Return exec alacritty
 
 # screenshot
-bindsym $mod+Shift+s exec --no-startup-id maim --select | tee ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png
+bindsym $mod+Shift+s exec flameshot gui
 
 # kill focused window
 bindsym $mod+Shift+q kill
