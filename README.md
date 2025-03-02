@@ -24,6 +24,7 @@ All my configuration files in one place
 - fira code nerd font
 - arandr
 - nitrogen
+- dunst
 - tmux
 - neovim
 - alacritty
