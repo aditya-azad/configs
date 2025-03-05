@@ -502,6 +502,8 @@ lsp_config.lua_ls.setup {
     }
 }
 
+lsp_config.phpactor.setup {}
+
 lsp.setup()
 
 -- dap
