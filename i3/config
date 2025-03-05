@@ -24,7 +24,11 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id dunst
 
 # display (dual monitor)
-exec --no-startup-id xrandr --output eDP --primary --mode 1920x1080 --pos 2560x0 --rotate normal --output HDMI-A-0 --mode 2560x1440 --pos 0x0 --rotate normal --output DP-1-0 --off --output DP-1-1 --off
+exec --no-startup-id xrandr \
+        --output eDP --primary --mode 1920x1080 --pos 2560x0 --rotate normal \
+        --output HDMI-A-0 --mode 2560x1440 --pos 0x0 --rotate normal \
+        --output DP-1-0 --off \
+        --output DP-1-1 --off
 
 # short input hold delay
 exec --no-startup-id xset r rate 200 30
