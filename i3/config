@@ -31,10 +31,10 @@ exec --no-startup-id xrandr \
         --output DP-1-1 --off
 
 # short input hold delay
-exec --no-startup-id xset r rate 200 30
+exec_always --no-startup-id xset r rate 200 30
 
 # background
-exec --no-startup-id nitrogen --restore
+exec_always --no-startup-id bash -c "sleep 2; nitrogen --restore"
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
