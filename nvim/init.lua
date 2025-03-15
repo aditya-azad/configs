@@ -41,6 +41,7 @@ end
 vim.opt.encoding = "utf-8"
 vim.opt.hidden = true
 vim.opt.updatetime = 100
+vim.opt.clipboard:append { "unnamed", "unnamedplus" }
 vim.g.clipboard = {
     name = "xclip",
     copy = {
