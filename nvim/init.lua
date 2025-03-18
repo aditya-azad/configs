@@ -149,6 +149,8 @@ vim.keymap.set("n", "<leader>tw4", "<cmd>lua SetTabWidth(4)<CR>", { desc = "Set 
 vim.keymap.set("n", "<leader>tw2", "<cmd>lua SetTabWidth(2)<CR>", { desc = "Set tab width to 2" })
 vim.keymap.set("n", "<leader>tww", "<cmd>lua ToggleWordWrap()<CR>", { desc = "Toggle word wrapping" })
 vim.keymap.set("n", "<leader>tc", "<cmd>lua ToggleColors()<CR>", { desc = "Toggle light and dark theme" })
+vim.keymap.set('n', 'j', 'gj', { noremap = true })
+vim.keymap.set('n', 'k', 'gk', { noremap = true })
 
 ------------------------------------------------------------------------ plugins
 
