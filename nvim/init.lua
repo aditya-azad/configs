@@ -450,16 +450,6 @@ lsp_config.gopls.setup {
     filetypes = { "go", "templ" }
 }
 
-lsp_config.djlsp.setup {}
-
-lsp_config.htmx.setup {}
-
-lsp_config.templ.setup {}
-
-lsp_config.html.setup {
-    filetypes = { "html" }
-}
-
 lsp_config.ts_ls.setup {}
 
 lsp_config.tailwindcss.setup {}
