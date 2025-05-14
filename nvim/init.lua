@@ -444,6 +444,16 @@ lsp_config.clangd.setup {
     cmd = { "clangd" }
 }
 
+lsp_config.nil_ls.setup {
+    settings = {
+        ['nil'] = {
+            formatting = {
+                command = { "nixfmt" },
+            },
+        },
+    },
+}
+
 lsp_config.rust_analyzer.setup {}
 
 lsp_config.gopls.setup {
