@@ -133,6 +133,19 @@ vim.opt.scrolloff = 8
 -- general keymaps
 
 vim.g.mapleader = " "
+vim.keymap.set('n', '<leader>z', function()
+    local current_win = vim.api.nvim_get_current_win()
+    local win_height = vim.api.nvim_win_get_height(current_win)
+    local win_width = vim.api.nvim_win_get_width(current_win)
+    local total_height = vim.o.lines - vim.o.cmdheight - 1
+    local total_width = vim.o.columns
+    if win_height > total_height * 0.8 and win_width > total_width * 0.8 then
+        vim.cmd('wincmd =')
+    else
+        vim.cmd('wincmd _')
+        vim.cmd('wincmd |')
+    end
+end, { desc = 'Toggle window maximize' })
 vim.keymap.set("n", "<leader>ev", ":e $MYVIMRC<CR>", { desc = "Open vimrc" })
 vim.keymap.set("n", "-", ":Oil --float<CR>", { desc = "Open explorer" })
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Remove new line character from end" })
@@ -461,6 +474,8 @@ lsp_config.gopls.setup {
 }
 
 lsp_config.ts_ls.setup {}
+
+lsp_config.templ.setup {}
 
 lsp_config.tailwindcss.setup {}
 
