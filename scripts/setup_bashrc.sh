@@ -13,3 +13,5 @@ echo "export EDITOR=nvim" >> "$BASHRC_FILE"
 
 # vim bindings
 echo "set -o vi" >> "$BASHRC_FILE"
+echo "bind -m vi-command 'Control-l: clear-screen'" >> "$BASHRC_FILE"
+echo "bind -m vi-insert 'Control-l: clear-screen'" >> "$BASHRC_FILE"
