@@ -361,6 +361,8 @@ require("gitsigns").setup {
     },
 }
 
+vim.keymap.set('n', '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Toggle git blame" })
+
 -- mason
 
 require("mason").setup()
@@ -582,9 +584,10 @@ local telescope_builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>fa", telescope_builtin.find_files, { desc = "Search all files" })
 vim.keymap.set("n", "<leader>ff", telescope_builtin.git_files, { desc = "Search git files" })
 vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, { desc = "Search buffers" })
-vim.keymap.set("n", "<leader>fc", telescope_builtin.git_commits, { desc = "Search git commits" })
 vim.keymap.set("n", "<leader>fq", telescope_builtin.diagnostics, { desc = "Open diagnostics" })
 vim.keymap.set("n", "<leader>fp", telescope_builtin.live_grep, { desc = "Live grep files" })
+vim.keymap.set("n", "<leader>fr", telescope_builtin.resume, { desc = "Show last picker results" })
+vim.keymap.set("n", "<leader>fc", telescope_builtin.grep_string, { desc = "Find string under cursor" })
 vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>", { desc = "Search help tags" })
 
 -- ui select
