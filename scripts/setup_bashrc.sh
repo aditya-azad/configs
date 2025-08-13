@@ -23,3 +23,4 @@ echo "alias ideas='nvim ~/database/workspace/ideas.md'" >> "$BASHRC_FILE"
 # robotics
 echo 'export PATH=${PATH}:/usr/src/tensorrt/bin/' >> "$BASHRC_FILE"
 echo "alias r2='source /opt/ros/humble/setup.bash'" >> "$BASHRC_FILE"
+echo "alias ws='source ./install/setup.bash'" >> "$BASHRC_FILE"
