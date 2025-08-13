@@ -15,3 +15,7 @@ echo "export EDITOR=nvim" >> "$BASHRC_FILE"
 echo "set -o vi" >> "$BASHRC_FILE"
 echo "bind -m vi-command 'Control-l: clear-screen'" >> "$BASHRC_FILE"
 echo "bind -m vi-insert 'Control-l: clear-screen'" >> "$BASHRC_FILE"
+
+# documents
+echo "alias todo='nvim ~/database/workspace/inbox.md'" >> "$BASHRC_FILE"
+echo "alias ideas='nvim ~/database/workspace/ideas.md'" >> "$BASHRC_FILE"
