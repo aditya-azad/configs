@@ -24,3 +24,10 @@ echo "alias ideas='nvim ~/database/workspace/ideas.md'" >> "$BASHRC_FILE"
 echo 'export PATH=${PATH}:/usr/src/tensorrt/bin/' >> "$BASHRC_FILE"
 echo "alias r2='source /opt/ros/humble/setup.bash'" >> "$BASHRC_FILE"
 echo "alias ws='source ./install/setup.bash'" >> "$BASHRC_FILE"
+echo "alias clean_ws='rm -rf ./build ./install ./log'" >> "$BASHRC_FILE"
+
+# git
+echo "alias gp='git push'" >> "$BASHRC_FILE"
+echo "alias gpl='git pull'" >> "$BASHRC_FILE"
+echo "alias gc='git commit -m '" >> "$BASHRC_FILE"
+echo "alias ga='git add .'" >> "$BASHRC_FILE"
