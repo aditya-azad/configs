@@ -20,12 +20,12 @@ function ToggleWordWrap()
 end
 
 function ToggleColors()
-    if vim.o.background == "dark" then
-        vim.o.background = "light"
-        print("Switching to light theme...")
+    if vim.g.colors_name == "github_dark" then
+        vim.cmd("colorscheme github_light")
+        print("Switched to light theme")
     else
-        vim.o.background = "dark"
-        print("Switching to dark theme...")
+        vim.cmd("colorscheme github_dark")
+        print("Switched to dark theme")
     end
 end
 
@@ -124,7 +124,7 @@ vim.opt.directory = os.getenv("HOME") .. "/.vim-tmp/swap"
 -- colors
 
 vim.opt.termguicolors = true
-vim.o.background = "dark"
+vim.o.background = "light"
 
 -- scroll
 
@@ -244,13 +244,9 @@ require("lazy").setup({
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {}
     },
-    {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        priority = 1000,
-        config = function()
-            vim.cmd.colorscheme("catppuccin")
-        end
+    { 
+        'projekt0n/github-nvim-theme',
+        name = 'github-theme'
     },
     {
         "nvim-telescope/telescope.nvim",
@@ -679,7 +675,7 @@ require("oil").setup({
 
 require("lualine").setup({
     options = {
-        theme = "catppuccin",
+        theme = "tokyonight",
         disabled_filetypes = {
             statusline = { "NvimTree" },
             winbar = {}
@@ -700,3 +696,8 @@ require("lualine").setup({
         lualine_z = { 'location' }
     }
 })
+
+-- theme
+
+require('github-theme').setup({ })
+vim.cmd('colorscheme github_light')
