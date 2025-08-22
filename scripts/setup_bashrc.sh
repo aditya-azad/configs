@@ -34,3 +34,22 @@ echo "alias gc='git commit -m '" >> "$BASHRC_FILE"
 echo "alias ga='git add .'" >> "$BASHRC_FILE"
 echo "alias qgc='QGroundControl-x86_64.AppImage'" >> "$BASHRC_FILE"
 echo "gacp() { git add . && git commit -m \"\$1\" && git push; }" >> "$BASHRC_FILE"
+
+# diary
+cat <<'EOF' >> ~/.bashrc
+
+diary() {
+    local notes_dir="$HOME/database/workspace/diary"
+    local today
+    today=$(date +"%Y-%m-%d")
+    local file="$notes_dir/$today.md"
+
+    # Create the file if it doesn't exist
+    if [[ ! -f "$file" ]]; then
+        touch "$file"
+    fi
+
+    # Open with your preferred editor
+    nvim "$file"
+}
+EOF
