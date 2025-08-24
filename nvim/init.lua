@@ -671,11 +671,15 @@ require("oil").setup({
     },
 })
 
+-- theme
+
+require('github-theme').setup({ })
+vim.cmd('colorscheme github_light')
+
 -- lualine
 
 require("lualine").setup({
     options = {
-        theme = "tokyonight",
         disabled_filetypes = {
             statusline = { "NvimTree" },
             winbar = {}
@@ -696,8 +700,3 @@ require("lualine").setup({
         lualine_z = { 'location' }
     }
 })
-
--- theme
-
-require('github-theme').setup({ })
-vim.cmd('colorscheme github_light')
