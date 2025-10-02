@@ -3,7 +3,7 @@
 start_dir=$(pwd)
 
 # deps
-sudo apt install -y git build-essential ninja-build gettext cmake unzip curl
+sudo apt install -y git build-essential ninja-build gettext cmake unzip curl xclip
 
 # tmux
 sudo apt install -y tmux
