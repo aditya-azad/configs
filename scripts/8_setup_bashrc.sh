@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 BASHRC_FILE="$HOME/.bashrc"
 
 # shortcuts

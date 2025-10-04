@@ -1,9 +1,14 @@
 #!/bin/bash
 
+set -e
+
 # system
 gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>Q']"
 gsettings set org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super><Shift>colon']"
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+gsettings set org.gnome.desktop.background picture-uri "file:///home/${USER}/code/configs/wallpapers/cat-colorful.jpg"
+gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/${USER}/code/configs/wallpapers/cat-colorful.jpg"
 
 # media keys
 gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>Return']"
