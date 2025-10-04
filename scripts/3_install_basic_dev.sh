@@ -20,4 +20,10 @@ git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
 
+# node
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+nvm use --lts
+
 cd "$start_dir"
