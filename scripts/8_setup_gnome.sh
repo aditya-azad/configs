@@ -3,6 +3,7 @@
 set -e
 
 # system
+gnome-extensions disable ubuntu-dock@ubuntu.com
 gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>Q']"
 gsettings set org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super><Shift>colon']"
