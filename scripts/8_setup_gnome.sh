@@ -35,6 +35,7 @@ gsettings set org.gnome.shell.keybindings switch-to-application-8 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-9 "[]"
 
 # workspace
+gsettings set org.gnome.mutter workspaces-only-on-primary true
 gsettings set org.gnome.desktop.wm.preferences num-workspaces 10
 gsettings set org.gnome.mutter dynamic-workspaces false
 
