@@ -4,6 +4,9 @@ set -e
 
 BASHRC_FILE="$HOME/.bashrc"
 
+# prompt
+echo "PS1='\[\e[38;5;33m\]\u\[\e[0m\]@\[\e[38;5;31m\]\h\[\e[0m\]:\[\e[38;5;34m\]\w\[\e[0m\]\$ '" >> "$BASHRC_FILE"
+
 # shortcuts
 echo "alias sdn='shutdown now'" >> "$BASHRC_FILE"
 echo "alias start='xdg-open'" >> "$BASHRC_FILE"
