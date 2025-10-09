@@ -12,7 +12,8 @@ gsettings set org.gnome.desktop.background picture-uri "file:///home/${USER}/cod
 gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/${USER}/code/configs/wallpapers/cat-colorful.jpg"
 
 # media keys
-gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>t']"
+gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
+gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>b']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
