@@ -185,26 +185,25 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     "mbbill/undotree",
-    "hrsh7th/cmp-nvim-lua",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
     "tpope/vim-sleuth",
+    "neovim/nvim-lspconfig",
+    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-nvim-lua",
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
+    "rafamadriz/friendly-snippets",
     {
         'MeanderingProgrammer/render-markdown.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
         opts = {},
-    },
-    {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-        build = "cd app && npm install",
-        init = function()
-            vim.g.mkdp_filetypes = { "markdown" }
-        end,
-        ft = { "markdown" },
     },
     {
         'kristijanhusak/vim-dadbod-ui',
@@ -223,16 +222,6 @@ require("lazy").setup({
         end,
     },
     {
-        "mfussenegger/nvim-dap",
-        dependencies = {
-            "leoluz/nvim-dap-go",
-            "rcarriga/nvim-dap-ui",
-            "theHamsta/nvim-dap-virtual-text",
-            "nvim-neotest/nvim-nio",
-            "williamboman/mason.nvim",
-        }
-    },
-    {
         'stevearc/oil.nvim',
         ---@module 'oil'
         ---@type oil.SetupOpts
@@ -244,13 +233,13 @@ require("lazy").setup({
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {}
     },
-    { 
+    {
         'projekt0n/github-nvim-theme',
         name = 'github-theme'
     },
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.5",
+        tag = "0.1.8",
         dependencies = { "nvim-lua/plenary.nvim" }
     },
     {
@@ -260,20 +249,6 @@ require("lazy").setup({
     {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' }
-    },
-    {
-        "VonHeikemen/lsp-zero.nvim",
-        branch = "v3.x",
-        dependencies = {
-            "neovim/nvim-lspconfig",
-            "hrsh7th/nvim-cmp",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "L3MON4D3/LuaSnip",
-            "saadparwaiz1/cmp_luasnip",
-            "rafamadriz/friendly-snippets"
-        }
     },
     {
         "NeogitOrg/neogit",
@@ -362,51 +337,77 @@ vim.keymap.set('n', '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>',
 -- mason
 
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "clangd",
+        "nil_ls",
+        "rust_analyzer",
+        "gopls",
+        "ts_ls",
+        "templ",
+        "tailwindcss",
+        "pylsp",
+        "lua_ls",
+        "phpactor",
+    },
+    automatic_enable = false,
+})
 
 -- lsp
 
-local lsp = require("lsp-zero").preset({})
-local cmp = require("cmp")
-local cmp_action = require("lsp-zero").cmp_action()
-local lsp_config = require("lspconfig")
-
-lsp.set_sign_icons({
-    error = " ",
-    warn = " ",
-    info = " ",
-    hint = " ⚑"
-})
-
 vim.diagnostic.config({
+    virtual_lines = false,
     virtual_text = true,
+    underline = false,
+    update_in_insert = false,
+    severity_sort = true,
+    float = {
+        border = "rounded",
+        source = true,
+    },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "󰅚 ",
+            [vim.diagnostic.severity.WARN] = "󰀪 ",
+            [vim.diagnostic.severity.INFO] = "󰋽 ",
+            [vim.diagnostic.severity.HINT] = "󰌶 ",
+        },
+        numhl = {
+            [vim.diagnostic.severity.ERROR] = "ErrorMsg",
+            [vim.diagnostic.severity.WARN] = "WarningMsg",
+        },
+    },
 })
 
-lsp.on_attach(function(_, bufnr)
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end,
-        { buffer = bufnr, remap = false, desc = "Go to definition" })
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, { buffer = bufnr, remap = false, desc = "Hover" })
-    vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format() end,
-        { buffer = bufnr, remap = false, desc = "Format file" })
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
-        { buffer = bufnr, remap = false, desc = "List symbols in workspace" })
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
-        { buffer = bufnr, remap = false, desc = "Hover diagnostics" })
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end,
-        { buffer = bufnr, remap = false, desc = "Next diagnostic" })
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end,
-        { buffer = bufnr, remap = false, desc = "Previous diagnostic" })
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end,
-        { buffer = bufnr, remap = false, desc = "Code Actions" })
-    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end,
-        { buffer = bufnr, remap = false, desc = "Find references" })
-    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end,
-        { buffer = bufnr, remap = false, desc = "Rename references" })
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end,
-        { buffer = bufnr, remap = false, desc = "Signature help" })
-end)
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("user_lsp_keymaps", { clear = true }),
+    callback = function(ev)
+        local opts = { buffer = ev.buf, silent = true, noremap = true, desc = "" }
+        opts.desc = "Go to definition"
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        opts.desc = "Hover"
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+        opts.desc = "Format file"
+        vim.keymap.set("n", "<leader>fs", function() vim.lsp.buf.format({ async = true }) end, opts)
+        opts.desc = "List symbols in workspace"
+        vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+        opts.desc = "Hover diagnostics"
+        vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
+        opts.desc = "Code Actions"
+        vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
+        opts.desc = "Find references"
+        vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+        opts.desc = "Rename symbol"
+        vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+        opts.desc = "Signature help"
+        vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+    end,
+})
 
 -- cmp
+
+local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
@@ -424,8 +425,20 @@ cmp.setup({
         { name = "luasnip" },
     },
     mapping = {
-        ["<C-f>"] = cmp_action.luasnip_jump_forward(),
-        ["<C-b>"] = cmp_action.luasnip_jump_backward(),
+        ["<C-f>"] = function(fallback)
+            if luasnip.expand_or_locally_jumpable() then
+                luasnip.expand_or_jump()
+            else
+                fallback()
+            end
+        end,
+        ["<C-b>"] = function(fallback)
+            if luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end,
         ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
         ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
@@ -451,128 +464,108 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 -- lsp servers
 
-lsp_config.clangd.setup {
-    cmd = { "clangd" }
-}
+local lsp = vim.lsp
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp_config.nil_ls.setup {
+-- clangd
+lsp.config('clangd', {
+    cmd = { "clangd" },
+    capabilities = capabilities,
+})
+
+-- nil (Nix)
+lsp.config('nil_ls', {
+    capabilities = capabilities,
     settings = {
         ['nil'] = {
-            formatting = {
-                command = { "nixfmt" },
-            },
+            formatting = { command = { "nixfmt" } },
         },
     },
-}
+})
 
-lsp_config.rust_analyzer.setup {}
+-- rust
+lsp.config('rust_analyzer', {
+    capabilities = capabilities,
+})
 
-lsp_config.gopls.setup {
-    filetypes = { "go", "templ" }
-}
+-- go
+lsp.config('gopls', {
+    capabilities = capabilities,
+    filetypes = { "go", "templ" },
+})
 
-lsp_config.ts_ls.setup {}
+-- typescript/javascript (ts_ls)
+lsp.config('ts_ls', {
+    capabilities = capabilities,
+})
 
-lsp_config.templ.setup {}
+-- templ
+lsp.config('templ', {
+    capabilities = capabilities,
+})
 
-lsp_config.tailwindcss.setup {}
+-- tailwindcss
+lsp.config('tailwindcss', {
+    capabilities = capabilities,
+})
 
-lsp_config.pylsp.setup {
-    root_dir = lsp_config.util.root_pattern(".git"),
+-- python (pylsp)
+lsp.config('pylsp', {
+    capabilities = capabilities,
     settings = {
         single_file_support = false,
         pylsp = {
             configurationSources = { "flake8" },
             plugins = {
-                -- formatter options
                 yapf = { enabled = false },
                 autopep8 = { enabled = false },
                 black = { enabled = true },
                 pyls_isort = { enabled = true },
-                -- linter options
-                flake8 = { enable = true },
+                flake8 = { enabled = true },
                 pyflakes = { enabled = true },
                 pycodestyle = { enabled = false },
                 pylint = { enabled = false, executable = "pylint" },
-                mccabe = { enable = false },
-                -- static type checker
+                mccabe = { enabled = false },
                 pylsp_mypy = { enabled = true },
-                -- auto-completion options
                 jedi_completion = { fuzzy = false },
             }
         }
     }
-}
+})
 
-lsp_config.lua_ls.setup {
+-- lua
+lsp.config('lua_ls', {
+    capabilities = capabilities,
     settings = {
         Lua = {
-            diagnostics = {
-                globals = { 'vim' },
-            },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-                enable = false,
-            },
+            diagnostics = { globals = { 'vim' } },
+            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+            telemetry = { enable = false },
         }
     }
-}
+})
 
-lsp_config.phpactor.setup {}
+-- php
+lsp.config('phpactor', {
+    capabilities = capabilities,
+})
 
-lsp.setup()
-
--- dap
-
-local dap = require("dap")
-local dap_ui = require("dapui")
-
-dap_ui.setup()
-
--- local dap_go = require("dapui")
--- dap_go.setup()
-
--- local dap_py = require("dap-python")
--- dap_py.setup("/path/to/venv/bin/python")
-
-local dap_virtual_text = require("nvim-dap-virtual-text")
-
-dap_virtual_text.setup {}
-
-vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-vim.keymap.set("n", "<leader>dc", dap.run_to_cursor, { desc = "Continue running till cursor" })
-
-vim.keymap.set("n", "<leader>d?", function()
-    dap_ui.eval(nil, { enter = true })
-end)
-
-vim.keymap.set("n", "<leader>d1", dap.continue, { desc = "Continue" })
-vim.keymap.set("n", "<leader>d2", dap.step_into, { desc = "Step Into" })
-vim.keymap.set("n", "<leader>d3", dap.step_over, { desc = "Step Over" })
-vim.keymap.set("n", "<leader>d4", dap.step_out, { desc = "Step Out" })
-vim.keymap.set("n", "<leader>d5", dap.step_back, { desc = "Step Back" })
-vim.keymap.set("n", "<leader>d6", dap.restart, { desc = "Restart debugging" })
-
-dap.listeners.before.attach.dapui_config = function()
-    dap_ui.open()
-end
-dap.listeners.before.launch.dapui_config = function()
-    dap_ui.open()
-end
-dap.listeners.before.event_terminated.dapui_config = function()
-    dap_ui.close()
-end
-dap.listeners.before.event_exited.dapui_config = function()
-    dap_ui.close()
+-- finally enable all configured servers
+for _, name in ipairs({
+    "clangd",
+    "nil_ls",
+    "rust_analyzer",
+    "gopls",
+    "ts_ls",
+    "templ",
+    "tailwindcss",
+    "pylsp",
+    "lua_ls",
+    "phpactor",
+}) do
+    lsp.enable(name)
 end
 
-dap.adapters.lldb = {
-    type = "executable",
-    command = "/usr/bin/lldb-vscode-14",
-    name = "lldb",
-}
 
 -- telescope
 
@@ -673,7 +666,7 @@ require("oil").setup({
 
 -- theme
 
-require('github-theme').setup({ })
+require('github-theme').setup({})
 vim.cmd('colorscheme github_light')
 
 -- lualine
