@@ -340,15 +340,12 @@ require("mason").setup()
 require("mason-lspconfig").setup({
     ensure_installed = {
         "clangd",
-        "nil_ls",
         "rust_analyzer",
         "gopls",
         "ts_ls",
-        "templ",
         "tailwindcss",
         "pylsp",
         "lua_ls",
-        "phpactor",
     },
     automatic_enable = false,
 })
@@ -473,16 +470,6 @@ lsp.config('clangd', {
     capabilities = capabilities,
 })
 
--- nil (Nix)
-lsp.config('nil_ls', {
-    capabilities = capabilities,
-    settings = {
-        ['nil'] = {
-            formatting = { command = { "nixfmt" } },
-        },
-    },
-})
-
 -- rust
 lsp.config('rust_analyzer', {
     capabilities = capabilities,
@@ -491,16 +478,11 @@ lsp.config('rust_analyzer', {
 -- go
 lsp.config('gopls', {
     capabilities = capabilities,
-    filetypes = { "go", "templ" },
+    filetypes = { "go", },
 })
 
 -- typescript/javascript (ts_ls)
 lsp.config('ts_ls', {
-    capabilities = capabilities,
-})
-
--- templ
-lsp.config('templ', {
     capabilities = capabilities,
 })
 
@@ -545,23 +527,15 @@ lsp.config('lua_ls', {
     }
 })
 
--- php
-lsp.config('phpactor', {
-    capabilities = capabilities,
-})
-
 -- finally enable all configured servers
 for _, name in ipairs({
     "clangd",
-    "nil_ls",
     "rust_analyzer",
     "gopls",
     "ts_ls",
-    "templ",
     "tailwindcss",
     "pylsp",
     "lua_ls",
-    "phpactor",
 }) do
     lsp.enable(name)
 end
