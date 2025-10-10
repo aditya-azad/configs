@@ -6,6 +6,6 @@ size = 12.0
 
 [general]
 import = [
-    "~/.config/alacritty/github_light_default.toml"
+    "~/.config/alacritty/ashes_light_modified.toml"
 ]
 
