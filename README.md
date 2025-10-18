@@ -5,7 +5,7 @@ A Ubuntu 22.04 config for the best of all worlds:
 - Opt-in tiling window mangement
 - Minimal customization headache
 - Just works (for AI, Robotics, Web)
-- 0 to 100 in 2 minutes
+- 0 to 100 in 30 minutes
 - System wide theme switching
 
 Inspired by [Omarchy](https://omarchy.org/)
