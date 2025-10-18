@@ -2,7 +2,7 @@
 
 A Ubuntu 22.04 config for the best of all worlds:
 
-- Opt-in tiling window mangement
+- Opt-in tiling window management
 - Minimal customization headache
 - Just works (for AI, Robotics, Web)
 - 0 to 100 in 30 minutes
