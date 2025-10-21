@@ -7,6 +7,9 @@ start_dir=$(pwd)
 mkdir -p ~/code
 cd ~/code
 
+# net tools
+sudo apt install -y net-tools
+
 # ripgrep
 cargo install ripgrep
 
