@@ -47,3 +47,61 @@ diary() {
 }
 EOF
 
+# ros domain id modifier
+START="# >>> rdid function >>>"
+END="# <<< rdid function <<<"
+
+RDID_FUNC_CONTENT='
+# Usage: rdid 23
+# Sets ROS_DOMAIN_ID in current shell and persists it in ~/.bashrc
+rdid() {
+  if [ -z "${1-}" ]; then
+    echo "Usage: rdid <domain_id>" >&2
+    return 2
+  fi
+
+  case "$1" in
+    ""|*[!0-9]*)
+      echo "Error: domain_id must be a non-negative integer." >&2
+      return 2
+      ;;
+    *)
+      if [ "$1" -gt 232 ] 2>/dev/null; then
+        echo "Warning: domain_id > 232 may be unsupported by some ROS 2 setups." >&2
+      fi
+      ;;
+  esac
+
+  local id="$1"
+  local bashrc="$HOME/.bashrc"
+  local line="export ROS_DOMAIN_ID=${id}"
+
+  export ROS_DOMAIN_ID="$id"
+
+  if grep -qE "^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=" "$bashrc"; then
+    sed -i -E "s|^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=.*|$line|" "$bashrc"
+  else
+    printf "\n%s\n" "$line" >> "$bashrc"
+  fi
+
+  echo "ROS_DOMAIN_ID set to ${id} (current shell) and persisted in ~/.bashrc"
+}
+'
+
+# Remove any existing block between markers (if present)
+if grep -qF "$START" "$BASHRC_FILE"; then
+  awk -v start="$START" -v end="$END" '
+    BEGIN {inblock=0}
+    $0 ~ start {inblock=1; next}
+    $0 ~ end {inblock=0; next}
+    inblock==0 {print}
+  ' "$BASHRC_FILE" > "${BASHRC_FILE}.tmp"
+  mv "${BASHRC_FILE}.tmp" "$BASHRC_FILE"
+fi
+
+# Append the fresh block
+{
+  printf "\n%s\n" "$START"
+  printf "%s\n" "$RDID_FUNC_CONTENT"
+  printf "%s\n" "$END"
+} >> "$BASHRC_FILE"

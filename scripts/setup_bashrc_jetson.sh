@@ -23,6 +23,3 @@ if (( ROS_DOMAIN_ID_INPUT < 0 || ROS_DOMAIN_ID_INPUT > 101 )); then
   exit 1
 fi
 echo "export ROS_DOMAIN_ID=${ROS_DOMAIN_ID_INPUT}" >> "$BASHRC_FILE"
-
-echo "export ROS_LOCALHOST_ONLY=0" >> "$BASHRC_FILE"
-echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> "$BASHRC_FILE"

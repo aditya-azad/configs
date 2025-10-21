@@ -10,6 +10,9 @@ cd ~/code
 # net tools
 sudo apt install -y net-tools
 
+# chrony
+sudo apt install -y chrony
+
 # ripgrep
 cargo install ripgrep
 
