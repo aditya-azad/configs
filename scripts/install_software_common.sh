@@ -7,6 +7,8 @@ start_dir=$(pwd)
 mkdir -p ~/code
 cd ~/code
 
+source ~/.cargo/env
+
 # net tools
 sudo apt install -y net-tools
 

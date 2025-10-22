@@ -9,6 +9,8 @@ start_dir=$(pwd)
 mkdir -p ~/code
 cd ~/code
 
+source ~/.cargo/env
+
 # bat
 cargo install bat
 
