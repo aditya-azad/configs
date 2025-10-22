@@ -23,6 +23,7 @@ echo "alias z='zellij'" >> "$BASHRC_FILE"
 echo "alias tmux='zellij'" >> "$BASHRC_FILE"
 echo "alias top='btop'" >> "$BASHRC_FILE"
 echo "alias htop='btop'" >> "$BASHRC_FILE"
+echo "alias scp='rsync -avP'" >> "$BASHRC_FILE"
 
 # editor
 echo "alias vim='nvim'" >> "$BASHRC_FILE"
