@@ -13,3 +13,5 @@ read -p "Email    : " EMAIL_ADDRESS
 # Export as environment variables
 echo "export USER_FULL_NAME='$FULL_NAME'" >> "$BASHRC_FILE"
 echo "export USER_EMAIL_ADDRESS='$EMAIL_ADDRESS'" >> "$BASHRC_FILE"
+export USER_EMAIL_ADDRESS="$EMAIL_ADDRESS"
+export USER_FULL_NAME="$FULL_NAME"
