@@ -21,14 +21,6 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 
 gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 6
 gsettings set org.gnome.desktop.interface clock-format '12h'
 
-# popshell
-export GSETTINGS_SCHEMA_DIR="$HOME/.local/share/gnome-shell/extensions/pop-shell@system76.com/schemas/"
-gsettings set org.gnome.shell.extensions.pop-shell active-hint true
-gsettings set org.gnome.shell.extensions.pop-shell active-hint-border-radius 0
-gsettings set org.gnome.shell.extensions.pop-shell gap-outer 2
-gsettings set org.gnome.shell.extensions.pop-shell gap-inner 2
-gsettings set org.gnome.shell.extensions.pop-shell show-title false
-
 # media keys and apps
 xdg-settings set default-web-browser brave-browser.desktop
 gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
@@ -81,10 +73,6 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-8 "['<Super>8
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-9 "['<Super>9']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-10 "['<Super>0']"
 
-# dock
-gsettings set org.gnome.shell.extensions.dash-to-dock autohide false
-gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
-
 # custom
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
 ## shut down
@@ -95,3 +83,16 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Restart'
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'systemctl reboot'
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Super><Ctrl><Alt>r'
+
+# dock
+gsettings set org.gnome.shell.extensions.dash-to-dock autohide false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
+
+# popshell
+export GSETTINGS_SCHEMA_DIR="$HOME/.local/share/gnome-shell/extensions/pop-shell@system76.com/schemas/"
+gsettings set org.gnome.shell.extensions.pop-shell active-hint true
+gsettings set org.gnome.shell.extensions.pop-shell active-hint-border-radius 0
+gsettings set org.gnome.shell.extensions.pop-shell gap-outer 2
+gsettings set org.gnome.shell.extensions.pop-shell gap-inner 2
+gsettings set org.gnome.shell.extensions.pop-shell show-title false
+
