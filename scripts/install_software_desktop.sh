@@ -58,7 +58,7 @@ cd btop
 sudo make GPU_SUPPORT=true
 python3 -m pip install nvidia-ml-py
 cd ..
-rm -rf btop
+rm -rf btop-x86_64-linux-musl.tbz
 
 # alacritty
 git clone https://github.com/alacritty/alacritty.git

@@ -14,6 +14,6 @@ cd btop
 sudo make GPU_SUPPORT=true
 python3 -m pip install nvidia-ml-py
 cd ..
-rm -rf btop
+rm -rf btop-aarch64-linux-musl.tbz
 
 cd "$start_dir"
