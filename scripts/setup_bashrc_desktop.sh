@@ -79,8 +79,8 @@ rdid() {
 
   export ROS_DOMAIN_ID="$id"
 
-  if grep -qE "^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=" "$bashrc"; then
-    sed -i -E "s|^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=.*|$line|" "$bashrc"
+  if grep -qE "^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=[0-9]+" "$bashrc"; then
+    sed -i.bak -E "s|^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=[0-9]+$|$line|" "$bashrc"
   else
     printf "\n%s\n" "$line" >> "$bashrc"
   fi
