@@ -21,6 +21,14 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 
 gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 6
 gsettings set org.gnome.desktop.interface clock-format '12h'
 
+# popshell
+export GSETTINGS_SCHEMA_DIR="$HOME/.local/share/gnome-shell/extensions/pop-shell@system76.com/schemas/"
+gsettings set org.gnome.shell.extensions.pop-shell active-hint true
+gsettings set org.gnome.shell.extensions.pop-shell active-hint-border-radius 0
+gsettings set org.gnome.shell.extensions.pop-shell gap-outer 2
+gsettings set org.gnome.shell.extensions.pop-shell gap-inner 2
+gsettings set org.gnome.shell.extensions.pop-shell show-title false
+
 # media keys and apps
 xdg-settings set default-web-browser brave-browser.desktop
 gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
