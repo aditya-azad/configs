@@ -51,6 +51,9 @@ sudo apt-get install -y nvidia-open
 echo "export PATH=${PATH}:/usr/local/cuda-12.6/bin" >> "$BASHRC_FILE"
 echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.6/lib64" >> "$BASHRC_FILE"
 
+# nvidia container toolkit
+sudo apt install -y nvidia-cuda-toolkit
+
 # btop
 wget https://github.com/aristocratos/btop/releases/download/v1.4.5/btop-x86_64-linux-musl.tbz
 tar -xjf btop-x86_64-linux-musl.tbz
