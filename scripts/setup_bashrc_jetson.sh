@@ -9,7 +9,6 @@ echo "PS1='\[\e[38;5;196m\]\u@\h\[\e[38;5;28m\]:\w\[\e[0m\]\$ '" >> "$BASHRC_FIL
 
 # robotics
 echo "alias sin='singularity exec --nv -B /run ~/code/singularity/jetson_6_2.sif /bin/bash'" >> "$BASHRC_FILE"
-echo "alias acp='source ~/code/acp_ws/install/setup.bash'" >> "$BASHRC_FILE"
 echo "alias fan='sudo jetson_clocks --fan'" >> "$BASHRC_FILE"
 
 read -rp "Enter ROS_DOMAIN_ID [0-101] (default 0): " ROS_DOMAIN_ID_INPUT
