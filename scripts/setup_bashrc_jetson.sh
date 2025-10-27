@@ -8,7 +8,7 @@ BASHRC_FILE="$HOME/.bashrc"
 echo "PS1='\[\e[38;5;196m\]\u@\h\[\e[38;5;28m\]:\w\[\e[0m\]\$ '" >> "$BASHRC_FILE"
 
 # robotics
-echo "alias sin='singularity exec --nv -B /run ~/code/singularity/jetson_6_2.sif /bin/bash'" >> "$BASHRC_FILE"
+echo "alias sin='sudo chmod 666 /dev/ttyTHS1 && singularity exec --nv -B /run ~/code/singularity/jetson_6_2.sif /bin/bash'" >> "$BASHRC_FILE"
 echo "alias fan='sudo jetson_clocks --fan'" >> "$BASHRC_FILE"
 
 read -rp "Enter ROS_DOMAIN_ID [0-101] (default 0): " ROS_DOMAIN_ID_INPUT
