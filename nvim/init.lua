@@ -581,7 +581,7 @@ neogit.setup {
 
 
 vim.api.nvim_create_user_command('G', function()
-    vim.cmd(":Neogit kind=floating")
+    vim.cmd(":Neogit kind=floating cwd=%:p:h")
 end, {})
 
 -- treesitter
