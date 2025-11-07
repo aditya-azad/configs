@@ -2,6 +2,8 @@
 
 set -e
 
+sudo mount -o remount,size=2G /tmp
+
 ./scripts/install_compilers.sh
 ./scripts/install_software_common.sh
 ./scripts/install_software_rpi.sh

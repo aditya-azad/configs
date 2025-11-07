@@ -24,9 +24,6 @@ cargo install du-dust
 # eza
 cargo install eza
 
-# zellij
-cargo install zellij
-
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim

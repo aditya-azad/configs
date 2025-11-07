@@ -7,6 +7,9 @@ start_dir=$(pwd)
 mkdir -p ~/code
 cd ~/code
 
+# zellij
+cargo install zellij
+
 # btop
 wget https://github.com/aristocratos/btop/releases/download/v1.4.5/btop-aarch64-linux-musl.tbz
 tar -xjf btop-aarch64-linux-musl.tbz

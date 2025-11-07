@@ -11,6 +11,9 @@ cd ~/code
 
 source ~/.cargo/env
 
+# zellij
+cargo install zellij
+
 # bat
 cargo install bat
 
@@ -110,9 +113,9 @@ popd
 
 # syncthing
 pushd /tmp
-wget https://github.com/syncthing/syncthing/releases/download/v2.0.10/syncthing-linux-amd64-v2.0.10.tar.gz
-tar xzf syncthing-linux-amd64-v2.0.10.tar.gz
-cp -r syncthing-linux-amd64-v2.0.10/ ~/syncthing
+wget https://github.com/syncthing/syncthing/releases/download/v2.0.10/syncthing-linux-amd64-v2.0.11.tar.gz
+tar xzf syncthing-linux-amd64-v2.0.11.tar.gz
+cp -r syncthing-linux-amd64-v2.0.11/ ~/syncthing
 mkdir -p ~/.config/systemd/user/
 cp ~/syncthing/etc/linux-systemd/user/syncthing.service ~/.config/systemd/user/
 echo "export PATH=$PATH:$HOME/syncthing/"
