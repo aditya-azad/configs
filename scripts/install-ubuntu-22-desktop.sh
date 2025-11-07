@@ -2,7 +2,6 @@
 
 set -e
 
-./scripts/setup_user.sh
 ./scripts/upgrade.sh
 ./scripts/install_compilers.sh
 ./scripts/install_software_common.sh

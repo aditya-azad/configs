@@ -2,6 +2,9 @@
 
 set -e
 
+read -p "Full Name: " FULL_NAME
+read -p "Email    : " EMAIL_ADDRESS
+
 git config --global user.name "$USER_FULL_NAME"
 git config --global user.email "$USER_EMAIL_ADDRESS"
 

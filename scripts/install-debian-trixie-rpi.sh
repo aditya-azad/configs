@@ -4,8 +4,8 @@ set -e
 
 ./scripts/install_compilers.sh
 ./scripts/install_software_common.sh
-./scripts/install_software_jetson.sh
+./scripts/install_software_rpi.sh
 ./scripts/setup_symlinks_common.sh
 ./scripts/setup_bashrc_common.sh
-./scripts/setup_bashrc_jetson.sh
+./scripts/setup_bashrc_rpi.sh
 ./scripts/setup_git.sh
