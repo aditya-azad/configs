@@ -29,7 +29,7 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>b']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
 # windows
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Super>m']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Super>f']"
 
 gsettings set org.gnome.desktop.wm.keybindings move-to-monitor-down "['<Super><Shift>j']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-monitor-up "['<Super><Shift>k']"
