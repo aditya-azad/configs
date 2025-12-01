@@ -45,6 +45,14 @@ curl -fsS https://dl.brave.com/install.sh | sh
 # nvidia driver
 sudo apt install nvidia-driver-570
 
+# zotero
+wget -qO- https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | sudo bash
+sudo apt update
+sudo apt install zotero
+pushd ~/Downloads
+wget https://github.com/wileyyugioh/zotmoov/releases/download/1.2.24/zotmoov-1.2.24-fx.xpi
+popd
+
 # cuda 12.6
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
