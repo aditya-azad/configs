@@ -19,6 +19,7 @@ echo "alias ideas='nvim ~/database/workspace/ideas.md'" >> "$BASHRC_FILE"
 
 # robotics
 echo "alias qgc='QGroundControl-x86_64.AppImage'" >> "$BASHRC_FILE"
+echo "export PX4_PATH=/home/azada/code/PX4-Autopilot" >> "$BASHRC_FILE"
 
 # ssh
 echo "alias e1='ssh -Y eagle1@eagle1'" >> "$BASHRC_FILE"
