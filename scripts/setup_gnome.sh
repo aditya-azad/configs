@@ -96,3 +96,5 @@ gsettings set org.gnome.shell.extensions.pop-shell gap-outer 2
 gsettings set org.gnome.shell.extensions.pop-shell gap-inner 2
 gsettings set org.gnome.shell.extensions.pop-shell show-title false
 
+# fix bugs
+gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com']"
