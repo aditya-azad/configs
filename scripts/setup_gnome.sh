@@ -3,7 +3,6 @@
 set -e
 
 # system
-gnome-extensions disable ubuntu-dock@ubuntu.com
 gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>Q']"
 gsettings set org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super><Shift>colon']"
@@ -96,5 +95,5 @@ gsettings set org.gnome.shell.extensions.pop-shell gap-outer 2
 gsettings set org.gnome.shell.extensions.pop-shell gap-inner 2
 gsettings set org.gnome.shell.extensions.pop-shell show-title false
 
-# fix bugs
-gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com']"
+# fix bugs disable extensions
+gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
