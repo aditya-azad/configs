@@ -15,6 +15,7 @@ echo "alias cdd='cd ~/Downloads'" >> "$BASHRC_FILE"
 
 # python
 echo "alias sv='source ./venv/bin/activate'" >> "$BASHRC_FILE"
+echo "alias svd='source ./.venv/bin/activate'" >> "$BASHRC_FILE"
 
 # utils
 echo "alias du='dust'" >> "$BASHRC_FILE"
