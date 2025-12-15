@@ -8,6 +8,7 @@ BASHRC_FILE="$HOME/.bashrc"
 echo "alias start='xdg-open'" >> "$BASHRC_FILE"
 echo "alias brc='nvim ~/.bashrc'" >> "$BASHRC_FILE"
 echo "alias st='~/code/configs/scripts/switch_theme.sh'" >> "$BASHRC_FILE"
+echo "alias dev='./scripts/dev.sh'" >> "$BASHRC_FILE"
 
 # directories
 echo "alias cdc='cd ~/code'" >> "$BASHRC_FILE"
