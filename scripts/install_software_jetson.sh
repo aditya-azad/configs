@@ -30,7 +30,7 @@ cargo install ripgrep
 cargo install eza
 
 # python libs
-pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8 catkin_pkg
+pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8 catkin_pkg numpy empy==3.3.4 lark
 
 # neovim
 git clone https://github.com/neovim/neovim

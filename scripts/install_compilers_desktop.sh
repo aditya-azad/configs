@@ -15,7 +15,7 @@ eval "$(~/.local/bin/mise activate bash)"
 mise use -g go
 
 # python
-mise use -g python@3.12
+mise use -g python@3.10
 mise use -g uv@latest
 
 # node

@@ -16,7 +16,7 @@ curl https://mise.run | sh
 eval "$(~/.local/bin/mise activate bash)"
 
 # python
-mise use -g python@3.12
+mise use -g python@3.10
 mise use -g uv@latest
 
 # go
