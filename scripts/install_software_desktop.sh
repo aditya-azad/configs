@@ -91,6 +91,12 @@ echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.6/lib64" >> "
 # nvidia container toolkit
 sudo apt install -y nvidia-cuda-toolkit
 
+# python libs
+pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8
+
+# torch
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
 # btop
 wget https://github.com/aristocratos/btop/releases/download/v1.4.5/btop-x86_64-linux-musl.tbz
 tar -xjf btop-x86_64-linux-musl.tbz

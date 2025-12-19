@@ -19,4 +19,10 @@ pkg install ripgrep
 # neovim
 pkg install neovim
 
+# python libs
+pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8
+
+# torch
+pkg install python-torch python-torchvision python-torchaudio
+
 cd "$start_dir"

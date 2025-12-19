@@ -26,6 +26,9 @@ cargo install ripgrep
 # eza
 cargo install eza
 
+# python libs
+pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8
+
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim

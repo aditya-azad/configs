@@ -25,6 +25,12 @@ cargo install ripgrep
 # eza
 cargo install eza
 
+# python libs
+pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8
+
+# torch
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim
