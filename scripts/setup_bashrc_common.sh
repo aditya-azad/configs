@@ -22,6 +22,8 @@ echo "alias svd='source ./.venv/bin/activate'" >> "$BASHRC_FILE"
 echo "alias z='zellij'" >> "$BASHRC_FILE"
 echo "alias tmux='zellij'" >> "$BASHRC_FILE"
 echo "alias scp='rsync -avP'" >> "$BASHRC_FILE"
+echo "alias du='dust'" >> "$BASHRC_FILE"
+echo "alias ls='eza'" >> "$BASHRC_FILE"
 
 # editor
 echo "alias vim='nvim'" >> "$BASHRC_FILE"
