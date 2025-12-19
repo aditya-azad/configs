@@ -50,4 +50,34 @@ python3 -m pip install nvidia-ml-py
 cd ..
 rm -rf btop-aarch64-linux-musl.tbz
 
+# singularity
+pushd ~/code
+sudo apt-get install -y \
+   autoconf \
+   automake \
+   cryptsetup \
+   fuse2fs \
+   git \
+   fuse \
+   libfuse-dev \
+   libseccomp-dev \
+   libtool \
+   pkg-config \
+   runc \
+   squashfs-tools \
+   squashfs-tools-ng \
+   uidmap \
+   wget \
+   zlib1g-dev
+export VERSION=4.3.0 && \
+    wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce-${VERSION}.tar.gz && \
+    tar -xzf singularity-ce-${VERSION}.tar.gz && \
+    cd singularity-ce-${VERSION}
+./mconfig --without-libsubid && \
+    make -C builddir && \
+    sudo make -C builddir install
+cd ..
+rm -rf singularity*
+popd
+
 cd "$start_dir"
