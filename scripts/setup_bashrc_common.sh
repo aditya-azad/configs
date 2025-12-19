@@ -19,12 +19,8 @@ echo "alias sv='source ./venv/bin/activate'" >> "$BASHRC_FILE"
 echo "alias svd='source ./.venv/bin/activate'" >> "$BASHRC_FILE"
 
 # utils
-echo "alias du='dust'" >> "$BASHRC_FILE"
-echo "alias ls='eza'" >> "$BASHRC_FILE"
 echo "alias z='zellij'" >> "$BASHRC_FILE"
 echo "alias tmux='zellij'" >> "$BASHRC_FILE"
-echo "alias top='btop'" >> "$BASHRC_FILE"
-echo "alias htop='btop'" >> "$BASHRC_FILE"
 echo "alias scp='rsync -avP'" >> "$BASHRC_FILE"
 
 # editor

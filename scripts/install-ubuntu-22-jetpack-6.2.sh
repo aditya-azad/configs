@@ -2,7 +2,8 @@
 
 set -e
 
-./scripts/install_compilers.sh
+./scripts/install_compilers_common.sh
+./scripts/install_compilers_jetson.sh
 ./scripts/install_software_common.sh
 ./scripts/install_software_jetson.sh
 ./scripts/setup_symlinks_common.sh
