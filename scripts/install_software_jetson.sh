@@ -32,6 +32,9 @@ cargo install eza
 # python libs
 pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8 catkin_pkg numpy empy==3.3.4 lark pyyaml
 
+# torch
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim
