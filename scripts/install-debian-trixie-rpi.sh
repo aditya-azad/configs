@@ -4,7 +4,6 @@ set -e
 
 sudo mount -o remount,size=2G /tmp
 
-./scripts/install_compilers_common.sh
 ./scripts/install_compilers_rpi.sh
 ./scripts/install_software_common.sh
 ./scripts/install_software_rpi.sh

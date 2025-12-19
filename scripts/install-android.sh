@@ -2,7 +2,6 @@
 
 set -e
 
-./scripts/install_compilers_common.sh
 ./scripts/install_compilers_android.sh
 ./scripts/install_software_common.sh
 ./scripts/install_software_android.sh
