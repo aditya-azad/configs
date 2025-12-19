@@ -7,6 +7,12 @@ start_dir=$(pwd)
 mkdir -p ~/code
 cd ~/code
 
+# net tools
+sudo apt install -y net-tools
+
+# chrony
+sudo apt install -y chrony
+
 # zellij
 cargo install zellij
 
