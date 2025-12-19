@@ -30,6 +30,7 @@ echo "alias e3='ssh -Y eagle3@eagle3'" >> "$BASHRC_FILE"
 echo "alias e3j='ssh -Y eagle3@jetson'" >> "$BASHRC_FILE"
 echo "alias e7='ssh -Y eagle7@eagle7'" >> "$BASHRC_FILE"
 echo "alias e7j='ssh -Y eagle7@jetson'" >> "$BASHRC_FILE"
+echo "alias eaj='ssh -Y eaglea@jetson'" >> "$BASHRC_FILE"
 echo "alias tur='ssh -Y aazad@turing.wpi.edu'" >> "$BASHRC_FILE"
 echo "alias rpiasus1local='ssh -Y azada@rpi-app-server-us-1.local'" >> "$BASHRC_FILE"
 
