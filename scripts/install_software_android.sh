@@ -8,6 +8,6 @@ mkdir -p ~/code
 cd ~/code
 
 # zellij
-cargo install zellij
+pkg install zellij
 
 cd "$start_dir"
