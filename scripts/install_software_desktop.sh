@@ -94,7 +94,7 @@ echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.6/lib64" >> "
 sudo apt install -y nvidia-cuda-toolkit
 
 # python libs
-pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8
+pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8 catkin_pkg
 
 # torch
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
