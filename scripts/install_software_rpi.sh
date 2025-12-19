@@ -17,6 +17,15 @@ sudo apt install -y net-tools
 # chrony
 sudo apt install -y chrony
 
+# du dust
+cargo install du-dust
+
+# ripgrep
+cargo install ripgrep
+
+# eza
+cargo install eza
+
 # zellij
 wget https://github.com/zellij-org/zellij/releases/download/v0.43.1/zellij-aarch64-unknown-linux-musl.tar.gz
 tar -xzf zellij-aarch64-unknown-linux-musl.tar.gz

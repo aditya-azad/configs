@@ -10,4 +10,10 @@ cd ~/code
 # zellij
 pkg install zellij
 
+# eza
+pkg install eza
+
+# ripgrep
+pkg install ripgrep
+
 cd "$start_dir"

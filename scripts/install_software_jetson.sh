@@ -16,6 +16,15 @@ sudo apt install -y chrony
 # zellij
 cargo install zellij
 
+# du dust
+cargo install du-dust
+
+# ripgrep
+cargo install ripgrep
+
+# eza
+cargo install eza
+
 # btop
 wget https://github.com/aristocratos/btop/releases/download/v1.4.5/btop-aarch64-linux-musl.tbz
 tar -xjf btop-aarch64-linux-musl.tbz

@@ -45,6 +45,15 @@ sudo apt install -y xournalpp
 # calibre
 sudo apt install -y calibre
 
+# du dust
+cargo install du-dust
+
+# ripgrep
+cargo install ripgrep
+
+# eza
+cargo install eza
+
 # brave
 curl -fsS https://dl.brave.com/install.sh | sh
 
