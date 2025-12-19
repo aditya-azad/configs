@@ -7,6 +7,10 @@ start_dir=$(pwd)
 mkdir -p ~/code
 cd ~/code
 
+source ~/.cargo/env
+
+eval "$(~/.local/bin/mise activate bash)"
+
 # net tools
 sudo apt install -y net-tools
 
@@ -27,9 +31,6 @@ cargo install eza
 
 # python libs
 pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy flake8
-
-# torch
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 
 # neovim
 git clone https://github.com/neovim/neovim

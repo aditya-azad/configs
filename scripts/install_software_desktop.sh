@@ -11,6 +11,8 @@ cd ~/code
 
 source ~/.cargo/env
 
+eval "$(~/.local/bin/mise activate bash)"
+
 # net tools
 sudo apt install -y net-tools
 

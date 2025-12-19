@@ -5,8 +5,8 @@ set -e
 read -p "Full Name: " FULL_NAME
 read -p "Email    : " EMAIL_ADDRESS
 
-git config --global user.name "$USER_FULL_NAME"
-git config --global user.email "$USER_EMAIL_ADDRESS"
+git config --global user.name "$FULL_NAME"
+git config --global user.email "$EMAIL_ADDRESS"
 
 read -p "Do you want to use your own existing SSH key pair? [y/n]: "  ans
 if [[ "$ans" == "n" || "$ans" == "N" ]]; then
