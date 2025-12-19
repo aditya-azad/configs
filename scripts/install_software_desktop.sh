@@ -60,6 +60,15 @@ curl -fsS https://dl.brave.com/install.sh | sh
 # nvidia driver
 sudo apt install nvidia-driver-570
 
+# neovim
+git clone https://github.com/neovim/neovim
+cd neovim
+git checkout stable
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install
+cd ..
+rm -rf neovim
+
 # zotero
 wget -qO- https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | sudo bash
 sudo apt update

@@ -16,4 +16,7 @@ pkg install eza
 # ripgrep
 pkg install ripgrep
 
+# neovim
+pkg install neovim
+
 cd "$start_dir"
