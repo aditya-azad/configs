@@ -19,6 +19,8 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
 gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 19
 gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 6
 gsettings set org.gnome.desktop.interface clock-format '12h'
+gsettings set org.gnome.settings-daemon.plugins.power lid-close-ac-action 'nothing'
+gsettings set org.gnome.settings-daemon.plugins.power lid-close-battery-action 'nothing'
 
 # media keys and apps
 xdg-settings set default-web-browser brave-browser.desktop
