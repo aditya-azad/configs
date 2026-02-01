@@ -40,3 +40,10 @@ Don't use without checking the configs, there might be some personalization in t
 2. Read the code
 
 3. Run `./scripts/install-ubuntu-22-desktop.sh`
+
+## TODO
+
+- add zotero plugins
+    - better bibtex
+    - obsidian note
+    - zotmoov
