@@ -15,8 +15,26 @@ echo "alias cdc='cd ~/code'" >> "$BASHRC_FILE"
 echo "alias cdd='cd ~/Downloads'" >> "$BASHRC_FILE"
 
 # python
-echo "alias sv='source ./venv/bin/activate'" >> "$BASHRC_FILE"
-echo "alias svd='source ./.venv/bin/activate'" >> "$BASHRC_FILE"
+venvup() {
+  local dir="$PWD"
+  local home="${HOME%/}"
+  local name
+  while true; do
+    for name in .venv venv; do
+      if [ -f "$dir/$name/bin/activate" ]; then
+        source "$dir/$name/bin/activate"
+        echo "Activated: $dir/$name"
+        return 0
+      fi
+    done
+    if [ "$dir" = "$home" ] || [ "$dir" = "/" ]; then
+      break
+    fi
+    dir="$(dirname "$dir")"
+  done
+  echo "No .venv or venv found from $PWD up to $home" >&2
+  return 1
+}
 
 # utils
 echo "alias z='zellij'" >> "$BASHRC_FILE"
