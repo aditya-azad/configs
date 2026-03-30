@@ -10,7 +10,7 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
 gsettings set org.gnome.desktop.interface icon-theme Yaru
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita
 gsettings set org.gnome.desktop.background picture-uri "file:///home/${USER}/code/configs/wallpapers/wyeth-christinas-world.jpg"
-gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/${USER}/code/configs/wallpapers/cat-colorful.jpg"
+gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/${USER}/code/configs/wallpapers/starry-night.jpg"
 gsettings set org.gnome.desktop.interface enable-animations false
 gsettings set org.gnome.desktop.peripherals.keyboard delay 150
 gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
