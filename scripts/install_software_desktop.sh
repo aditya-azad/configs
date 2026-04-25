@@ -72,11 +72,18 @@ cd ..
 rm -rf neovim
 
 # zotero
-wget -qO- https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | sudo bash
-sudo apt update
-sudo apt install zotero
+pushd /tmp
+wget -O Zotero-7.0.32_linux-x86_64.tar.bz2 "https://www.zotero.org/download/client/dl?channel=release&platform=linux-x86_64&version=7.0.32"
+sudo mkdir -p /opt/zotero
+sudo tar -xjf Zotero-7.0.32_linux-x86_64.tar.bz2 -C /opt/zotero
+pushd /opt/zotero
+./set_launcher_icon
+ln -s /opt/zotero/zotero.desktop ~/.local/share/applications/zotero.desktop
+popd
+popd
 pushd ~/Downloads
 wget https://github.com/wileyyugioh/zotmoov/releases/download/1.2.24/zotmoov-1.2.24-fx.xpi
+wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v7.0.76/zotero-better-bibtex-7.0.76.xpi
 popd
 
 # cuda 12.6
