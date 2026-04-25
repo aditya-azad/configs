@@ -99,3 +99,7 @@ gsettings set org.gnome.shell.extensions.pop-shell show-title false
 
 # fix bugs disable extensions
 gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
+
+# default terminal
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which alacritty)"
+sudo update-alternatives --config x-terminal-emulator
