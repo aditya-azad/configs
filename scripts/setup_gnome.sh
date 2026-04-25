@@ -101,6 +101,13 @@ gsettings set org.gnome.shell.extensions.pop-shell show-title false
 gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
 
 # default terminal
+pushd /tmp
+sudo apt remove nautilus-extension-gnome-terminal
+pip install nautilus-open-any-terminal --break-system-packages
+wget https://github.com/Stunkymonkey/nautilus-open-any-terminal/releases/download/0.8.1/nautilus-extension-any-terminal_0.8.1-1_all.deb
+sudo apt install ./nautilus-extension-any-terminal_0.8.1-1_all.deb
+nautilus -q
+gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal alacritty
 sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which alacritty)"
 sudo update-alternatives --config x-terminal-emulator
 gsettings set org.gnome.desktop.default-applications.terminal exec alacritty
