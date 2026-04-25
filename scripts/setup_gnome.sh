@@ -95,7 +95,7 @@ gsettings set org.gnome.shell.extensions.pop-shell active-hint true
 gsettings set org.gnome.shell.extensions.pop-shell active-hint-border-radius 0
 gsettings set org.gnome.shell.extensions.pop-shell gap-outer 2
 gsettings set org.gnome.shell.extensions.pop-shell gap-inner 2
-gsettings set org.gnome.shell.extensions.pop-shell show-title false
+gsettings set org.gnome.shell.extensions.pop-shell show-title true
 
 # fix bugs disable extensions
 gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
