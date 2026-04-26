@@ -165,7 +165,8 @@ tar xzf syncthing-linux-amd64-v2.0.11.tar.gz
 cp -r syncthing-linux-amd64-v2.0.11/ ~/syncthing
 mkdir -p ~/.config/systemd/user/
 cp ~/syncthing/etc/linux-systemd/user/syncthing.service ~/.config/systemd/user/
-echo "export PATH=$PATH:$HOME/syncthing/"
+echo "export PATH=${PATH}:${HOME}/syncthing/" >> "$BASHRC_FILE"
+systemctl --user daemon-reload
 systemctl --user enable syncthing.service
 systemctl --user start syncthing.service
 popd
