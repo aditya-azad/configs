@@ -183,6 +183,11 @@ wget https://cdn.fastly.steamstatic.com/client/installer/steam.deb
 sudo apt install -y ./steam.deb
 popd
 
+# discord
+sudo apt install flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install com.discordapp.Discord
+
 # freefilesync
 pushd /tmp
 wget https://freefilesync.org/download/FreeFileSync_14.5_Linux_x86_64.tar.gz
