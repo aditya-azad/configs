@@ -15,6 +15,8 @@ echo "alias cdc='cd ~/code'" >> "$BASHRC_FILE"
 echo "alias cdd='cd ~/Downloads'" >> "$BASHRC_FILE"
 
 # python
+cat >> "$BASHRC_FILE" <<'EOF'
+
 venvup() {
   local dir="$PWD"
   local home="${HOME%/}"
@@ -35,6 +37,7 @@ venvup() {
   echo "No .venv or venv found from $PWD up to $home" >&2
   return 1
 }
+EOF
 
 # utils
 echo "alias z='zellij'" >> "$BASHRC_FILE"
