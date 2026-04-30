@@ -84,6 +84,7 @@ popd
 pushd ~/Downloads
 wget https://github.com/wileyyugioh/zotmoov/releases/download/1.2.24/zotmoov-1.2.24-fx.xpi
 wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v7.0.76/zotero-better-bibtex-7.0.76.xpi
+wget https://github.com/aidenlx/obsidian-zotero/releases/download/zt1.0.1/zotero-obsidian-note-1.0.1.xpi
 popd
 
 # cuda 12.6
@@ -184,9 +185,7 @@ sudo apt install -y ./steam.deb
 popd
 
 # discord
-sudo apt install flatpak
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install com.discordapp.Discord
+sudo snap install discord
 
 # freefilesync
 pushd /tmp
