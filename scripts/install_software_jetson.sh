@@ -38,7 +38,7 @@ pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu12
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim
-git checkout stable
+git checkout release-0.11
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
 cd ..

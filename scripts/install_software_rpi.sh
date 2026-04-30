@@ -32,7 +32,7 @@ pip3 install python-lsp-server python-lsp-black python-lsp-isort pylsp-mypy mypy
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim
-git checkout stable
+git checkout release-0.11
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
 cd ..

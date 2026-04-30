@@ -65,7 +65,7 @@ sudo apt install nvidia-driver-570
 # neovim
 git clone https://github.com/neovim/neovim
 cd neovim
-git checkout stable
+git checkout release-0.11
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
 cd ..
