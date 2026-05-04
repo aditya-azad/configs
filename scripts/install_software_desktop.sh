@@ -77,7 +77,7 @@ wget -O Zotero-7.0.32_linux-x86_64.tar.bz2 "https://www.zotero.org/download/clie
 sudo mkdir -p /opt/zotero
 sudo tar -xjf Zotero-7.0.32_linux-x86_64.tar.bz2 -C /opt/zotero
 pushd /opt/zotero
-./set_launcher_icon
+sudo ./set_launcher_icon
 ln -s /opt/zotero/zotero.desktop ~/.local/share/applications/zotero.desktop
 popd
 popd
