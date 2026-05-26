@@ -460,6 +460,12 @@ lsp.config('rust_analyzer', {
     capabilities = capabilities,
 })
 
+-- zig
+lsp.config('zls', {
+    cmd = { "zls" },
+    capabilities = capabilities,
+})
+
 -- go
 lsp.config('gopls', {
     capabilities = capabilities,
@@ -476,28 +482,22 @@ lsp.config('tailwindcss', {
     capabilities = capabilities,
 })
 
--- python (pylsp)
-lsp.config('pylsp', {
-    capabilities = capabilities,
-    settings = {
-        single_file_support = false,
-        pylsp = {
-            configurationSources = { "flake8" },
-            plugins = {
-                yapf = { enabled = false },
-                autopep8 = { enabled = false },
-                black = { enabled = true },
-                pyls_isort = { enabled = true },
-                flake8 = { enabled = true, ignore = { 'E501' } },
-                pyflakes = { enabled = true },
-                pycodestyle = { enabled = false },
-                pylint = { enabled = false, executable = "pylint" },
-                mccabe = { enabled = false },
-                pylsp_mypy = { enabled = true },
-                jedi_completion = { fuzzy = false },
-            }
-        }
-    }
+-- python (pip install ruff pylsp-mypy python-lsp-server)
+
+vim.lsp.config('ruff', {
+  cmd = { 'ruff', 'server' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml', '.git' },
+})
+
+vim.lsp.config('pylsp', {
+  settings = {
+    pylsp = {
+      plugins = {
+        pylsp_mypy = { enabled = true },
+      },
+    },
+  },
 })
 
 -- lua
@@ -517,6 +517,8 @@ for _, name in ipairs({
     "clangd",
     "rust_analyzer",
     "gopls",
+    "zls",
+    "ruff",
     "ts_ls",
     "tailwindcss",
     "pylsp",
