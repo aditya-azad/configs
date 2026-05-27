@@ -482,7 +482,7 @@ lsp.config('tailwindcss', {
     capabilities = capabilities,
 })
 
--- python (pip install ruff pylsp-mypy python-lsp-server)
+-- python (pip install ruff pyrefly)
 
 vim.lsp.config('ruff', {
   cmd = { 'ruff', 'server' },
@@ -490,15 +490,7 @@ vim.lsp.config('ruff', {
   root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml', '.git' },
 })
 
-vim.lsp.config('pylsp', {
-  settings = {
-    pylsp = {
-      plugins = {
-        pylsp_mypy = { enabled = true },
-      },
-    },
-  },
-})
+vim.lsp.config('pyrefly', {})
 
 -- lua
 lsp.config('lua_ls', {
@@ -521,7 +513,7 @@ for _, name in ipairs({
     "ruff",
     "ts_ls",
     "tailwindcss",
-    "pylsp",
+    "pyrefly",
     "lua_ls",
 }) do
     lsp.enable(name)
