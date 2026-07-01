@@ -250,7 +250,7 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "sindrets/diffview.nvim",
             "nvim-telescope/telescope.nvim",
-        }
+        },
     },
     {
         "folke/lazydev.nvim",
@@ -547,11 +547,16 @@ require("telescope").load_extension("ui-select")
 
 vim.keymap.set("n", "<leader>ft", ":TodoTelescope<CR>", { desc = "Search over todo comments" })
 
+-- theme
+
+require('theme')
+
 -- neogit
 
 local neogit = require("neogit")
 
 neogit.setup {
+    disable_context_highlighting = true,
     kind = "floating",
     commit_editor = {
         kind = "floating",
@@ -616,10 +621,6 @@ require("oil").setup({
         end,
     },
 })
-
--- theme
-
-require('theme')
 
 -- lualine
 
