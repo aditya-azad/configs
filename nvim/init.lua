@@ -222,14 +222,10 @@ require("lazy").setup({
         opts = {}
     },
     {
-        "folke/tokyonight.nvim",
+        'projekt0n/github-nvim-theme',
+        name = 'github-theme',
         lazy = false,
         priority = 1000,
-        opts = {},
-    },
-    {
-        'projekt0n/github-nvim-theme',
-        name = 'github-theme'
     },
     {
         "nvim-telescope/telescope.nvim",
