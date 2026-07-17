@@ -25,7 +25,7 @@ Don't use without checking the configs, there might be some personalization in t
 - Zellij
 - Pop Shell
 - Neovim
-- Alacritty
+- Kitty
 - Du-Dust
 - Ripgrep
 - Eza

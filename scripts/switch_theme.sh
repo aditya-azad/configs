@@ -13,7 +13,7 @@ if [ "$state" -eq 0 ]; then
   gsettings set org.gnome.desktop.interface gtk-theme Adwaita
   gsettings set org.gnome.desktop.interface icon-theme Yaru
   cp ~/code/configs/nvim/lua/light_theme.lua ~/code/configs/nvim/lua/theme.lua
-  cp ~/code/configs/alacritty/light_theme.toml ~/.config/alacritty/theme.toml
+  cp ~/code/configs/kitty/light_theme.conf ~/.config/kitty/theme.conf
   cp ~/code/configs/btop/themes/light_theme.theme ~/.config/btop/themes/theme.theme
   echo "1" > "$THEME"
 else
@@ -21,7 +21,7 @@ else
   gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
   gsettings set org.gnome.desktop.interface icon-theme Yaru-dark
   cp ~/code/configs/nvim/lua/dark_theme.lua ~/code/configs/nvim/lua/theme.lua
-  cp ~/code/configs/alacritty/dark_theme.toml ~/.config/alacritty/theme.toml
+  cp ~/code/configs/kitty/dark_theme.conf ~/.config/kitty/theme.conf
   cp ~/code/configs/btop/themes/dark_theme.theme ~/.config/btop/themes/theme.theme
   echo "0" > "$THEME"
 fi

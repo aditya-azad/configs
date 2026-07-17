@@ -24,7 +24,7 @@ gsettings set org.gnome.settings-daemon.plugins.power lid-close-battery-action '
 
 # media keys and apps
 xdg-settings set default-web-browser brave-browser.desktop
-gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
+gsettings set org.gnome.desktop.default-applications.terminal exec 'kitty'
 gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
 gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>b']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
@@ -110,8 +110,8 @@ pip install nautilus-open-any-terminal --break-system-packages
 wget https://github.com/Stunkymonkey/nautilus-open-any-terminal/releases/download/0.8.1/nautilus-extension-any-terminal_0.8.1-1_all.deb
 sudo apt install ./nautilus-extension-any-terminal_0.8.1-1_all.deb
 nautilus -q
-gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal alacritty
-sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which alacritty)"
+gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which kitty)"
 sudo update-alternatives --config x-terminal-emulator
-gsettings set org.gnome.desktop.default-applications.terminal exec alacritty
+gsettings set org.gnome.desktop.default-applications.terminal exec kitty
 gsettings set org.gnome.desktop.default-applications.terminal exec-arg ""

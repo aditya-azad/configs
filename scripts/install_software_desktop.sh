@@ -116,20 +116,14 @@ python3 -m pip install nvidia-ml-py
 cd ..
 rm -rf btop-x86_64-linux-musl.tbz
 
-# alacritty
-git clone https://github.com/alacritty/alacritty.git
-cd alacritty
-cargo build --release
-sudo tic -xe alacritty,alacritty-direct extra/alacritty.info
-sudo cp target/release/alacritty /usr/local/bin
-sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
-sudo desktop-file-install extra/linux/Alacritty.desktop
-sudo update-desktop-database
-mkdir -p ~/.bash_completion
-cp extra/completions/alacritty.bash ~/.bash_completion/alacritty
-echo "source ~/.bash_completion/alacritty" >> ~/.bashrc
-cd ..
-rm -rf alacritty
+# kitty
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
+mkdir -p ~/.local/share/applications
+cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
+sed -i "s|Icon=kitty|Icon=/home/$USER/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+sed -i "s|Exec=kitty|Exec=/home/$USER/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
 
 # ros2 humble
 sudo apt install software-properties-common

@@ -2,4 +2,5 @@
 
 set -e
 
-ln -s "$HOME/code/configs/alacritty" "$HOME/.config/alacritty"
+rm -rf "$HOME/.config/kitty"
+ln -s "$HOME/code/configs/kitty" "$HOME/.config/kitty"
