@@ -194,6 +194,16 @@ require("lazy").setup({
         opts = {},
     },
     {
+        'Thiago4532/mdmath.nvim',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
+        ft = "markdown",
+        opts = {
+            dynamic = false,
+        },
+    },
+    {
         'kristijanhusak/vim-dadbod-ui',
         dependencies = {
             { 'tpope/vim-dadbod',                     lazy = true },
@@ -641,4 +651,10 @@ require("lualine").setup({
         lualine_y = { 'progress' },
         lualine_z = { 'location' }
     }
+})
+
+-- render markdown
+
+require("render-markdown").setup({
+  latex = { enabled = false },
 })
