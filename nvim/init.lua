@@ -200,7 +200,8 @@ require("lazy").setup({
         },
         ft = "markdown",
         opts = {
-            dynamic = false,
+            dynamic = true,
+            dynamic_scale = 0.75,
         },
     },
     {
@@ -236,6 +237,13 @@ require("lazy").setup({
         name = 'github-theme',
         lazy = false,
         priority = 1000,
+    },
+    {
+        "3rd/image.nvim",
+        build = false,
+        opts = {
+            processor = "magick_cli",
+        }
     },
     {
         "nvim-telescope/telescope.nvim",
