@@ -71,22 +71,6 @@ sudo make install
 cd ..
 rm -rf neovim
 
-# zotero
-pushd /tmp
-wget -O Zotero-7.0.32_linux-x86_64.tar.bz2 "https://www.zotero.org/download/client/dl?channel=release&platform=linux-x86_64&version=7.0.32"
-sudo mkdir -p /opt/zotero
-sudo tar -xjf Zotero-7.0.32_linux-x86_64.tar.bz2 -C /opt/zotero
-pushd /opt/zotero
-sudo ./set_launcher_icon
-ln -s /opt/zotero/zotero.desktop ~/.local/share/applications/zotero.desktop
-popd
-popd
-pushd ~/Downloads
-wget https://github.com/wileyyugioh/zotmoov/releases/download/1.2.24/zotmoov-1.2.24-fx.xpi
-wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v7.0.76/zotero-better-bibtex-7.0.76.xpi
-wget https://github.com/aidenlx/obsidian-zotero/releases/download/zt1.0.1/zotero-obsidian-note-1.0.1.xpi
-popd
-
 # cuda 12.6
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
