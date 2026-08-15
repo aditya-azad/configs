@@ -279,6 +279,21 @@ require("lazy").setup({
         dependencies = { "Bilal2453/luvit-meta" }
     },
     {
+        "rcarriga/nvim-notify",
+        lazy = false,
+        config = function()
+            local notify = require("notify")
+            notify.setup({
+                render = "compact",
+                stages = "fade_in_slide_out",
+                timeout = 3000,
+                max_width = 50,
+                top_down = false,
+            })
+            vim.notify = notify
+        end,
+    },
+    {
         "folke/which-key.nvim",
         event = "VeryLazy",
         keys = {
