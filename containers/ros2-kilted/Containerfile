@@ -1,0 +1,59 @@
+# containers/ros2-kilted/Containerfile
+# ros2-kilted box (Ubuntu 24.04 / Noble base). Kilted targets Noble; PX4 1.15
+# builds on Noble; pick a CUDA build matching the PyTorch wheel for Noble
+# (cu124/cu126). Built on the host with:
+#   docker build -t localhost/ros2-kilted:latest \
+#     -f containers/ros2-kilted/Containerfile containers/ros2-kilted
+
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=America/New_York
+
+# ── 1. base + ROS 2 Kilted ────────────────────────────────────────────────────
+RUN apt-get update && apt-get install -y \
+      curl gnupg lsb-release locales sudo ca-certificates \
+      build-essential cmake git ninja-build python3 python3-pip python3-colcon-common-extensions \
+    && locale-gen en_US en_US.UTF-8 \
+    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+# ros2-apt-source (Kilted)
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+      -o /usr/share/keyrings/ros-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
+      > /etc/apt/sources.list.d/ros2.list \
+    && apt-get update \
+    && apt-get install -y ros-kilted-desktop ros-dev-tools
+
+# ── 2. PX4 1.15 build deps (checkout happens in init.sh) ───────────────────────
+RUN apt-get install -y \
+      python3-empy python3-toml python3-numpy python3-yaml \
+      genromfs nano optipng zip unzip wget \
+      libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+      && rm -rf /var/lib/apt/lists/*
+
+# ── 3. CUDA toolkit (Noble repo; cu126 build for PyTorch) ──────────────────────
+#    NOTE: NVIDIA driver stays on the host; this installs only the toolkit.
+RUN curl -sSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2404.pin \
+      -o /etc/apt/preferences.d/cuda-repository-pin-600 \
+    && curl -sSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/3bf86a91-3254-keyring.gpg \
+      -o /usr/share/keyrings/cuda-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/cuda-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/ /" \
+      > /etc/apt/sources.list.d/cuda.list \
+    && apt-get update \
+    && apt-get install -y cuda-toolkit-12-6 \
+    && rm -rf /var/lib/apt/lists/*
+ENV PATH=/usr/local/cuda-12.6/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64:$LD_LIBRARY_PATH
+
+# ── 4. Python + pip + PyTorch cu126 ───────────────────────────────────────────
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 install --no-cache-dir \
+      torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
+# ── 5. udev/rules (Cyclone DDS defaults finalized in init.sh) ──────────────────
+RUN apt-get update && apt-get install -y udev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR $HOME
+CMD ["/bin/bash"]
