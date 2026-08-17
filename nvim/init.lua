@@ -171,8 +171,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    { dir = "/home/azada/code/obelisk", opts = { notes_dir = "~/database/workspace/notes-2" } },
-    { dir = "/home/azada/code/neoflash", opts = { notes_dir = "~/database/workspace/notes-2" } },
+    { "aditya-azad/obelisk", opts = { notes_dir = "~/database/workspace/notes" } },
+    { "aditya-azad/neoflash", opts = { notes_dir = "~/database/workspace/notes" } },
     "lewis6991/gitsigns.nvim",
     "mbbill/undotree",
     "williamboman/mason.nvim",
