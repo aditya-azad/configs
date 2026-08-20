@@ -18,40 +18,15 @@ echo "alias htop='btop'" >> "$BASHRC_FILE"
 # documents
 echo "alias todo='nvim ~/database/workspace/inbox.md'" >> "$BASHRC_FILE"
 echo "alias ideas='nvim ~/database/workspace/ideas.md'" >> "$BASHRC_FILE"
+echo "alias notes='nvim ~/database/workspace/notes'" >> "$BASHRC_FILE"
 
 # robotics
 echo "alias qgc='QGroundControl-x86_64.AppImage'" >> "$BASHRC_FILE"
 echo "export PX4_PATH=/home/azada/code/PX4-Autopilot" >> "$BASHRC_FILE"
 
 # ssh
-echo "alias e1='ssh -Y eagle1@eagle1'" >> "$BASHRC_FILE"
-echo "alias e1j='ssh -Y eagle1@jetson'" >> "$BASHRC_FILE"
-echo "alias e3='ssh -Y eagle3@eagle3'" >> "$BASHRC_FILE"
-echo "alias e3j='ssh -Y eagle3@jetson'" >> "$BASHRC_FILE"
 echo "alias e7='ssh -Y eagle7@eagle7'" >> "$BASHRC_FILE"
 echo "alias e7j='ssh -Y eagle7@jetson'" >> "$BASHRC_FILE"
-echo "alias eaj='ssh -Y eaglea@jetson'" >> "$BASHRC_FILE"
-echo "alias tur='ssh -Y aazad@turing.wpi.edu'" >> "$BASHRC_FILE"
-echo "alias rpiasus1local='ssh -Y azada@rpi-app-server-us-1.local'" >> "$BASHRC_FILE"
-
-# diary
-cat <<'EOF' >> ~/.bashrc
-
-diary() {
-    local notes_dir="$HOME/database/workspace/diary"
-    local today
-    today=$(date +"%Y-%m-%d")
-    local file="$notes_dir/$today.md"
-
-    # Create the file if it doesn't exist
-    if [[ ! -f "$file" ]]; then
-        touch "$file"
-    fi
-
-    # Open with your preferred editor
-    nvim "$file"
-}
-EOF
 
 # ros domain id modifier
 START="# >>> rdid function >>>"
