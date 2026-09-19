@@ -1,0 +1,159 @@
+---
+# tasks/hyprland.yml — Hyprland compositor (replaces tasks/gnome.yml + tasks/popshell.yml)
+# on Ubuntu 26.04 (NOT an LTS release).
+#
+# Replicates the GNOME + pop-shell bindings/settings:
+#   • Keybindings & tiling live in hypr/hyprland.lua (symlinked to ~/.config/hypr
+#     by tasks/symlinks_desktop.yml). Modern Hyprland config is Lua (hl.* API).
+#   • This task installs Hyprland + the hypr* ecosystem via the community Ubuntu
+#     26.04 installer (https://gitlab.com/kralos/hyprbuntu), which builds from
+#     source with gcc-16 (Ubuntu 26.04 ships gcc-16 in apt; modern Hyprland needs
+#     the C++23 libstdc++ from GCC 16).
+#   • It also sets GTK/interface appearance via gsettings (read by GTK apps
+#     through dconf under any session), lid-close via systemd-logind, and wires
+#     default browser/terminal + nautilus "open terminal here".
+#
+# Idempotent: hyprbuntu.sh is guarded by `creates: /usr/bin/Hyprland` (it installs
+# with CMAKE_INSTALL_PREFIX=/usr). gsettings set is a no-op when unchanged
+# (changed_when:false); file/copy/lineinfile modules are idempotent by nature.
+
+# ── Runtime helpers hyprbuntu does NOT install ───────────────────────────────
+# wlsunset = night light (19:00→06:00). Wallpaper is handled by hyprpaper
+# (installed & service-enabled by hyprbuntu via HYPRPAPER_SETUP=true); its
+# config is written by the `st` theme-switch setter.
+# (hyprbuntu already installs grim/slurp/wl-clipboard/kitty/waybar/hyprshot/etc.)
+- name: Hyprland — install night-light helper
+  ansible.builtin.apt:
+    name:
+      - wlsunset
+    state: present
+
+# ── Hyprland + ecosystem: build from source via hyprbuntu (Ubuntu 26.04) ────
+# hyprbuntu.sh refuses to run as root (EUID check), so run as the user. The
+# script calls sudo internally for apt/cmake install, so the user needs sudo
+# (passwordless sudo on a personal desktop is simplest).
+# Non-interactive mode is driven by the environment variables below (see the
+# hyprbuntu.sh header). THEME_PREF=none — theme is toggled manually via `st`.
+# TUIGREET_SETUP=false keeps the existing GDM (launch Hyprland via the uwsm
+# session from the GDM gear menu). THUNAR_SETUP=false (we use nautilus).
+- name: Hyprland — download hyprbuntu installer
+  ansible.builtin.get_url:
+    url: https://gitlab.com/kralos/hyprbuntu/-/raw/main/hyprbuntu.sh
+    dest: "{{ ansible_env.HOME }}/.local/bin/hyprbuntu.sh"
+    mode: "0755"
+    force: true
+  become: false
+
+- name: Hyprland — run hyprbuntu installer (build from source, gcc-16)
+  ansible.builtin.shell: |
+    set -e
+    {{ ansible_env.HOME }}/.local/bin/hyprbuntu.sh
+  args:
+    executable: /bin/bash
+    creates: /usr/bin/Hyprland
+  become: false
+  environment:
+    BUILD_DIR: "{{ code_dir }}/hyprbuntu"
+    DISABLE_CONFIRM: "true"
+    HYPRIDLE_SETUP: "true"
+    HYPRLOCK_SETUP: "true"
+    HYPRPAPER_SETUP: "true"       # wallpaper daemon; config written by `st` setter
+    HYPRSHOT_SETUP: "true"
+    NOTIFICATION_DAEMON_PREF: "swaync"
+    NVIDIA_SETUP: "true"          # legion7i has NVIDIA; hyprbuntu auto-detects too
+    SWAYOSD_SETUP: "true"
+    THEME_PREF: "none"            # theme is toggled manually via `st`, not pinned here
+    THUNAR_SETUP: "false"          # we use nautilus
+    TUIGREET_SETUP: "false"        # keep GDM; launch Hyprland via uwsm session
+    WAYBAR_SETUP: "true"
+
+- name: Hyprland — remove TryExec from uwsm session (GDM quirk)
+  ansible.builtin.replace:
+    path: /usr/share/wayland-sessions/hyprland-uwsm.desktop
+    regexp: '^TryExec='
+    replace: ''
+  failed_when: false  # file may not exist yet on first run
+
+# ── Appearance (gsettings, read by GTK via dconf under any session) ──────────
+- name: Hyprland — GTK / interface settings
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.desktop.interface", key: "icon-theme", value: "Yaru" }
+    - { schema: "org.gnome.desktop.interface", key: "gtk-theme", value: "Adwaita" }
+    - { schema: "org.gnome.desktop.interface", key: "enable-animations", value: "false" }
+    - { schema: "org.gnome.desktop.interface", key: "clock-format", value: "'12h'" }
+    - { schema: "org.gnome.desktop.peripherals.keyboard", key: "delay", value: "150" }
+    - { schema: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['caps:none']" }
+  # color-scheme is intentionally NOT set here — it is toggled by the `st`
+  # theme-switch script (setters/gtk.sh) so dark/light follows your choice.
+
+# ── Default browser & terminal ───────────────────────────────────────────────
+- name: Hyprland — default browser & terminal
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - "xdg-settings set default-web-browser brave-browser.desktop"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec 'kitty'"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''"
+
+- name: Hyprland — register kitty as x-terminal-emulator alternative
+  ansible.builtin.shell: |
+    update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which kitty)" 50
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+# ── Nautilus "open terminal here" → kitty ────────────────────────────────────
+- name: Hyprland — install nautilus-open-any-terminal pip package
+  ansible.builtin.pip:
+    name: nautilus-open-any-terminal
+    state: present
+    extra_args: "--break-system-packages"
+  become: false
+
+- name: Hyprland — download nautilus-open-any-terminal deb
+  ansible.builtin.get_url:
+    url: "https://github.com/Stunkymonkey/nautilus-open-any-terminal/releases/download/0.8.1/nautilus-extension-any-terminal_0.8.1-1_all.deb"
+    dest: /tmp/nautilus-extension-any-terminal_0.8.1-1_all.deb
+    mode: "0644"
+    force: false
+
+- name: Hyprland — install nautilus-open-any-terminal deb
+  ansible.builtin.apt:
+    deb: /tmp/nautilus-extension-any-terminal_0.8.1-1_all.deb
+    state: present
+
+- name: Hyprland — restart nautilus
+  ansible.builtin.shell: nautilus -q
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  failed_when: false
+
+- name: Hyprland — set nautilus terminal to kitty
+  ansible.builtin.shell: gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+
+# ── Power: lid-close → nothing (GNOME lid-close-*-action + suspend-with-ext-monitor=false) ─
+- name: Hyprland — logind lid-close = ignore
+  ansible.builtin.copy:
+    dest: /etc/systemd/logind.conf.d/lid.conf
+    mode: "0644"
+    content: |
+      [Login]
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalMonitors=ignore
+      HandleLidSwitchDocked=ignore
+  # Effective after a reboot or `systemctl restart systemd-logind` (which can
+  # disrupt the live session, so we do not restart here).

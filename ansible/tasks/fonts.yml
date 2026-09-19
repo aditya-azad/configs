@@ -1,0 +1,40 @@
+---
+# tasks/fonts.yml — install Fira Code Nerd Font from the repo zip. Runs as the user.
+# Idempotent: extracts to /tmp/firacode and copies new font files into user fonts dir.
+
+- name: Ensure user fonts dir exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/fonts"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Unzip FiraCode font to /tmp/firacode (on target)
+  ansible.builtin.unarchive:
+    src: "{{ configs_repo }}/font/FiraCode.zip"
+    dest: /tmp/firacode
+    remote_src: true
+    creates: /tmp/firacode
+  become: false
+
+- name: Find extracted font files
+  ansible.builtin.find:
+    paths: /tmp/firacode
+    file_type: file
+  register: firacode_files
+  become: false
+
+- name: Copy font files into user fonts dir
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_env.HOME }}/.local/share/fonts/{{ item.path | basename }}"
+    remote_src: true
+    mode: "0644"
+    force: true
+  become: false
+  loop: "{{ firacode_files.files }}"
+
+- name: Refresh font cache
+  ansible.builtin.command: fc-cache -f -v
+  become: false
+  changed_when: false

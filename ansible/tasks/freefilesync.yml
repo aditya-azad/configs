@@ -1,0 +1,43 @@
+---
+# tasks/freefilesync.yml — FreeFileSync folder comparison/sync GUI (desktop, x86_64).
+#
+# The official Linux download is a tarball containing a self-extracting
+# installer (FreeFileSync_<ver>_Install.run). It is run non-interactively with
+# --accept-license --skip-overview into /opt/FreeFileSync, system-wide.
+
+- name: Set FreeFileSync facts
+  ansible.builtin.set_fact:
+    freefilesync_version: "14.12"
+    freefilesync_archive: "FreeFileSync_{{ freefilesync_version }}_Linux_x86_64.tar.gz"
+    freefilesync_installer: "FreeFileSync_{{ freefilesync_version }}_Install.run"
+
+- name: Download FreeFileSync tarball
+  ansible.builtin.get_url:
+    url: "https://freefilesync.org/download/{{ freefilesync_archive }}"
+    dest: "/tmp/{{ freefilesync_archive }}"
+    mode: "0644"
+    force: false
+  when: ansible_architecture == "x86_64"
+
+- name: Extract FreeFileSync installer from tarball
+  ansible.builtin.shell: |
+    set -e
+    tar xzf /tmp/{{ freefilesync_archive }} -C /tmp
+  args:
+    executable: /bin/bash
+    creates: "/tmp/{{ freefilesync_installer }}"
+  when: ansible_architecture == "x86_64"
+
+- name: Run FreeFileSync installer (non-interactive, system-wide)
+  ansible.builtin.shell: |
+    set -e
+    chmod +x /tmp/{{ freefilesync_installer }}
+    /tmp/{{ freefilesync_installer }} \
+      --accept-license --skip-overview \
+      --directory /opt/FreeFileSync \
+      --for-all-users true \
+      --create-shortcuts true
+  args:
+    executable: /bin/bash
+    creates: /opt/FreeFileSync/FreeFileSync
+  when: ansible_architecture == "x86_64"

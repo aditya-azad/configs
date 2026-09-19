@@ -1,0 +1,12 @@
+---
+# tasks/bat.yml — cargo install bat. Runs as the user.
+
+- name: Install bat via cargo
+  ansible.builtin.shell: |
+    set -e
+    source {{ cargo_env }}
+    cargo install bat
+  args:
+    executable: /bin/bash
+    creates: "{{ cargo_bin }}/bat"
+  become: false

@@ -1,0 +1,59 @@
+---
+# tasks/singularity.yml — SingularityCE 4.3.0 built from source. Runs as the user.
+# Idempotent: guarded by /usr/local/bin/singularity.
+
+- name: Install singularity build/runtime deps
+  ansible.builtin.apt:
+    name:
+      - autoconf
+      - automake
+      - cryptsetup
+      - fuse2fs
+      - git
+      - fuse
+      - libfuse-dev
+      - libseccomp-dev
+      - libtool
+      - pkg-config
+      - runc
+      - squashfs-tools
+      - squashfs-tools-ng
+      - uidmap
+      - wget
+      - zlib1g-dev
+    state: present
+
+- name: Ensure ~/code exists
+  ansible.builtin.file:
+    path: "{{ code_dir }}"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Download & extract singularity-ce 4.3.0
+  ansible.builtin.unarchive:
+    src: "https://github.com/sylabs/singularity/releases/download/v4.3.0/singularity-ce-4.3.0.tar.gz"
+    dest: "{{ code_dir }}"
+    remote_src: true
+    creates: "{{ code_dir }}/singularity-ce-4.3.0"
+  become: false
+
+- name: Configure singularity (mconfig)
+  ansible.builtin.shell: ./mconfig --without-libsubid
+  args:
+    chdir: "{{ code_dir }}/singularity-ce-4.3.0"
+    creates: "{{ code_dir }}/singularity-ce-4.3.0/builddir/Makefile"
+  become: false
+
+- name: Build singularity
+  ansible.builtin.shell: make -C builddir
+  args:
+    chdir: "{{ code_dir }}/singularity-ce-4.3.0"
+    creates: "{{ code_dir }}/singularity-ce-4.3.0/builddir/singularity"
+  become: false
+
+- name: Install singularity
+  ansible.builtin.shell: make -C builddir install
+  args:
+    chdir: "{{ code_dir }}/singularity-ce-4.3.0"
+    creates: /usr/local/bin/singularity

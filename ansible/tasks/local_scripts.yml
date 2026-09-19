@@ -1,0 +1,134 @@
+# ── apt deps ──────────────────────────────────────────────────────────────────
+- name: Local scripts — install common deps
+  ansible.builtin.apt:
+    name:
+      - jq
+      - zip
+      - gh
+      - distrobox
+      - openconnect
+    state: present
+
+- name: Local scripts — install QEMU/KVM/OVMF deps (x86_64 desktop)
+  ansible.builtin.apt:
+    name:
+      - qemu-system
+      - qemu-utils
+      - swtpm
+      - virt-viewer
+      - ovmf
+    state: present
+  when: ansible_architecture == "x86_64"
+
+# ── dirs ──────────────────────────────────────────────────────────────────────
+- name: Ensure ~/.local/{bin,lib,share} and ~/.vms exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  become: false
+  loop:
+    - "{{ ansible_env.HOME }}/.local/bin"
+    - "{{ ansible_env.HOME }}/.local/lib"
+    - "{{ ansible_env.HOME }}/.local/share"
+    - "{{ ansible_env.HOME }}/.vms"
+
+# ── st (theme-switch) ────────────────────────────────────────────────────────
+- name: Deploy theme-switch dir to ~/.local/share/theme-switch
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/theme-switch/"
+    dest: "{{ ansible_env.HOME }}/.local/share/theme-switch/"
+    mode: preserve
+  become: false
+
+- name: Make st executable
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/theme-switch/st"
+    mode: "0755"
+  become: false
+
+- name: Link st into ~/.local/bin
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/share/theme-switch/st"
+    dest: "{{ ansible_env.HOME }}/.local/bin/st"
+    state: link
+    force: true
+  become: false
+
+# ── db (distrobox) ───────────────────────────────────────────────────────────
+- name: Deploy distrobox dir to ~/.local/share/distrobox
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/distrobox/"
+    dest: "{{ ansible_env.HOME }}/.local/share/distrobox/"
+    mode: preserve
+  become: false
+
+- name: Make db executable
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/distrobox/db"
+    mode: "0755"
+  become: false
+
+- name: Link db into ~/.local/bin
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/share/distrobox/db"
+    dest: "{{ ansible_env.HOME }}/.local/bin/db"
+    state: link
+    force: true
+  become: false
+
+# ── wpi-vpn ───────────────────────────────────────────────────────────────────
+- name: Deploy wpi-vpn to ~/.local/bin
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/wpi-vpn/wpi-vpn"
+    dest: "{{ ansible_env.HOME }}/.local/bin/wpi-vpn"
+    mode: "0755"
+  become: false
+
+# ── ghclone ───────────────────────────────────────────────────────────────────
+- name: Deploy ghclone to ~/.local/bin
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/ghclone/ghclone"
+    dest: "{{ ansible_env.HOME }}/.local/bin/ghclone"
+    mode: "0755"
+  become: false
+
+# ── qvm + windows VM spec ─────────────────────────────────────────────────────
+- name: Deploy qvm to ~/.local/bin
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/qvm/qvm"
+    dest: "{{ ansible_env.HOME }}/.local/bin/qvm"
+    mode: "0755"
+  become: false
+
+- name: Deploy windows VM spec to ~/.vms/windows
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/qvm/vms/windows.sh"
+    dest: "{{ ansible_env.HOME }}/.vms/windows/windows.sh"
+    mode: "0644"
+  become: false
+
+# ── venvup + rdid (sourced helpers) ───────────────────────────────────────────
+- name: Deploy venvup to ~/.local/lib
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/venvup/venvup"
+    dest: "{{ ansible_env.HOME }}/.local/lib/venvup"
+    mode: "0644"
+  become: false
+
+- name: Deploy rdid to ~/.local/lib
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/packages/rdid/rdid"
+    dest: "{{ ansible_env.HOME }}/.local/lib/rdid"
+    mode: "0644"
+  become: false
+
+# ── qvm OVMF env (bashrc) ─────────────────────────────────────────────────────
+- name: qvm OVMF firmware paths (bashrc)
+  ansible.builtin.blockinfile:
+    path: "{{ bashrc_file }}"
+    marker: "# {mark} ANSIBLE qvm-ovmf"
+    block: |
+      export QVM_OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+      export QVM_OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+  become: false

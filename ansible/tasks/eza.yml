@@ -1,0 +1,12 @@
+---
+# tasks/eza.yml — cargo install eza. Runs as the user.
+
+- name: Install eza via cargo
+  ansible.builtin.shell: |
+    set -e
+    source {{ cargo_env }}
+    cargo install eza
+  args:
+    executable: /bin/bash
+    creates: "{{ cargo_bin }}/eza"
+  become: false

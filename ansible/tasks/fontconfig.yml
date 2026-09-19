@@ -1,0 +1,71 @@
+---
+# tasks/fontconfig.yml — proper fontconfig defaults + Noto + FiraCode Nerd Font.
+# Installs the font packages, drops a managed fontconfig preset, and refreshes cache.
+
+- name: Install font packages
+  ansible.builtin.apt:
+    name:
+      - fonts-noto
+      - fonts-noto-core
+      - fonts-noto-color-emoji
+      - fonts-firacode
+    state: present
+
+- name: Ensure user fontconfig dir exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/fontconfig"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Drop user fontconfig preset (Noto + FiraCode Nerd Font + emoji)
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.config/fontconfig/fonts.conf"
+    mode: "0644"
+    content: |
+      <?xml version="1.0"?>
+      <!DOCTYPE fontconfig SYSTEM "urn:fonts:dtd:fontconfig">
+      <fontconfig>
+        <alias><family>serif</family>      <prefer><family>Noto Serif</family>      <family>Noto Color Emoji</family></prefer></alias>
+        <alias><family>sans-serif</family> <prefer><family>Noto Sans</family>       <family>Noto Color Emoji</family></prefer></alias>
+        <alias><family>monospace</family>  <prefer><family>FiraCode Nerd Font</family><family>Noto Color Emoji</family></prefer></alias>
+        <alias><family>emoji</family>      <prefer><family>Noto Color Emoji</family></prefer></alias>
+      </fontconfig>
+  become: false
+
+- name: Ensure user fonts dir exists (for the FiraCode Nerd Font zip from the repo)
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/fonts"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Unzip FiraCode Nerd Font to /tmp/firacode (on target)
+  ansible.builtin.unarchive:
+    src: "{{ configs_repo }}/font/FiraCode.zip"
+    dest: /tmp/firacode
+    remote_src: true
+    creates: /tmp/firacode
+  become: false
+
+- name: Find extracted font files
+  ansible.builtin.find:
+    paths: /tmp/firacode
+    file_type: file
+  register: firacode_files
+  become: false
+
+- name: Copy FiraCode Nerd Font files into user fonts dir
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_env.HOME }}/.local/share/fonts/{{ item.path | basename }}"
+    remote_src: true
+    mode: "0644"
+    force: true
+  become: false
+  loop: "{{ firacode_files.files }}"
+
+- name: Refresh font cache
+  ansible.builtin.command: fc-cache -f -v
+  become: false
+  changed_when: false

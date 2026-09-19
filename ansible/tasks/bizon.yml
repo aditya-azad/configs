@@ -1,0 +1,18 @@
+---
+# tasks/bizon.yml — bizon SSH alias + /etc/hosts entry.
+# The host entry is added by setup_hosts.yml (selected on the desktop); this
+# task adds the `bizon` shell alias. Idempotent via blockinfile.
+
+- name: Ensure bizon is in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^\s*130\.215\.183\.33\s+bizon\s*$'
+    line: "130.215.183.33 bizon"
+
+- name: bizon SSH alias (bashrc)
+  ansible.builtin.blockinfile:
+    path: "{{ bashrc_file }}"
+    marker: "# {mark} ANSIBLE bizon-ssh"
+    block: |
+      alias bizon='ssh -Y {{ bizon_user | default(\"aazad\") }}@bizon'
+  become: false

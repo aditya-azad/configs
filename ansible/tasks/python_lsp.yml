@@ -1,0 +1,20 @@
+---
+# tasks/python_lsp.yml — Python LSP stack + robotics helpers via pip (user).
+# Mirrors the original install_software_{desktop,jetson}.sh pip list.
+
+- name: Install Python LSP + robotics packages
+  ansible.builtin.pip:
+    name:
+      - python-lsp-server
+      - python-lsp-black
+      - python-lsp-isort
+      - pylsp-mypy
+      - mypy
+      - flake8
+      - catkin_pkg
+      - numpy
+      - "empy==3.3.4"
+      - lark
+      - pyyaml
+    state: present
+  become: false

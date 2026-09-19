@@ -1,0 +1,23 @@
+---
+# tasks/upgrade.yml — apt update + upgrade. Idempotent by nature.
+
+- name: apt update
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: apt upgrade
+  ansible.builtin.apt:
+    upgrade: yes
+
+- name: Remove unwanted packages
+  ansible.builtin.apt:
+    name:
+      - thunderbird
+      - firefox
+    state: absent
+
+- name: Remove firefox snap
+  community.general.snap:
+    name: firefox
+    state: absent
+  failed_when: false

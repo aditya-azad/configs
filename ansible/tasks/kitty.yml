@@ -1,0 +1,69 @@
+---
+# tasks/kitty.yml — install kitty terminal via official installer. Runs as the user.
+# Idempotent: guarded by ~/.local/kitty.app/bin/kitty.
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Install kitty via official installer
+  ansible.builtin.shell: |
+    set -e
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+  args:
+    executable: /bin/bash
+    creates: "{{ ansible_env.HOME }}/.local/kitty.app/bin/kitty"
+  become: false
+
+- name: Symlink kitty & kitten into ~/.local/bin
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/kitty.app/bin/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item }}"
+    state: link
+    force: true
+  become: false
+  loop:
+    - kitty
+    - kitten
+
+- name: Ensure applications dir exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Copy kitty desktop files
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.local/kitty.app/share/applications/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
+    remote_src: true
+    mode: "0644"
+    force: true
+  become: false
+  loop:
+    - kitty.desktop
+    - kitty-open.desktop
+
+- name: Patch icon path in kitty desktop files
+  ansible.builtin.replace:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
+    regexp: 'Icon=kitty'
+    replace: "Icon={{ ansible_env.HOME }}/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png"
+  become: false
+  loop:
+    - kitty.desktop
+    - kitty-open.desktop
+
+- name: Patch exec path in kitty desktop files
+  ansible.builtin.replace:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
+    regexp: 'Exec=kitty'
+    replace: "Exec={{ ansible_env.HOME }}/.local/kitty.app/bin/kitty"
+  become: false
+  loop:
+    - kitty.desktop
+    - kitty-open.desktop

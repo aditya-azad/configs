@@ -1,0 +1,45 @@
+---
+# tasks/mise_runtimes.yml — install mise and pin go/python/uv/node.
+# Runs as the user.
+
+- name: Install mise (creates ~/.local/bin/mise)
+  ansible.builtin.shell: |
+    set -e
+    curl https://mise.run | sh
+  args:
+    creates: "{{ mise_bin }}"
+    executable: /bin/bash
+  become: false
+
+- name: Pin python@3.14 (mise)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    {{ mise_bin }} use -g python@3.14
+  args:
+    executable: /bin/bash
+  become: false
+  register: mise_py
+  changed_when: "'already' not in mise_py.stdout | lower"
+
+- name: Pin uv@latest (mise)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    {{ mise_bin }} use -g uv@latest
+  args:
+    executable: /bin/bash
+  become: false
+  register: mise_uv
+  changed_when: "'already' not in mise_uv.stdout | lower"
+
+- name: Pin node@lts (mise)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    {{ mise_bin }} use --global node@lts
+  args:
+    executable: /bin/bash
+  become: false
+  register: mise_node
+  changed_when: "'already' not in mise_node.stdout | lower"

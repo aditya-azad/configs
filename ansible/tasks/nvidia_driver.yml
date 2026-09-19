@@ -1,0 +1,17 @@
+---
+# tasks/nvidia_driver.yml — desktop NVIDIA driver.
+# The driver is the one card-dependent, system-wide piece. CUDA itself is
+# intentionally NOT installed on the host: PyTorch/uv/pip wheels bundle the
+# CUDA runtime, and any host-side CUDA-C compilation should happen inside a
+# distrobox
+
+- name: Add graphics-drivers PPA
+  community.general.apt_repository:
+    repo: ppa:graphics-drivers/ppa
+    state: present
+    update_cache: true
+
+- name: Install nvidia-driver-{{ nvidia_driver_version | default(580) }}
+  ansible.builtin.apt:
+    name: "nvidia-driver-{{ nvidia_driver_version | default(580) }}"
+    state: present

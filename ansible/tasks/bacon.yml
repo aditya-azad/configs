@@ -1,0 +1,12 @@
+---
+# tasks/bacon.yml — cargo install bacon. Runs as the user.
+
+- name: Install bacon via cargo
+  ansible.builtin.shell: |
+    set -e
+    source {{ cargo_env }}
+    cargo install --locked bacon
+  args:
+    executable: /bin/bash
+    creates: "{{ cargo_bin }}/bacon"
+  become: false

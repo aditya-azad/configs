@@ -1,0 +1,17 @@
+---
+# tasks/cargo_info.yml — cargo-info needs libssl-dev. Runs as the user.
+
+- name: Install libssl-dev
+  ansible.builtin.apt:
+    name: libssl-dev
+    state: present
+
+- name: Install cargo-info via cargo
+  ansible.builtin.shell: |
+    set -e
+    source {{ cargo_env }}
+    cargo install cargo-info
+  args:
+    executable: /bin/bash
+    creates: "{{ cargo_bin }}/cargo-info"
+  become: false

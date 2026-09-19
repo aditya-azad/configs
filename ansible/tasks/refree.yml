@@ -1,0 +1,21 @@
+---
+# tasks/refree.yml — clone & install refree. Runs as the user.
+# Idempotent: install script re-run is safe; guarded by repo presence.
+
+- name: Clone refree
+  ansible.builtin.git:
+    repo: https://github.com/aditya-azad/refree.git
+    dest: "{{ code_dir }}/refree"
+    update: true
+  become: false
+
+- name: Run refree install script
+  ansible.builtin.shell: |
+    set -e
+    cd {{ code_dir }}/refree
+    chmod +x ./scripts/install.sh
+    ./scripts/install.sh
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false

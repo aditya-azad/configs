@@ -1,0 +1,28 @@
+# venvup — walk up from $PWD to the nearest .venv/venv and activate it.
+#
+# Sourced function library: loaded by home.nix initExtra via
+#   source ${…/home/packages/venvup/venvup}
+# Runs in the current (interactive) shell so the venv's activate takes effect.
+#
+#   venvup            activate the nearest .venv/venv (walks up to $HOME)
+
+venvup() {
+  local dir="$PWD"
+  local home="${HOME%/}"
+  local name
+  while true; do
+    for name in .venv venv; do
+      if [ -f "$dir/$name/bin/activate" ]; then
+        source "$dir/$name/bin/activate"
+        echo "Activated: $dir/$name"
+        return 0
+      fi
+    done
+    if [ "$dir" = "$home" ] || [ "$dir" = "/" ]; then
+      break
+    fi
+    dir="$(dirname "$dir")"
+  done
+  echo "No .venv or venv found from $PWD up to $home" >&2
+  return 1
+}

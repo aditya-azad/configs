@@ -1,0 +1,20 @@
+---
+# tasks/compilers.yml — build toolchain apt dependencies shared by desktop & jetson.
+
+- name: Install compiler/build dependencies
+  ansible.builtin.apt:
+    name:
+      - git
+      - build-essential
+      - ninja-build
+      - gettext
+      - cmake
+      - unzip
+      - curl
+      - xclip
+      - g++
+      - pkg-config
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+    state: present

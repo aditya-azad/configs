@@ -1,0 +1,11 @@
+---
+# tasks/rust.yml — rustup + cargo env. Runs as the user.
+
+- name: Install rustup (creates ~/.cargo/bin/cargo)
+  ansible.builtin.shell: |
+    set -e
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  args:
+    creates: "{{ cargo_bin }}/cargo"
+    executable: /bin/bash
+  become: false

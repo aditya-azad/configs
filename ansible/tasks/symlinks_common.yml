@@ -1,0 +1,19 @@
+---
+# tasks/symlinks_common.yml — link nvim + zellij configs from the repo.
+# Idempotent: file module with force=true replaces existing paths/symlinks.
+
+- name: Link nvim config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/nvim"
+    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    state: link
+    force: true
+  become: false
+
+- name: Link zellij config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/zellij"
+    dest: "{{ ansible_env.HOME }}/.config/zellij"
+    state: link
+    force: true
+  become: false

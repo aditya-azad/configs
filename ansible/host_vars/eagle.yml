@@ -1,0 +1,36 @@
+---
+# eagle — Jetson (JetPack 6.2 / Ubuntu 22.04 aarch64).
+
+# Identity
+username: eagle7
+git_full_name: "Aditya Azad"
+git_email: "adityaazad121@gmail.com"
+
+# Ordered list of independent program task files (tasks/<name>.yml).
+programs:
+  - compilers
+  - mise_runtimes
+  - rust
+  - net_tools
+  - chrony
+  - zellij
+  - du_dust
+  - ripgrep
+  - eza
+  - python_lsp
+  - pytorch
+  - neovim
+  - fontconfig
+  - singularity
+  - realsense
+  - nvidia_container_toolkit
+  - nvliblist
+  - symlinks_common
+  - local_scripts
+  - bashrc_common
+  - bashrc_jetson
+  - git
+  - pi
+
+# Jetson-specific
+ros_domain_id: 7

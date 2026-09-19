@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# wpi-vpn — connect to / disconnect from the WPI GlobalProtect VPN via openconnect.
+#
+# Uses gpauth (browser SSO) + gpclient (openconnect-based tunnel) from the
+# GlobalProtect-openconnect project. gpclient manages the tun device, so it
+# runs under sudo. gpauth runs as the normal user so the browser callback
+# round-trips correctly.
+#
+#   wpi-vpn connect       authenticate via browser, start VPN in background
+#   wpi-vpn disconnect    stop the VPN
+#   wpi-vpn -h            usage
+
+set -euo pipefail
+
+PORTAL="globalprotect.wpi.edu"
+LOG_FILE="/tmp/wpi-vpn.log"
+
+usage() {
+  cat <<EOF
+Usage: wpi-vpn <connect|disconnect>
+
+  connect       Open browser for WPI SSO, then start VPN in background.
+                Terminal can be closed after auth completes.
+  disconnect    Stop the VPN.
+EOF
+}
+
+connect() {
+  GPAUTH="$(command -v gpauth || true)"
+  GPCLIENT="$(command -v gpclient || true)"
+  if [ -z "$GPAUTH" ] || [ -z "$GPCLIENT" ]; then
+    echo "wpi-vpn: gpauth/gpclient not found. Add 'gpclient' and 'gpauth' to environment.systemPackages." >&2
+    exit 1
+  fi
+
+  # Step 1: authenticate in the foreground (browser opens for WPI SSO).
+  # gpauth prints a JSON auth result to stdout; logs go to stderr.
+  echo "Opening browser for WPI authentication..."
+  COOKIE_FILE="$(mktemp)"
+  trap 'rm -f "$COOKIE_FILE"' EXIT
+
+  "$GPAUTH" "$PORTAL" --browser 2>/dev/null > "$COOKIE_FILE"
+
+  # gpauth outputs {"success": ...} or {"failure": "msg"} as JSON on stdout.
+  if ! grep -q '"success"' "$COOKIE_FILE" 2>/dev/null; then
+    echo "wpi-vpn: authentication failed." >&2
+    cat "$COOKIE_FILE" >&2
+    exit 1
+  fi
+
+  # Step 2: start the VPN tunnel detached from this terminal.
+  # Cache sudo credentials first so the background process doesn't prompt.
+  sudo -v
+  sudo setsid "$GPCLIENT" connect "$PORTAL" --cookie-on-stdin \
+    < "$COOKIE_FILE" > "$LOG_FILE" 2>&1 &
+
+  rm -f "$COOKIE_FILE"
+  trap - EXIT
+
+  echo "VPN connecting in background. Logs: $LOG_FILE"
+  echo "Run 'wpi-vpn disconnect' to stop."
+}
+
+disconnect() {
+  GPCLIENT="$(command -v gpclient || true)"
+  if [ -z "$GPCLIENT" ]; then
+    echo "wpi-vpn: gpclient not found." >&2
+    exit 1
+  fi
+  # gpclient reads /var/run/gpclient.lock and sends SIGINT to the running tunnel.
+  sudo "$GPCLIENT" disconnect
+  echo "Disconnected."
+}
+
+case "${1-}" in
+  connect)    connect ;;
+  disconnect) disconnect ;;
+  -h|--help|"") usage; exit 0 ;;
+  *) echo "wpi-vpn: unknown argument '$1'" >&2; usage; exit 2 ;;
+esac

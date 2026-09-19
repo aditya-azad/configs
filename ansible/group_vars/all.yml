@@ -1,0 +1,21 @@
+---
+# Shared variables for every host.
+
+# Where the configs repo lives on each target host.
+configs_repo: "{{ ansible_env.HOME }}/code/configs"
+
+# Code/build workspace.
+code_dir: "{{ ansible_env.HOME }}/code"
+
+# Local software prefix (mirrors the original ~/.software usage).
+software_dir: "{{ ansible_env.HOME }}/.software"
+
+# Bashrc file managed with idempotent blockinfile sections.
+bashrc_file: "{{ ansible_env.HOME }}/.bashrc"
+
+# Mise
+mise_bin: "{{ ansible_env.HOME }}/.local/bin/mise"
+
+# Cargo
+cargo_env: "{{ ansible_env.HOME }}/.cargo/env"
+cargo_bin: "{{ ansible_env.HOME }}/.cargo/bin"

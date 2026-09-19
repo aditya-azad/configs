@@ -1,0 +1,47 @@
+---
+# tasks/pi.yml — pi (pi.coding-agent) integration.
+# Mirrors configs-nix home/programs/pi.nix: sets default provider/model + the
+# pi extension packages in ~/.pi/agent/settings.json, preserving any other keys
+# pi itself has written (theme, thinking level, changelog, ...). Runs as the user.
+
+- name: Ensure ~/.pi/agent exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.pi/agent"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Ensure pi is installed (npm global via mise)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    npm install -g @earendil-works/pi-coding-agent
+  args:
+    executable: /bin/bash
+    creates: "{{ ansible_env.HOME }}/.local/share/mise/installs/node/latest/bin/pi"
+  become: false
+
+- name: Merge pi settings (provider/model/packages), preserving the rest
+  ansible.builtin.shell: |
+    set -e
+    cfg="{{ ansible_env.HOME }}/.pi/agent/settings.json"
+    touch "$cfg"
+    tmp="$(mktemp)"
+    jq --arg p "openrouter" \
+        --arg m "z-ai/glm-5.2" \
+        '. + {
+          "defaultProvider": $p,
+          "defaultModel": $m,
+          "packages": [
+            "npm:pi-subagents",
+            "npm:@zhushanwen/pi-ask-user",
+            "npm:pi-agent-browser-native",
+            "npm:pi-mcp-adapter",
+            "npm:pi-notify",
+            "npm:pi-vim"
+          ]
+        }' "$cfg" > "$tmp" && mv "$tmp" "$cfg"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false

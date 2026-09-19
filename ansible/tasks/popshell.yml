@@ -1,0 +1,48 @@
+---
+# tasks/popshell.yml — Pop Shell (GNOME extension) built from source. Runs as the user.
+# Requires mise/node/typescript. Idempotent: guarded by the extension install marker.
+
+- name: Ensure typescript installed globally (mise node)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    npm install -g typescript@5
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+
+- name: Ensure ~/code exists
+  ansible.builtin.file:
+    path: "{{ code_dir }}"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Determine Ubuntu codename
+  ansible.builtin.shell: . /etc/os-release && echo "${UBUNTU_CODENAME:-${VERSION_CODENAME}}"
+  args:
+    executable: /bin/bash
+  register: _os_codename
+  changed_when: false
+
+- name: Resolve pop-shell branch for this Ubuntu codename
+  ansible.builtin.set_fact:
+    _popshell_branch: "{{ popshell_branch | default({'jammy': 'master_jammy', 'noble': 'master_noble', 'mantic': 'master_mantic'}[_os_codename.stdout] | default('master')) }}"
+
+- name: Clone pop-os/shell ({{ _popshell_branch }})
+  ansible.builtin.git:
+    repo: https://github.com/pop-os/shell
+    dest: "{{ code_dir }}/shell"
+    version: "{{ _popshell_branch }}"
+  become: false
+
+- name: Build & locally install pop-shell
+  ansible.builtin.shell: |
+    set -e
+    cd {{ code_dir }}/shell
+    make local-install
+  args:
+    executable: /bin/bash
+    creates: "{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/pop-shell@system76.com/extension.js"
+  become: false

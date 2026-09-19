@@ -1,0 +1,37 @@
+---
+# tasks/texlab.yml — build texlab LSP from source. Runs as the user.
+# Idempotent: skipped if ~/.software/texlab/release/texlab exists.
+
+- name: Clone texlab
+  ansible.builtin.git:
+    repo: https://github.com/latex-lsp/texlab.git
+    dest: "{{ code_dir }}/texlab"
+    depth: 1
+  become: false
+
+- name: Build texlab (release)
+  ansible.builtin.shell: |
+    set -e
+    source {{ cargo_env }}
+    cd {{ code_dir }}/texlab
+    cargo build --release
+  args:
+    executable: /bin/bash
+    creates: "{{ code_dir }}/texlab/target/release/texlab"
+  become: false
+
+- name: Install texlab to ~/.software
+  ansible.builtin.copy:
+    src: "{{ code_dir }}/texlab/target/release/"
+    dest: "{{ software_dir }}/texlab/"
+    remote_src: true
+    mode: preserve
+  become: false
+
+- name: Add texlab to PATH (bashrc)
+  ansible.builtin.blockinfile:
+    path: "{{ bashrc_file }}"
+    marker: "# {mark} ANSIBLE texlab-path"
+    block: |
+      export PATH=$PATH:$HOME/.software/texlab
+  become: false

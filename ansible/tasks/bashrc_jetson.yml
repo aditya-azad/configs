@@ -1,0 +1,24 @@
+---
+# tasks/bashrc_jetson.yml — jetson-specific shell config (eagle).
+# Idempotent via blockinfile/lineinfile.
+
+- name: Jetson bashrc — prompt
+  ansible.builtin.blockinfile:
+    path: "{{ bashrc_file }}"
+    marker: "# {mark} ANSIBLE jetson-prompt"
+    block: |
+      PS1='\[\e[38;5;196m\]\u@\h\[\e[38;5;28m\]:\w\[\e[0m\]\$ '
+
+- name: Jetson bashrc — robotics
+  ansible.builtin.blockinfile:
+    path: "{{ bashrc_file }}"
+    marker: "# {mark} ANSIBLE jetson-robotics"
+    block: |
+      alias sin='sudo chmod 666 /dev/ttyTHS1 && singularity exec --nv -B /run ~/code/singularity/jetson_6_2.sif /bin/bash'
+      alias fan='sudo jetson_clocks --fan'
+
+- name: Jetson bashrc — persist ROS_DOMAIN_ID
+  ansible.builtin.lineinfile:
+    path: "{{ bashrc_file }}"
+    regexp: '^\s*export\s+ROS_DOMAIN_ID=[0-9]+$'
+    line: "export ROS_DOMAIN_ID={{ ros_domain_id }}"

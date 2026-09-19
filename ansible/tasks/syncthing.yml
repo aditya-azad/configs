@@ -1,0 +1,66 @@
+---
+# tasks/syncthing.yml — install Syncthing + enable user systemd service. Runs as the user.
+# Desktop uses v2.0.11 linux-amd64; the host selects the right archive via arch vars.
+
+- name: Set syncthing archive facts
+  ansible.builtin.set_fact:
+    syncthing_version: "2.0.11"
+    syncthing_arch_dir: >-
+      {{ 'syncthing-linux-amd64-v2.0.11' if ansible_architecture == 'x86_64' else 'syncthing-linux-arm64-v2.0.11' }}
+    syncthing_archive: >-
+      {{ 'syncthing-linux-amd64-v2.0.11.tar.gz' if ansible_architecture == 'x86_64' else 'syncthing-linux-arm64-v2.0.11.tar.gz' }}
+
+- name: Download syncthing archive
+  ansible.builtin.get_url:
+    url: "https://github.com/syncthing/syncthing/releases/download/v{{ syncthing_version }}/{{ syncthing_archive }}"
+    dest: "/tmp/{{ syncthing_archive }}"
+    mode: "0644"
+    force: false
+  become: false
+
+- name: Extract syncthing to ~/syncthing (skip if already installed)
+  ansible.builtin.shell: |
+    set -e
+    cd {{ ansible_env.HOME }}
+    tar xzf /tmp/{{ syncthing_archive }}
+    rm -rf syncthing
+    mv {{ syncthing_arch_dir }} syncthing
+  args:
+    executable: /bin/bash
+    creates: "{{ ansible_env.HOME }}/syncthing/syncthing"
+  become: false
+
+- name: Ensure user systemd dir exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Install syncthing user unit
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/syncthing/etc/linux-systemd/user/syncthing.service"
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user/syncthing.service"
+    remote_src: true
+    mode: "0644"
+    force: true
+  become: false
+
+- name: Add syncthing to PATH (bashrc)
+  ansible.builtin.blockinfile:
+    path: "{{ bashrc_file }}"
+    marker: "# {mark} ANSIBLE syncthing-path"
+    block: |
+      export PATH=${PATH}:${HOME}/syncthing/
+  become: false
+
+- name: Enable & start syncthing user service
+  ansible.builtin.systemd:
+    name: syncthing.service
+    scope: user
+    daemon_reload: true
+    enabled: true
+    state: started
+  become: false
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"

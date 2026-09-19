@@ -1,0 +1,16 @@
+---
+# tasks/steam.yml — Steam launcher (desktop, x86_64).
+
+- name: Download steam deb
+  ansible.builtin.get_url:
+    url: "https://cdn.fastly.steamstatic.com/client/installer/steam.deb"
+    dest: /tmp/steam.deb
+    mode: "0644"
+    force: false
+  when: ansible_architecture == "x86_64"
+
+- name: Install steam
+  ansible.builtin.apt:
+    deb: /tmp/steam.deb
+    state: present
+  when: ansible_architecture == "x86_64"

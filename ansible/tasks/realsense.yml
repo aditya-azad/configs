@@ -1,0 +1,30 @@
+---
+# tasks/realsense.yml — librealsense v2.56.3 udev rules (no firmware patch).
+# Idempotent: clone guarded by dest presence; udev script is safe to re-run.
+
+- name: Install v4l-utils
+  ansible.builtin.apt:
+    name: v4l-utils
+    state: present
+
+- name: Ensure ~/code exists
+  ansible.builtin.file:
+    path: "{{ code_dir }}"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Clone librealsense (v2.56.3)
+  ansible.builtin.git:
+    repo: https://github.com/IntelRealSense/librealsense.git
+    dest: "{{ code_dir }}/librealsense"
+    version: v2.56.3
+  become: false
+
+- name: Run setup_udev_rules.sh
+  ansible.builtin.shell: bash ./scripts/setup_udev_rules.sh
+  args:
+    chdir: "{{ code_dir }}/librealsense"
+    executable: /bin/bash
+  become: false
+  changed_when: false

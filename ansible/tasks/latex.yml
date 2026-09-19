@@ -1,0 +1,9 @@
+---
+# tasks/latex.yml
+
+- name: Install LaTeX
+  ansible.builtin.apt:
+    name:
+      - texlive-latex-extra
+      - latexmk
+    state: present

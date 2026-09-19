@@ -1,0 +1,61 @@
+---
+# tasks/docker.yml — Docker CE + buildx/compose + Docker Desktop (desktop, x86_64).
+
+- name: Install docker prerequisites
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: true
+
+- name: Ensure /etc/apt/keyrings exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Download Docker GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+    force: true
+
+- name: Determine Ubuntu codename
+  ansible.builtin.shell: . /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}"
+  args:
+    executable: /bin/bash
+  register: _docker_codename
+  changed_when: false
+
+- name: Add Docker apt repo
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ _docker_codename.stdout }} stable"
+    filename: docker
+    state: present
+    update_cache: true
+
+- name: Install Docker packages
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+
+- name: Download Docker Desktop deb
+  ansible.builtin.get_url:
+    url: "https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb"
+    dest: /tmp/docker-desktop-amd64.deb
+    mode: "0644"
+    force: false
+  when: ansible_architecture == "x86_64"
+
+- name: Install Docker Desktop
+  ansible.builtin.apt:
+    deb: /tmp/docker-desktop-amd64.deb
+    state: present
+  when: ansible_architecture == "x86_64"

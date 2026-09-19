@@ -1,0 +1,7 @@
+---
+# tasks/nvtop.yml
+
+- name: Install nvtop
+  ansible.builtin.apt:
+    name: nvtop
+    state: present

@@ -1,0 +1,223 @@
+---
+# tasks/gnome.yml — GNOME settings, keybindings, dock, default terminal.
+# gsettings set is idempotent (no-op when value unchanged); we mark
+# changed_when:false so re-runs report clean. Runs as the user.
+
+- name: GNOME — system keybindings & interface
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.desktop.wm.keybindings", key: "close", value: "['<Super><Shift>Q']" }
+    - { schema: "org.gnome.shell.keybindings", key: "show-screenshot-ui", value: "['<Super><Shift>s']" }
+    - { schema: "org.gnome.settings-daemon.plugins.media-keys", key: "screensaver", value: "['<Super><Shift>colon']" }
+    - { schema: "org.gnome.desktop.interface", key: "color-scheme", value: "prefer-light" }
+    - { schema: "org.gnome.desktop.interface", key: "icon-theme", value: "Yaru" }
+    - { schema: "org.gnome.desktop.interface", key: "gtk-theme", value: "Adwaita" }
+    - { schema: "org.gnome.desktop.background", key: "picture-uri", value: "file://{{ ansible_env.HOME }}/code/configs/wallpapers/carnation-lily-lily-rose.jpg" }
+    - { schema: "org.gnome.desktop.background", key: "picture-uri-dark", value: "file://{{ ansible_env.HOME }}/code/configs/wallpapers/zima-blue.png" }
+    - { schema: "org.gnome.desktop.interface", key: "enable-animations", value: "false" }
+    - { schema: "org.gnome.desktop.peripherals.keyboard", key: "delay", value: "150" }
+    - { schema: "org.gnome.settings-daemon.plugins.power", key: "idle-dim", value: "false" }
+    - { schema: "org.gnome.settings-daemon.plugins.power", key: "lid-close-suspend-with-external-monitor", value: "false" }
+    - { schema: "org.gnome.settings-daemon.plugins.color", key: "night-light-enabled", value: "true" }
+    - { schema: "org.gnome.settings-daemon.plugins.color", key: "night-light-schedule-from", value: "19" }
+    - { schema: "org.gnome.settings-daemon.plugins.color", key: "night-light-schedule-to", value: "6" }
+    - { schema: "org.gnome.desktop.interface", key: "clock-format", value: "'12h'" }
+    - { schema: "org.gnome.settings-daemon.plugins.power", key: "lid-close-ac-action", value: "'nothing'" }
+    - { schema: "org.gnome.settings-daemon.plugins.power", key: "lid-close-battery-action", value: "'nothing'" }
+    - { schema: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['caps:none']" }
+    - { schema: "org.gnome.desktop.wm.keybindings", key: "toggle-maximized", value: "['<Super>f']" }
+    - { schema: "org.gnome.desktop.wm.keybindings", key: "move-to-monitor-down", value: "['<Super><Shift>j']" }
+    - { schema: "org.gnome.desktop.wm.keybindings", key: "move-to-monitor-up", value: "['<Super><Shift>k']" }
+    - { schema: "org.gnome.desktop.wm.keybindings", key: "move-to-monitor-left", value: "['<Super><Shift>h']" }
+    - { schema: "org.gnome.desktop.wm.keybindings", key: "move-to-monitor-right", value: "['<Super><Shift>l']" }
+
+- name: GNOME — disable switch-to-application-N keybindings
+  ansible.builtin.shell: "gsettings set org.gnome.shell.keybindings switch-to-application-{{ item }} '[]'"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop: "{{ range(1, 10) | list }}"
+
+- name: GNOME — workspaces
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.mutter", key: "workspaces-only-on-primary", value: "true" }
+    - { schema: "org.gnome.desktop.wm.preferences", key: "num-workspaces", value: "10" }
+    - { schema: "org.gnome.mutter", key: "dynamic-workspaces", value: "false" }
+
+- name: GNOME — move-to-workspace-N keybindings
+  ansible.builtin.shell: "gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-{{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { key: "1", value: "['<Super><Shift>1']" }
+    - { key: "2", value: "['<Super><Shift>2']" }
+    - { key: "3", value: "['<Super><Shift>3']" }
+    - { key: "4", value: "['<Super><Shift>4']" }
+    - { key: "5", value: "['<Super><Shift>5']" }
+    - { key: "6", value: "['<Super><Shift>6']" }
+    - { key: "7", value: "['<Super><Shift>7']" }
+    - { key: "8", value: "['<Super><Shift>8']" }
+    - { key: "9", value: "['<Super><Shift>9']" }
+    - { key: "10", value: "['<Super><Shift>0']" }
+
+- name: GNOME — switch-to-workspace-N keybindings
+  ansible.builtin.shell: "gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-{{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { key: "1", value: "['<Super>1']" }
+    - { key: "2", value: "['<Super>2']" }
+    - { key: "3", value: "['<Super>3']" }
+    - { key: "4", value: "['<Super>4']" }
+    - { key: "5", value: "['<Super>5']" }
+    - { key: "6", value: "['<Super>6']" }
+    - { key: "7", value: "['<Super>7']" }
+    - { key: "8", value: "['<Super>8']" }
+    - { key: "9", value: "['<Super>9']" }
+    - { key: "10", value: "['<Super>0']" }
+
+- name: GNOME — register custom-keybindings paths
+  ansible.builtin.shell: >
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings
+    "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+
+- name: GNOME — custom0 (Shutdown)
+  ansible.builtin.shell: "gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ {{ item.key }} '{{ item.value }}'"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { key: "name", value: "Shutdown" }
+    - { key: "command", value: "systemctl poweroff" }
+    - { key: "binding", value: "<Super><Ctrl><Alt>q" }
+
+- name: GNOME — custom1 (Restart)
+  ansible.builtin.shell: "gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ {{ item.key }} '{{ item.value }}'"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { key: "name", value: "Restart" }
+    - { key: "command", value: "systemctl reboot" }
+    - { key: "binding", value: "<Super><Ctrl><Alt>r" }
+
+- name: GNOME — dock
+  ansible.builtin.shell: "gsettings set org.gnome.shell.extensions.dash-to-dock {{ item.key }} {{ item.value }}"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { key: "autohide", value: "false" }
+    - { key: "dock-fixed", value: "false" }
+
+- name: GNOME — pop-shell settings
+  ansible.builtin.shell: >
+    GSETTINGS_SCHEMA_DIR="{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/pop-shell@system76.com/schemas/"
+    gsettings set org.gnome.shell.extensions.pop-shell {{ item.key }} {{ item.value }}
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - { key: "active-hint", value: "true" }
+    - { key: "active-hint-border-radius", value: "0" }
+    - { key: "gap-outer", value: "2" }
+    - { key: "gap-inner", value: "2" }
+    - { key: "show-title", value: "true" }
+
+- name: GNOME — disable conflicting extensions
+  ansible.builtin.shell: >
+    gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+
+- name: GNOME — default browser & terminal
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  loop:
+    - "xdg-settings set default-web-browser brave-browser.desktop"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec 'kitty'"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''"
+    - "gsettings set org.gnome.settings-daemon.plugins.media-keys www \"['<Super>b']\""
+    - "gsettings set org.gnome.settings-daemon.plugins.media-keys home \"['<Super>e']\""
+
+- name: GNOME — remove nautilus gnome-terminal extension
+  ansible.builtin.apt:
+    name: nautilus-extension-gnome-terminal
+    state: absent
+
+- name: GNOME — install nautilus-open-any-terminal pip package
+  ansible.builtin.pip:
+    name: nautilus-open-any-terminal
+    state: present
+    extra_args: "--break-system-packages"
+  become: false
+
+- name: GNOME — download nautilus-open-any-terminal deb
+  ansible.builtin.get_url:
+    url: "https://github.com/Stunkymonkey/nautilus-open-any-terminal/releases/download/0.8.1/nautilus-extension-any-terminal_0.8.1-1_all.deb"
+    dest: /tmp/nautilus-extension-any-terminal_0.8.1-1_all.deb
+    mode: "0644"
+    force: false
+
+- name: GNOME — install nautilus-open-any-terminal deb
+  ansible.builtin.apt:
+    deb: /tmp/nautilus-extension-any-terminal_0.8.1-1_all.deb
+    state: present
+
+- name: GNOME — restart nautilus
+  ansible.builtin.shell: nautilus -q
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+  failed_when: false
+
+- name: GNOME — set nautilus terminal to kitty
+  ansible.builtin.shell: gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false
+
+- name: GNOME — register kitty as x-terminal-emulator alternative
+  ansible.builtin.shell: |
+    update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which kitty)" 50
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: GNOME — set kitty as default terminal (gsettings)
+  ansible.builtin.shell: |
+    gsettings set org.gnome.desktop.default-applications.terminal exec kitty
+    gsettings set org.gnome.desktop.default-applications.terminal exec-arg ""
+  args:
+    executable: /bin/bash
+  become: false
+  changed_when: false

@@ -1,0 +1,9 @@
+---
+# tasks/setup_hosts.yml — add the eagle/jetson host entry used by the desktop.
+# bizon has its own task file (tasks/bizon.yml) so each remote is opt-in.
+
+- name: Ensure eagle/jetson is in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^\s*192\.168\.55\.1\s+jetson\s*$'
+    line: "192.168.55.1 jetson"

@@ -1,0 +1,2 @@
+- all software and settings must be idempotently installed
+- do not run any of the code without explicit user permission
