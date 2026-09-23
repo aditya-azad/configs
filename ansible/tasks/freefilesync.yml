@@ -1,8 +1,11 @@
 ---
 
-- name: Set FreeFileSync facts
+- name: Set FreeFileSync version
   ansible.builtin.set_fact:
     freefilesync_version: "14.12"
+
+- name: Set FreeFileSync facts
+  ansible.builtin.set_fact:
     freefilesync_archive: "FreeFileSync_{{ freefilesync_version }}_Linux_x86_64.tar.gz"
     freefilesync_installer: "FreeFileSync_{{ freefilesync_version }}_Install.run"
 
