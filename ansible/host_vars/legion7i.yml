@@ -1,5 +1,5 @@
 ---
-# legion7i — desktop (Ubuntu LTS, GNOME). Local connection.
+# Lenovo Legion 7 16IAX7 (Gen 7, model 82TD)
 
 # Identity
 username: azada
@@ -11,6 +11,7 @@ git_email: "adityaazad121@gmail.com"
 programs:
   - uninstall
   - upgrade
+  - laptop_base
   - compilers
   - mise_runtimes
   - rust

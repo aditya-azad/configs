@@ -1,0 +1,27 @@
+---
+# tasks/laptop_base.yml — laptop runtime that Ubuntu Desktop would have
+# provided but a minimal Ubuntu Server base does not.
+
+- name: Laptop base — install runtime
+  ansible.builtin.apt:
+    name:
+      - thermald
+      - power-profiles-daemon
+      - bolt
+      - fwupd
+      - fwupd-signed
+      - intel-microcode
+      - linux-headers-generic
+    state: present
+
+- name: Laptop base — enable + start thermald
+  ansible.builtin.systemd:
+    name: thermald.service
+    state: started
+    enabled: true
+
+- name: Laptop base — enable + start power-profiles-daemon
+  ansible.builtin.systemd:
+    name: power-profiles-daemon.service
+    state: started
+    enabled: true
