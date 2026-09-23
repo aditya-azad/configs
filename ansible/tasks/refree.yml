@@ -7,7 +7,8 @@
     repo: https://github.com/aditya-azad/refree.git
     dest: "{{ code_dir }}/refree"
     update: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Run refree install script
   ansible.builtin.shell: |
@@ -17,5 +18,6 @@
     ./scripts/install.sh
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false

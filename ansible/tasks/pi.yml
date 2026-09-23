@@ -6,10 +6,11 @@
 
 - name: Ensure ~/.pi/agent exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.pi/agent"
+    path: "{{ home_dir }}/.pi/agent"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Ensure pi is installed (npm global via mise)
   ansible.builtin.shell: |
@@ -18,13 +19,14 @@
     npm install -g @earendil-works/pi-coding-agent
   args:
     executable: /bin/bash
-    creates: "{{ ansible_env.HOME }}/.local/share/mise/installs/node/latest/bin/pi"
-  become: false
+    creates: "{{ home_dir }}/.local/share/mise/installs/node/latest/bin/pi"
+  become: true
+  become_user: "{{ username }}"
 
 - name: Merge pi settings (provider/model/packages), preserving the rest
   ansible.builtin.shell: |
     set -e
-    cfg="{{ ansible_env.HOME }}/.pi/agent/settings.json"
+    cfg="{{ home_dir }}/.pi/agent/settings.json"
     touch "$cfg"
     tmp="$(mktemp)"
     jq --arg p "openrouter" \
@@ -43,5 +45,6 @@
         }' "$cfg" > "$tmp" && mv "$tmp" "$cfg"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false

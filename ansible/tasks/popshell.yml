@@ -9,7 +9,8 @@
     npm install -g typescript@5
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
 
 - name: Ensure ~/code exists
@@ -17,7 +18,8 @@
     path: "{{ code_dir }}"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Determine Ubuntu codename
   ansible.builtin.shell: . /etc/os-release && echo "${UBUNTU_CODENAME:-${VERSION_CODENAME}}"
@@ -35,7 +37,8 @@
     repo: https://github.com/pop-os/shell
     dest: "{{ code_dir }}/shell"
     version: "{{ _popshell_branch }}"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Build & locally install pop-shell
   ansible.builtin.shell: |
@@ -44,5 +47,6 @@
     make local-install
   args:
     executable: /bin/bash
-    creates: "{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/pop-shell@system76.com/extension.js"
-  become: false
+    creates: "{{ home_dir }}/.local/share/gnome-shell/extensions/pop-shell@system76.com/extension.js"
+  become: true
+  become_user: "{{ username }}"

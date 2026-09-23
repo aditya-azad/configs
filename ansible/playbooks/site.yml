@@ -1,11 +1,11 @@
 ---
 # Site playbook. Each host runs only the programs it selected (host_vars `programs`).
 #
-#   ansible-playbook playbooks/site.yml                  # all hosts
-#   ansible-playbook playbooks/site.yml -l legion7i      # desktop only
-#   ansible-playbook playbooks/site.yml -l eagle         # jetson only
-#   ansible-playbook playbooks/site.yml --tags neovim    # single program (tagged)
-#   ansible-playbook playbooks/site.yml --skip-tags upgrade
+#   sudo ansible-playbook playbooks/site.yml                  # all hosts
+#   sudo ansible-playbook playbooks/site.yml -l legion7i      # desktop only
+#   sudo ansible-playbook playbooks/site.yml -l eagle         # jetson only
+#   sudo ansible-playbook playbooks/site.yml --tags neovim    # single program (tagged)
+#   sudo ansible-playbook playbooks/site.yml --skip-tags upgrade
 #
 # Each entry in `programs` maps to tasks/<name>.yml, which installs and configures
 # exactly that piece of software, idempotently.
@@ -16,12 +16,22 @@
   gather_facts: true
 
   pre_tasks:
+    - name: Resolve target user uid (run as root)
+      ansible.builtin.command: "id -u {{ username }}"
+      changed_when: false
+      register: user_uid_res
+
+    - name: Set user_uid fact
+      ansible.builtin.set_fact:
+        user_uid: "{{ user_uid_res.stdout }}"
+
     - name: Ensure configs repo exists at {{ configs_repo }}
       ansible.builtin.git:
         repo: "https://github.com/aditya-azad/configs.git"
         dest: "{{ configs_repo }}"
         version: main
-      become: false
+      become: true
+      become_user: "{{ username }}"
       tags: always
 
   tasks:

@@ -8,7 +8,6 @@ git_email: "adityaazad121@gmail.com"
 
 # Ordered list of independent program task files (tasks/<name>.yml).
 programs:
-  - ansible_sudoers
   - compilers
   - mise_runtimes
   - rust

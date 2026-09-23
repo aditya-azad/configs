@@ -16,35 +16,39 @@
     dest: "/tmp/{{ syncthing_archive }}"
     mode: "0644"
     force: false
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Extract syncthing to ~/syncthing (skip if already installed)
   ansible.builtin.shell: |
     set -e
-    cd {{ ansible_env.HOME }}
+    cd {{ home_dir }}
     tar xzf /tmp/{{ syncthing_archive }}
     rm -rf syncthing
     mv {{ syncthing_arch_dir }} syncthing
   args:
     executable: /bin/bash
-    creates: "{{ ansible_env.HOME }}/syncthing/syncthing"
-  become: false
+    creates: "{{ home_dir }}/syncthing/syncthing"
+  become: true
+  become_user: "{{ username }}"
 
 - name: Ensure user systemd dir exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/systemd/user"
+    path: "{{ home_dir }}/.config/systemd/user"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Install syncthing user unit
   ansible.builtin.copy:
-    src: "{{ ansible_env.HOME }}/syncthing/etc/linux-systemd/user/syncthing.service"
-    dest: "{{ ansible_env.HOME }}/.config/systemd/user/syncthing.service"
+    src: "{{ home_dir }}/syncthing/etc/linux-systemd/user/syncthing.service"
+    dest: "{{ home_dir }}/.config/systemd/user/syncthing.service"
     remote_src: true
     mode: "0644"
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Add syncthing to PATH (bashrc)
   ansible.builtin.blockinfile:
@@ -52,7 +56,8 @@
     marker: "# {mark} ANSIBLE syncthing-path"
     block: |
       export PATH=${PATH}:${HOME}/syncthing/
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Enable & start syncthing user service
   ansible.builtin.systemd:
@@ -61,6 +66,7 @@
     daemon_reload: true
     enabled: true
     state: started
-  become: false
+  become: true
+  become_user: "{{ username }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ user_uid }}"

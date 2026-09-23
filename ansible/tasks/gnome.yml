@@ -7,7 +7,8 @@
   ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { schema: "org.gnome.desktop.wm.keybindings", key: "close", value: "['<Super><Shift>Q']" }
@@ -16,8 +17,8 @@
     - { schema: "org.gnome.desktop.interface", key: "color-scheme", value: "prefer-light" }
     - { schema: "org.gnome.desktop.interface", key: "icon-theme", value: "Yaru" }
     - { schema: "org.gnome.desktop.interface", key: "gtk-theme", value: "Adwaita" }
-    - { schema: "org.gnome.desktop.background", key: "picture-uri", value: "file://{{ ansible_env.HOME }}/code/configs/wallpapers/carnation-lily-lily-rose.jpg" }
-    - { schema: "org.gnome.desktop.background", key: "picture-uri-dark", value: "file://{{ ansible_env.HOME }}/code/configs/wallpapers/zima-blue.png" }
+    - { schema: "org.gnome.desktop.background", key: "picture-uri", value: "file://{{ home_dir }}/code/configs/wallpapers/carnation-lily-lily-rose.jpg" }
+    - { schema: "org.gnome.desktop.background", key: "picture-uri-dark", value: "file://{{ home_dir }}/code/configs/wallpapers/zima-blue.png" }
     - { schema: "org.gnome.desktop.interface", key: "enable-animations", value: "false" }
     - { schema: "org.gnome.desktop.peripherals.keyboard", key: "delay", value: "150" }
     - { schema: "org.gnome.settings-daemon.plugins.power", key: "idle-dim", value: "false" }
@@ -39,7 +40,8 @@
   ansible.builtin.shell: "gsettings set org.gnome.shell.keybindings switch-to-application-{{ item }} '[]'"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop: "{{ range(1, 10) | list }}"
 
@@ -47,7 +49,8 @@
   ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { schema: "org.gnome.mutter", key: "workspaces-only-on-primary", value: "true" }
@@ -58,7 +61,8 @@
   ansible.builtin.shell: "gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-{{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { key: "1", value: "['<Super><Shift>1']" }
@@ -76,7 +80,8 @@
   ansible.builtin.shell: "gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-{{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { key: "1", value: "['<Super>1']" }
@@ -96,14 +101,16 @@
     "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
 
 - name: GNOME — custom0 (Shutdown)
   ansible.builtin.shell: "gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ {{ item.key }} '{{ item.value }}'"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { key: "name", value: "Shutdown" }
@@ -114,7 +121,8 @@
   ansible.builtin.shell: "gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ {{ item.key }} '{{ item.value }}'"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { key: "name", value: "Restart" }
@@ -125,7 +133,8 @@
   ansible.builtin.shell: "gsettings set org.gnome.shell.extensions.dash-to-dock {{ item.key }} {{ item.value }}"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { key: "autohide", value: "false" }
@@ -133,11 +142,12 @@
 
 - name: GNOME — pop-shell settings
   ansible.builtin.shell: >
-    GSETTINGS_SCHEMA_DIR="{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/pop-shell@system76.com/schemas/"
+    GSETTINGS_SCHEMA_DIR="{{ home_dir }}/.local/share/gnome-shell/extensions/pop-shell@system76.com/schemas/"
     gsettings set org.gnome.shell.extensions.pop-shell {{ item.key }} {{ item.value }}
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { key: "active-hint", value: "true" }
@@ -151,14 +161,16 @@
     gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
 
 - name: GNOME — default browser & terminal
   ansible.builtin.shell: "{{ item }}"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - "xdg-settings set default-web-browser brave-browser.desktop"
@@ -177,7 +189,8 @@
     name: nautilus-open-any-terminal
     state: present
     extra_args: "--break-system-packages"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: GNOME — download nautilus-open-any-terminal deb
   ansible.builtin.get_url:
@@ -195,7 +208,8 @@
   ansible.builtin.shell: nautilus -q
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   failed_when: false
 
@@ -203,7 +217,8 @@
   ansible.builtin.shell: gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
 
 - name: GNOME — register kitty as x-terminal-emulator alternative
@@ -219,5 +234,6 @@
     gsettings set org.gnome.desktop.default-applications.terminal exec-arg ""
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false

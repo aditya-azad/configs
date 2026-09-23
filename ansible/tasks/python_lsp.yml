@@ -17,4 +17,5 @@
       - lark
       - pyyaml
     state: present
-  become: false
+  become: true
+  become_user: "{{ username }}"

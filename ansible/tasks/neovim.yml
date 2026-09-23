@@ -19,7 +19,8 @@
     dest: "{{ code_dir }}/neovim"
     version: release-0.13
     depth: 1
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Build neovim (RelWithDebInfo)
   ansible.builtin.shell: |
@@ -29,7 +30,8 @@
   args:
     executable: /bin/bash
     creates: "{{ code_dir }}/neovim/build/bin/nvim"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Install neovim system-wide
   ansible.builtin.shell: make install

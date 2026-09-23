@@ -39,19 +39,21 @@
 - name: Hyprland — download hyprbuntu installer
   ansible.builtin.get_url:
     url: https://gitlab.com/kralos/hyprbuntu/-/raw/main/hyprbuntu.sh
-    dest: "{{ ansible_env.HOME }}/.local/bin/hyprbuntu.sh"
+    dest: "{{ home_dir }}/.local/bin/hyprbuntu.sh"
     mode: "0755"
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Hyprland — run hyprbuntu installer (build from source, gcc-16)
   ansible.builtin.shell: |
     set -e
-    {{ ansible_env.HOME }}/.local/bin/hyprbuntu.sh
+    {{ home_dir }}/.local/bin/hyprbuntu.sh
   args:
     executable: /bin/bash
     creates: /usr/bin/Hyprland
-  become: false
+  become: true
+  become_user: "{{ username }}"
   environment:
     BUILD_DIR: "{{ code_dir }}/hyprbuntu"
     DISABLE_CONFIRM: "true"
@@ -79,7 +81,8 @@
   ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - { schema: "org.gnome.desktop.interface", key: "icon-theme", value: "Yaru" }
@@ -96,7 +99,8 @@
   ansible.builtin.shell: "{{ item }}"
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   loop:
     - "xdg-settings set default-web-browser brave-browser.desktop"
@@ -116,7 +120,8 @@
     name: nautilus-open-any-terminal
     state: present
     extra_args: "--break-system-packages"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Hyprland — download nautilus-open-any-terminal deb
   ansible.builtin.get_url:
@@ -134,7 +139,8 @@
   ansible.builtin.shell: nautilus -q
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
   failed_when: false
 
@@ -142,7 +148,8 @@
   ansible.builtin.shell: gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
 
 # ── Power: lid-close → nothing (GNOME lid-close-*-action + suspend-with-ext-monitor=false) ─

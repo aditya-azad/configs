@@ -9,7 +9,8 @@
   args:
     creates: "{{ mise_bin }}"
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Pin python@3.14 (mise)
   ansible.builtin.shell: |
@@ -18,7 +19,8 @@
     {{ mise_bin }} use -g python@3.14
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   register: mise_py
   changed_when: "'already' not in mise_py.stdout | lower"
 
@@ -29,7 +31,8 @@
     {{ mise_bin }} use -g uv@latest
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   register: mise_uv
   changed_when: "'already' not in mise_uv.stdout | lower"
 
@@ -40,6 +43,7 @@
     {{ mise_bin }} use --global node@lts
   args:
     executable: /bin/bash
-  become: false
+  become: true
+  become_user: "{{ username }}"
   register: mise_node
   changed_when: "'already' not in mise_node.stdout | lower"

@@ -7,5 +7,6 @@
       - torchvision
     extra_args: "--index-url https://download.pytorch.org/whl/cu126"
     state: present
-  become: false
+  become: true
+  become_user: "{{ username }}"
   when: ansible_architecture == "aarch64"

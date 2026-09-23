@@ -4,30 +4,34 @@
 - name: Link kitty config
   ansible.builtin.file:
     src: "{{ configs_repo }}/kitty"
-    dest: "{{ ansible_env.HOME }}/.config/kitty"
+    dest: "{{ home_dir }}/.config/kitty"
     state: link
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Link refree config
   ansible.builtin.file:
     src: "{{ configs_repo }}/refree"
-    dest: "{{ ansible_env.HOME }}/.refree"
+    dest: "{{ home_dir }}/.refree"
     state: link
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Ensure ~/.config/hypr exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/hypr"
+    path: "{{ home_dir }}/.config/hypr"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Link hyprland.lua config
   ansible.builtin.file:
     src: "{{ configs_repo }}/hypr/hyprland.lua"
-    dest: "{{ ansible_env.HOME }}/.config/hypr/hyprland.lua"
+    dest: "{{ home_dir }}/.config/hypr/hyprland.lua"
     state: link
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"

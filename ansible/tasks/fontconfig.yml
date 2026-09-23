@@ -13,14 +13,15 @@
 
 - name: Ensure user fontconfig dir exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/fontconfig"
+    path: "{{ home_dir }}/.config/fontconfig"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Drop user fontconfig preset (Noto + FiraCode Nerd Font + emoji)
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.config/fontconfig/fonts.conf"
+    dest: "{{ home_dir }}/.config/fontconfig/fonts.conf"
     mode: "0644"
     content: |
       <?xml version="1.0"?>
@@ -31,14 +32,16 @@
         <alias><family>monospace</family>  <prefer><family>FiraCode Nerd Font</family><family>Noto Color Emoji</family></prefer></alias>
         <alias><family>emoji</family>      <prefer><family>Noto Color Emoji</family></prefer></alias>
       </fontconfig>
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Ensure user fonts dir exists (for the FiraCode Nerd Font zip from the repo)
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/fonts"
+    path: "{{ home_dir }}/.local/share/fonts"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Unzip FiraCode Nerd Font to /tmp/firacode (on target)
   ansible.builtin.unarchive:
@@ -46,26 +49,30 @@
     dest: /tmp/firacode
     remote_src: true
     creates: /tmp/firacode
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Find extracted font files
   ansible.builtin.find:
     paths: /tmp/firacode
     file_type: file
   register: firacode_files
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Copy FiraCode Nerd Font files into user fonts dir
   ansible.builtin.copy:
     src: "{{ item.path }}"
-    dest: "{{ ansible_env.HOME }}/.local/share/fonts/{{ item.path | basename }}"
+    dest: "{{ home_dir }}/.local/share/fonts/{{ item.path | basename }}"
     remote_src: true
     mode: "0644"
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
   loop: "{{ firacode_files.files }}"
 
 - name: Refresh font cache
   ansible.builtin.command: fc-cache -f -v
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false

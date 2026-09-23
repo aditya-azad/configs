@@ -28,7 +28,8 @@
     path: "{{ code_dir }}"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Download & extract singularity-ce 4.3.0
   ansible.builtin.unarchive:
@@ -36,21 +37,24 @@
     dest: "{{ code_dir }}"
     remote_src: true
     creates: "{{ code_dir }}/singularity-ce-4.3.0"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Configure singularity (mconfig)
   ansible.builtin.shell: ./mconfig --without-libsubid
   args:
     chdir: "{{ code_dir }}/singularity-ce-4.3.0"
     creates: "{{ code_dir }}/singularity-ce-4.3.0/builddir/Makefile"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Build singularity
   ansible.builtin.shell: make -C builddir
   args:
     chdir: "{{ code_dir }}/singularity-ce-4.3.0"
     creates: "{{ code_dir }}/singularity-ce-4.3.0/builddir/singularity"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Install singularity
   ansible.builtin.shell: make -C builddir install

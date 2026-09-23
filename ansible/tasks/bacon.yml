@@ -9,4 +9,5 @@
   args:
     executable: /bin/bash
     creates: "{{ cargo_bin }}/bacon"
-  become: false
+  become: true
+  become_user: "{{ username }}"

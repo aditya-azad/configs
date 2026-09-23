@@ -4,10 +4,11 @@
 
 - name: Ensure user fonts dir exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/fonts"
+    path: "{{ home_dir }}/.local/share/fonts"
     state: directory
     mode: "0755"
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Unzip FiraCode font to /tmp/firacode (on target)
   ansible.builtin.unarchive:
@@ -15,26 +16,30 @@
     dest: /tmp/firacode
     remote_src: true
     creates: /tmp/firacode
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Find extracted font files
   ansible.builtin.find:
     paths: /tmp/firacode
     file_type: file
   register: firacode_files
-  become: false
+  become: true
+  become_user: "{{ username }}"
 
 - name: Copy font files into user fonts dir
   ansible.builtin.copy:
     src: "{{ item.path }}"
-    dest: "{{ ansible_env.HOME }}/.local/share/fonts/{{ item.path | basename }}"
+    dest: "{{ home_dir }}/.local/share/fonts/{{ item.path | basename }}"
     remote_src: true
     mode: "0644"
     force: true
-  become: false
+  become: true
+  become_user: "{{ username }}"
   loop: "{{ firacode_files.files }}"
 
 - name: Refresh font cache
   ansible.builtin.command: fc-cache -f -v
-  become: false
+  become: true
+  become_user: "{{ username }}"
   changed_when: false
