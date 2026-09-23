@@ -26,15 +26,15 @@
     creates: "/tmp/{{ freefilesync_installer }}"
   when: ansible_architecture == "x86_64"
 
-- name: Run FreeFileSync installer (non-interactive, system-wide)
+- name: Extract FreeFileSync files from installer
   ansible.builtin.shell: |
     set -e
-    chmod +x /tmp/{{ freefilesync_installer }}
-    /tmp/{{ freefilesync_installer }} \
-      --accept-license --skip-overview \
-      --directory /opt/FreeFileSync \
-      --for-all-users true \
-      --create-shortcuts true
+    installer="/tmp/{{ freefilesync_installer }}"
+    dest="/opt/FreeFileSync"
+    mkdir -p "$dest"
+    offset=$(LC_ALL=C grep -a -b -o $'\x1f\x8b\x08' "$installer" | head -n1 | cut -d: -f1)
+    tail -c +$((offset + 1)) "$installer" | tar xz -C "$dest"
+    chmod +x "$dest/FreeFileSync" "$dest/RealTimeSync" "$dest/Bin/FreeFileSync_x86_64" "$dest/Bin/RealTimeSync_x86_64"
   args:
     executable: /bin/bash
     creates: /opt/FreeFileSync/FreeFileSync
