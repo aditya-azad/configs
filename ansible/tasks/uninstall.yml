@@ -1,6 +1,4 @@
 ---
-# tasks/upgrade.yml — apt update + upgrade. Idempotent by nature.
-
 - name: apt update
   ansible.builtin.apt:
     update_cache: true
@@ -9,12 +7,64 @@
   ansible.builtin.apt:
     upgrade: yes
 
-- name: Remove unwanted packages
+- name: Remove GNOME app suite + other unwanted packages (apt, purge)
   ansible.builtin.apt:
     name:
+      # ── already unwanted ──
       - thunderbird
       - firefox
+      - vlc
+      - vlc-data
+      # ── GNOME app suite (replaced by Wayland/Hyprland equivalents) ──
+      - nautilus                       # → thunar
+      - nautilus-extension-gnome-terminal
+      - gnome-terminal                 # → kitty (already installed)
+      - gnome-terminal-data
+      - gnome-calculator               # → qalculate-gtk
+      - gnome-screenshot               # → hyprshot (hyprbuntu)
+      - gnome-weather                  # dropped (no replacement)
+      - gnome-clocks                   # dropped
+      - gnome-contacts                 # dropped
+      - gnome-calendar                 # dropped
+      - gnome-text-editor              # → neovim (already installed)
+      - totem                          # → mpv
+      - eog                            # → imv
+      - gnome-power-manager            # → hypridle + brightnessctl
+      - gnome-software                 # → apt (no app store)
+      - gnome-control-center           # removed (no Hyprland replacement)
+      - gnome-system-monitor           # removed (no Hyprland replacement)
+      - gnome-keyring                  # secrets → keepass2 (already installed)
+      - gnome-keyring-pkcs11
+      - gdm3                           # login manager → greetd + tuigreet
+      - gnome-shell                    # only ran the GDM greeter; not needed
+      - gnome-shell-common
+      - gnome-session                  # GNOME session manager (gdm3 dep)
+      - ubuntu-session                 # Ubuntu GNOME session metapackage
+      - simple-scan                    # dropped (document scanner)
+      - yelp                           # dropped (GNOME help browser)
     state: absent
+    purge: true
+
+- name: Remove renamed/uncertain GNOME packages (graceful if absent)
+  ansible.builtin.apt:
+    name:
+      - evince              # GNOME renamed Evince → Papers; either may exist
+      - evince-common
+      - papers              # → zathura
+      - gedit               # may be absent (superseded by gnome-text-editor)
+      - gnome-bluetooth     # package renamed across releases → blueman
+      - gnome-bluetooth3
+      - gnome-characters
+      - gnome-font-viewer
+      - gnome-logs
+    state: absent
+    purge: true
+  failed_when: false
+
+- name: Clean up now-unused dependencies (autoremove)
+  ansible.builtin.apt:
+    autoremove: true
+    purge: true
 
 - name: Remove firefox snap
   community.general.snap:

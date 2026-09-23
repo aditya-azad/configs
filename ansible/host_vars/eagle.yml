@@ -16,7 +16,6 @@ programs:
   - zellij
   - ripgrep
   - python_lsp
-  - pytorch
   - neovim
   - fontconfig
   - singularity

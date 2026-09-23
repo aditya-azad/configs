@@ -1,7 +1,4 @@
 ---
-# tasks/mise_runtimes.yml — install mise and pin go/python/uv/node.
-# Runs as the user.
-
 - name: Install mise (creates ~/.local/bin/mise)
   ansible.builtin.shell: |
     set -e
@@ -12,7 +9,7 @@
   become: true
   become_user: "{{ username }}"
 
-- name: Pin python@3.14 (mise)
+- name: Pin python@3.14 as the global default (mise)
   ansible.builtin.shell: |
     set -e
     eval "$({{ mise_bin }} activate bash)"
@@ -22,9 +19,51 @@
   become: true
   become_user: "{{ username }}"
   register: mise_py
-  changed_when: "'already' not in mise_py.stdout | lower"
+  changed_when: >-
+    ('already' not in ((mise_py.stdout | default('')) ~ (mise_py.stderr | default(''))) | lower)
+    and ((mise_py.stdout | default('')) ~ (mise_py.stderr | default(''))) | trim != ''
 
-- name: Pin uv@latest (mise)
+- name: Ensure pip is present and current for the global python
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    python -m pip install --upgrade pip
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  register: mise_pip_up
+  changed_when: "'Successfully installed' in (mise_pip_up.stdout | default(''))"
+
+- name: Pin node@lts as the global default (mise)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    {{ mise_bin }} use -g node@lts
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  register: mise_node
+  changed_when: >-
+    ('already' not in ((mise_node.stdout | default('')) ~ (mise_node.stderr | default(''))) | lower)
+    and ((mise_node.stdout | default('')) ~ (mise_node.stderr | default(''))) | trim != ''
+
+- name: Pin go@latest as the global default (mise)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    {{ mise_bin }} use -g go@latest
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  register: mise_go
+  changed_when: >-
+    ('already' not in ((mise_go.stdout | default('')) ~ (mise_go.stderr | default(''))) | lower)
+    and ((mise_go.stdout | default('')) ~ (mise_go.stderr | default(''))) | trim != ''
+
+- name: Pin uv@latest as the global default (mise)
   ansible.builtin.shell: |
     set -e
     eval "$({{ mise_bin }} activate bash)"
@@ -34,16 +73,6 @@
   become: true
   become_user: "{{ username }}"
   register: mise_uv
-  changed_when: "'already' not in mise_uv.stdout | lower"
-
-- name: Pin node@lts (mise)
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
-    {{ mise_bin }} use --global node@lts
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: mise_node
-  changed_when: "'already' not in mise_node.stdout | lower"
+  changed_when: >-
+    ('already' not in ((mise_uv.stdout | default('')) ~ (mise_uv.stderr | default(''))) | lower)
+    and ((mise_uv.stdout | default('')) ~ (mise_uv.stderr | default(''))) | trim != ''

@@ -1,7 +1,4 @@
 ---
-# tasks/python_lsp.yml — Python LSP stack + robotics helpers via pip (user).
-# Mirrors the original install_software_{desktop,jetson}.sh pip list.
-
 - name: Install Python LSP + robotics packages
   ansible.builtin.pip:
     name:
@@ -17,5 +14,6 @@
       - lark
       - pyyaml
     state: present
+    executable: "{{ mise_pip }}"
   become: true
   become_user: "{{ username }}"

@@ -22,6 +22,12 @@ bashrc_file: "{{ home_dir }}/.bashrc"
 
 # Mise
 mise_bin: "{{ home_dir }}/.local/bin/mise"
+mise_shims: "{{ home_dir }}/.local/share/mise/shims"
+mise_python: "{{ mise_shims }}/python3"
+mise_pip: "{{ mise_shims }}/pip"
+mise_node: "{{ mise_shims }}/node"
+mise_npm: "{{ mise_shims }}/npm"
+mise_go: "{{ mise_shims }}/go"
 
 # Cargo
 cargo_env: "{{ home_dir }}/.cargo/env"
