@@ -1,6 +1,7 @@
 ---
-# tasks/neovim.yml — build Neovim release-0.13 from source. Runs as the user.
-# Idempotent: skipped if /usr/local/bin/nvim exists.
+# tasks/neovim.yml — build Neovim 0.13.0-dev (master) from source. Runs as the user.
+# Rebuilds when new commits land on master; idempotent otherwise.
+# Idempotency is tracked via /usr/local/share/nvim-commit (the installed HEAD).
 
 - name: Ensure build deps present
   ansible.builtin.apt:
@@ -13,14 +14,49 @@
       - build-essential
     state: present
 
-- name: Clone neovim (release-0.13)
+- name: Clone/update neovim (master, 0.13.0-dev)
   ansible.builtin.git:
     repo: https://github.com/neovim/neovim
     dest: "{{ code_dir }}/neovim"
-    version: release-0.13
+    version: master
     depth: 1
   become: true
   become_user: "{{ username }}"
+  register: nvim_repo
+
+- name: Read installed commit marker
+  ansible.builtin.slurp:
+    src: /usr/local/share/nvim-commit
+  register: nvim_installed_commit
+  failed_when: false
+  changed_when: false
+
+- name: Decide whether to rebuild
+  ansible.builtin.set_fact:
+    nvim_rebuild: >-
+      {{
+        nvim_repo.changed
+        or (nvim_installed_commit.content | default('')) | b64decode | trim != nvim_repo.after
+      }}
+
+- name: Remove old neovim build dir
+  ansible.builtin.file:
+    path: "{{ code_dir }}/neovim/build"
+    state: absent
+  become: true
+  become_user: "{{ username }}"
+  when: nvim_rebuild
+
+- name: Remove old installed neovim
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/local/bin/nvim
+    - /usr/local/share/nvim
+    - /usr/local/lib/nvim
+    - /usr/local/share/nvim-commit
+  when: nvim_rebuild
 
 - name: Build neovim (RelWithDebInfo)
   ansible.builtin.shell: |
@@ -32,9 +68,21 @@
     creates: "{{ code_dir }}/neovim/build/bin/nvim"
   become: true
   become_user: "{{ username }}"
+  when: nvim_rebuild
 
 - name: Install neovim system-wide
   ansible.builtin.shell: make install
   args:
     chdir: "{{ code_dir }}/neovim"
-    creates: /usr/local/bin/nvim
+  become: true
+  when: nvim_rebuild
+
+- name: Write installed commit marker
+  ansible.builtin.copy:
+    dest: /usr/local/share/nvim-commit
+    content: "{{ nvim_repo.after }}\n"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when: nvim_rebuild
