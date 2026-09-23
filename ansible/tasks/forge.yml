@@ -1,0 +1,340 @@
+---
+
+- name: Forge — install GNOME desktop + apps
+  ansible.builtin.apt:
+    name:
+      - ubuntu-desktop
+      - gdm3
+      - make
+      - gettext
+      - libglib2.0-bin
+      - git
+      - vlc
+    state: present
+
+- name: Forge — enable + start gdm3
+  ansible.builtin.systemd:
+    name: gdm.service
+    state: started
+    enabled: true
+
+- name: Forge — clone repo (main)
+  ansible.builtin.git:
+    repo: https://github.com/forge-ext/forge.git
+    dest: "{{ code_dir }}/forge"
+    version: main
+    depth: 1
+  become: true
+  become_user: "{{ username }}"
+
+- name: Forge — build + install extension
+  ansible.builtin.shell: |
+    set -e
+    cd "{{ code_dir }}/forge"
+    make build install
+  args:
+    executable: /bin/bash
+    creates: "{{ home_dir }}/.local/share/gnome-shell/extensions/forge@jmmaranan.com/metadata.json"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Forge — ensure user glib schema dir exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.local/share/glib-2.0/schemas"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Forge — install gschema for gsettings CLI
+  ansible.builtin.copy:
+    src: "{{ code_dir }}/forge/schemas/org.gnome.shell.extensions.forge.gschema.xml"
+    dest: "{{ home_dir }}/.local/share/glib-2.0/schemas/org.gnome.shell.extensions.forge.gschema.xml"
+    mode: "0644"
+    remote_src: true
+  become: true
+  become_user: "{{ username }}"
+
+- name: Forge — compile user glib schemas
+  ansible.builtin.command: glib-compile-schemas "{{ home_dir }}/.local/share/glib-2.0/schemas/"
+  changed_when: false
+  become: true
+  become_user: "{{ username }}"
+
+- name: Forge — enable extension
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} {{ item.value }}"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.shell", key: "disable-user-extensions", value: "false" }
+    - { schema: "org.gnome.shell", key: "enabled-extensions", value: "['forge@jmmaranan.com']" }
+
+- name: Forge — set tiling keybindings
+  ansible.builtin.shell: "gsettings set org.gnome.shell.extensions.forge {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { key: "window-focus-left",  value: "['<Super>h']" }
+    - { key: "window-focus-down",  value: "['<Super>j']" }
+    - { key: "window-focus-up",    value: "['<Super>k']" }
+    - { key: "window-focus-right", value: "['<Super>l']" }
+    - { key: "window-move-left",   value: "['<Super><Shift>h']" }
+    - { key: "window-move-down",   value: "['<Super><Shift>j']" }
+    - { key: "window-move-up",     value: "['<Super><Shift>k']" }
+    - { key: "window-move-right",  value: "['<Super><Shift>l']" }
+    - { key: "window-toggle-float", value: "['<Super>comma']" }
+
+- name: GNOME — window-manager keybindings (close, maximize, workspaces)
+  ansible.builtin.shell: "gsettings set org.gnome.desktop.wm.keybindings {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { key: "close",                  value: "['<Super><Shift>q']" }
+    - { key: "toggle-maximized",       value: "['<Super>f']" }
+    - { key: "switch-to-workspace-1",  value: "['<Super>1']" }
+    - { key: "switch-to-workspace-2",  value: "['<Super>2']" }
+    - { key: "switch-to-workspace-3",  value: "['<Super>3']" }
+    - { key: "switch-to-workspace-4",  value: "['<Super>4']" }
+    - { key: "switch-to-workspace-5",  value: "['<Super>5']" }
+    - { key: "switch-to-workspace-6",  value: "['<Super>6']" }
+    - { key: "switch-to-workspace-7",  value: "['<Super>7']" }
+    - { key: "switch-to-workspace-8",  value: "['<Super>8']" }
+    - { key: "switch-to-workspace-9",  value: "['<Super>9']" }
+    - { key: "switch-to-workspace-10", value: "['<Super>0']" }
+    - { key: "move-to-workspace-1",    value: "['<Super><Shift>1']" }
+    - { key: "move-to-workspace-2",    value: "['<Super><Shift>2']" }
+    - { key: "move-to-workspace-3",    value: "['<Super><Shift>3']" }
+    - { key: "move-to-workspace-4",    value: "['<Super><Shift>4']" }
+    - { key: "move-to-workspace-5",    value: "['<Super><Shift>5']" }
+    - { key: "move-to-workspace-6",    value: "['<Super><Shift>6']" }
+    - { key: "move-to-workspace-7",    value: "['<Super><Shift>7']" }
+    - { key: "move-to-workspace-8",    value: "['<Super><Shift>8']" }
+    - { key: "move-to-workspace-9",    value: "['<Super><Shift>9']" }
+    - { key: "move-to-workspace-10",   value: "['<Super><Shift>0']" }
+
+- name: GNOME — clear shell switch-to-application binds (conflict with workspace keys)
+  ansible.builtin.shell: "gsettings set org.gnome.shell.keybindings {{ item }} \"[]\""
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - switch-to-application-1
+    - switch-to-application-2
+    - switch-to-application-3
+    - switch-to-application-4
+    - switch-to-application-5
+    - switch-to-application-6
+    - switch-to-application-7
+    - switch-to-application-8
+    - switch-to-application-9
+
+- name: GNOME — static workspaces
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} {{ item.value }}"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.mutter", key: "workspaces-only-on-primary", value: "true" }
+    - { schema: "org.gnome.mutter", key: "dynamic-workspaces", value: "false" }
+    - { schema: "org.gnome.desktop.wm.preferences", key: "num-workspaces", value: "10" }
+
+- name: GNOME — screenshot + power + night-light + wallpaper
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.shell.keybindings", key: "show-screenshot-ui", value: "['<Super><Shift>s']" }
+    - { schema: "org.gnome.settings-daemon.plugins.power", key: "idle-dim", value: "false" }
+    - { schema: "org.gnome.settings-daemon.plugins.color", key: "night-light-enabled", value: "true" }
+    - { schema: "org.gnome.settings-daemon.plugins.color", key: "night-light-schedule-from", value: "19.0" }
+    - { schema: "org.gnome.settings-daemon.plugins.color", key: "night-light-schedule-to", value: "6.0" }
+    - { schema: "org.gnome.desktop.background", key: "picture-uri", value: "'file://{{ configs_repo }}/wallpapers/carnation-lily-lily-rose.jpg'" }
+    - { schema: "org.gnome.desktop.background", key: "picture-uri-dark", value: "'file://{{ configs_repo }}/wallpapers/zima-blue.png'" }
+
+- name: GNOME — disable ding (desktop icons) + ubuntu-dock
+  ansible.builtin.shell: >
+    gsettings set org.gnome.shell disabled-extensions
+    "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+
+- name: GNOME — register custom command keybindings list
+  ansible.builtin.shell: >
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings
+    "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/']"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+
+- name: GNOME — set each custom command keybinding
+  ansible.builtin.shell: |
+    gsettings set org.gnome.settings-daemon.plugins.media-keys:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ name "{{ item.name }}"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ command "{{ item.command }}"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ binding "{{ item.binding }}"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { id: custom0, name: "Terminal",   command: "kitty",                                       binding: "['<Super>Return']" }
+    - { id: custom1, name: "Browser",    command: "brave",                                       binding: "['<Super>b']" }
+    - { id: custom2, name: "Files",      command: "nautilus",                                    binding: "['<Super>e']" }
+    - { id: custom3, name: "Displays",   command: "gnome-control-center display",                binding: "['<Super>m']" }
+    - { id: custom4, name: "Lock",       command: "loginctl lock-session",                      binding: "['<Super><Shift>colon']" }
+    - { id: custom5, name: "Power off",  command: "gnome-session-quit --power-off --no-prompt", binding: "['<Super><Ctrl><Alt>q']" }
+    - { id: custom6, name: "Reboot",     command: "gnome-session-quit --reboot --no-prompt",    binding: "['<Super><Ctrl><Alt>r']" }
+
+- name: GNOME — GTK / interface settings
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.desktop.interface", key: "icon-theme", value: "Yaru" }
+    - { schema: "org.gnome.desktop.interface", key: "gtk-theme", value: "Adwaita" }
+    - { schema: "org.gnome.desktop.interface", key: "enable-animations", value: "false" }
+    - { schema: "org.gnome.desktop.interface", key: "clock-format", value: "'12h'" }
+    - { schema: "org.gnome.desktop.peripherals.keyboard", key: "delay", value: "150" }
+    - { schema: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['caps:none']" }
+
+- name: GNOME — default browser & terminal
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - "xdg-settings set default-web-browser brave-browser.desktop"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec 'kitty'"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''"
+
+- name: VLC — set as default video player
+  ansible.builtin.shell: "xdg-mime default vlc.desktop {{ item }}"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - video/mp4
+    - video/x-msvideo
+    - video/quicktime
+    - video/x-matroska
+    - video/webm
+    - video/x-flv
+    - video/x-ms-wmv
+    - video/mpeg
+    - video/ogg
+    - video/3gpp
+    - audio/mpeg
+    - audio/flac
+    - audio/x-wav
+    - audio/ogg
+
+- name: GNOME — register kitty as x-terminal-emulator alternative
+  ansible.builtin.shell: |
+    update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which kitty)" 50
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Nautilus open-any-terminal — install python3-nautilus dep
+  ansible.builtin.apt:
+    name: python3-nautilus
+    state: present
+
+- name: Nautilus open-any-terminal — remove conflicting gnome-terminal extension
+  ansible.builtin.apt:
+    name: nautilus-extension-gnome-terminal
+    state: absent
+    purge: true
+  failed_when: false
+
+- name: Nautilus open-any-terminal — check if installed
+  ansible.builtin.command: dpkg -s nautilus-extension-any-terminal
+  register: nat_dpkg
+  changed_when: false
+  failed_when: false
+
+- name: Nautilus open-any-terminal — download deb
+  ansible.builtin.get_url:
+    url: https://github.com/Stunkymonkey/nautilus-open-any-terminal/releases/download/0.8.3/nautilus-extension-any-terminal_0.8.3-1_all.deb
+    dest: /tmp/nautilus-extension-any-terminal.deb
+    mode: "0644"
+  when: nat_dpkg.rc != 0
+
+- name: Nautilus open-any-terminal — install deb
+  ansible.builtin.apt:
+    deb: /tmp/nautilus-extension-any-terminal.deb
+  when: nat_dpkg.rc != 0
+
+- name: Nautilus open-any-terminal — set kitty as default
+  ansible.builtin.shell: gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+
+- name: Nautilus open-any-terminal — restart nautilus
+  ansible.builtin.shell: nautilus -q
+  args:
+    executable: /bin/bash
+  changed_when: false
+  failed_when: false
+
+- name: Plymouth — install simple spinner theme
+  ansible.builtin.apt:
+    name: plymouth-theme-spinner
+    state: present
+
+- name: Plymouth — read current default theme
+  ansible.builtin.command: plymouth-set-default-theme
+  changed_when: false
+  register: plymouth_current_theme
+  failed_when: false
+
+- name: Plymouth — set spinner as default theme + rebuild initrd
+  ansible.builtin.command: plymouth-set-default-theme -R spinner
+  when: plymouth_current_theme.stdout | trim != 'spinner'
+
+- name: logind — lid-close = ignore
+  ansible.builtin.copy:
+    dest: /etc/systemd/logind.conf.d/lid.conf
+    mode: "0644"
+    content: |
+      [Login]
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalMonitors=ignore
+      HandleLidSwitchDocked=ignore

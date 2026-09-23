@@ -33,7 +33,7 @@ programs:
   - steam
   - discord
   - fontconfig
-  - hyprland
+  - forge
   - refree
   - local_scripts
   - vfio

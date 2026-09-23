@@ -1,17 +1,22 @@
 ---
 
-- name: Remove bloat
+- name: Remove Firefox snap
+  ansible.builtin.shell: snap remove --purge firefox
+  register: snap_firefox
+  changed_when: "'removed' in (snap_firefox.stdout | lower)"
+  failed_when: false
+
+- name: Remove Thunderbird snap
+  ansible.builtin.shell: snap remove --purge thunderbird
+  register: snap_thunderbird
+  changed_when: "'removed' in (snap_thunderbird.stdout | lower)"
+  failed_when: false
+
+- name: Remove bloat (transitional apt stubs)
   ansible.builtin.apt:
     name:
-      - apport
-      - apport-symptoms
-      - whoopsie
-      - whoopsie-preferences
-      - ubuntu-report
-      - ubuntu-pro-client
-      - landscape-client
-      - popularity-contest
-      - motd-news-config
+      - firefox
+      - thunderbird
     state: absent
     purge: true
   failed_when: false
