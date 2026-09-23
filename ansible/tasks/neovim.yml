@@ -84,6 +84,14 @@
   become: true
   when: nvim_rebuild
 
+- name: Ensure ~/.config exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
 - name: Link nvim config
   ansible.builtin.file:
     src: "{{ configs_repo }}/nvim"

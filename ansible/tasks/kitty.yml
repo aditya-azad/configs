@@ -73,6 +73,14 @@
     - kitty.desktop
     - kitty-open.desktop
 
+- name: Ensure ~/.config exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
 - name: Link kitty config
   ansible.builtin.file:
     src: "{{ configs_repo }}/kitty"
