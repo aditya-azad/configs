@@ -92,6 +92,8 @@ VM_FIRMWARE="${VM_FIRMWARE:-uefi}"
 VM_TPM="${VM_TPM:-0}"
 VM_GPU="${VM_GPU:-virtio}"
 VM_VFIO_DEVS="${VM_VFIO_DEVS:-}"
+VM_DISPLAY="${VM_DISPLAY:-auto}"        # auto → spice (virtio/std) | looking-glass (vfio)
+VM_IVSHMEM_SIZE="${VM_IVSHMEM_SIZE:-64}"   # MiB of Looking-Glass shared framebuffer
 VM_CPU="${VM_CPU:-host}"
 VM_ISO="${VM_ISO:-}"
 VM_DRIVERS_ISO="${VM_DRIVERS_ISO:-}"
@@ -159,8 +161,15 @@ run_qemu() {
     *) echo "qvm: VM_GPU must be 'virtio' | 'std' | 'vfio'" >&2; return 1 ;;
   esac
 
+  # display mode: 'auto' → spice (virtio/std), looking-glass (vfio).
+  case "$VM_DISPLAY" in
+    auto) if [ "$VM_GPU" = "vfio" ]; then VM_DISPLAY="looking-glass"; else VM_DISPLAY="spice"; fi ;;
+    spice|looking-glass) ;;
+    *) echo "qvm: VM_DISPLAY must be 'spice' | 'looking-glass' (got '$VM_DISPLAY')" >&2; return 1 ;;
+  esac
+
   local -a disp_args=()
-  if [ "$VM_GPU" != "vfio" ]; then
+  if [ "$VM_DISPLAY" = "spice" ]; then
     disp_args=( -spice "unix=on,path=$spice,disable-ticketing=on"
                 -device virtio-serial
                 -chardev "spicevmc,id=vdagent,name=vdagent"
@@ -170,8 +179,21 @@ run_qemu() {
     # attach the Spice display once the socket is up
     ( sleep 1; exec remote-viewer "spice+unix://$spice" ) >/dev/null 2>&1 &
   else
-    disp_args=( -display none )
-    echo "qvm: VM_GPU=vfio — no Spice display; attach with looking-glass-client" >&2
+    # Looking-Glass: shared-memory framebuffer between the guest (running
+    # the LG host app) and looking-glass-client on this host. (Re)create
+    # /dev/shm/looking-glass if missing/too small. Both qemu and lg-client
+    # run as the invoking user, so 0600 suffices.
+    local lgshm="/dev/shm/looking-glass"
+    local need=$(( VM_IVSHMEM_SIZE * 1024 * 1024 ))
+    if [ ! -f "$lgshm" ] || [ "$(stat -c %s "$lgshm" 2>/dev/null || echo 0)" -lt "$need" ]; then
+      truncate -s "${VM_IVSHMEM_SIZE}M" "$lgshm"
+    fi
+    chmod 600 "$lgshm" 2>/dev/null || true
+    disp_args=( -display none
+                -object "memory-backend-file,id=lgmem,size=${VM_IVSHMEM_SIZE}M,mem-path=$lgshm,share=on"
+                -device "ivshmem-plain,memdev=lgmem" )
+    ( sleep 1; exec looking-glass-client ) >/dev/null 2>&1 &
+    echo "qvm: VM_DISPLAY=looking-glass — ivshmem $lgshm (${VM_IVSHMEM_SIZE}M); launched looking-glass-client" >&2
   fi
 
   # reap swtpm + sockets when the guest powers off

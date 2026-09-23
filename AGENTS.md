@@ -9,3 +9,4 @@
 - bashrc is managed with idempotent blockinfile sections (marker `# {mark} ANSIBLE …`)
 - GTK color-scheme is toggled by the `st` theme-switch script, not set in ansible
 - scripts under ansible/files/packages/ are personal software
+- don't put comments anywhere unless asked by user

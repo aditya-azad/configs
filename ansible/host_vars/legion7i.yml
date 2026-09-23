@@ -36,6 +36,7 @@ programs:
   - hyprland
   - refree
   - local_scripts
+  - vfio
   - bashrc_common
   - bashrc_desktop
   - setup_hosts

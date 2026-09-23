@@ -11,6 +11,7 @@ local launcher    = "hyprlauncher"
 -- ── Environment ──────────────────────────────────────────────────────────────
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+-- AQ_DRM_DEVICES is NOT set here (see Windows VM setup)
 
 -- ── Autostart ────────────────────────────────────────────────────────────────
 hl.on("hyprland.start", function()
