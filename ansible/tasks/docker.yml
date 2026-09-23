@@ -21,16 +21,9 @@
     mode: "0644"
     force: true
 
-- name: Determine Ubuntu codename
-  ansible.builtin.shell: . /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}"
-  args:
-    executable: /bin/bash
-  register: _docker_codename
-  changed_when: false
-
 - name: Add Docker apt repo
   ansible.builtin.apt_repository:
-    repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ _docker_codename.stdout }} stable"
+    repo: "deb [arch={{ ansible_facts.architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ docker_apt_codename | default('noble') }} stable"
     filename: docker
     state: present
     update_cache: true
@@ -51,10 +44,10 @@
     dest: /tmp/docker-desktop-amd64.deb
     mode: "0644"
     force: false
-  when: ansible_architecture == "x86_64"
+  when: ansible_facts.architecture == "x86_64"
 
 - name: Install Docker Desktop
   ansible.builtin.apt:
     deb: /tmp/docker-desktop-amd64.deb
     state: present
-  when: ansible_architecture == "x86_64"
+  when: ansible_facts.architecture == "x86_64"
