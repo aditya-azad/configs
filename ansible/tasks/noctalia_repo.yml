@@ -1,0 +1,24 @@
+- name: Noctalia — download APT keyring package
+  ansible.builtin.get_url:
+    url: https://pkg.noctalia.dev/deb/nickh-archive-keyring.deb
+    dest: /tmp/nickh-archive-keyring.deb
+    mode: "0644"
+    force: true
+
+- name: Noctalia — install APT keyring
+  ansible.builtin.apt:
+    deb: /tmp/nickh-archive-keyring.deb
+    state: present
+
+- name: Noctalia — add APT repository (Ubuntu 26.04 resolute)
+  ansible.builtin.get_url:
+    url: https://pkg.noctalia.dev/deb/noctalia-resolute.sources
+    dest: /etc/apt/sources.list.d/noctalia-resolute.sources
+    mode: "0644"
+    force: true
+  register: noctalia_sources
+
+- name: Noctalia — update APT cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: noctalia_sources.changed

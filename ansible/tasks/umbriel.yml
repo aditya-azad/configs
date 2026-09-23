@@ -1,0 +1,32 @@
+- name: Umbriel — install compositor, portal, and X11 support
+  ansible.builtin.apt:
+    name:
+      - umbriel
+      - xdg-desktop-portal-umbriel
+      - xwayland-satellite
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Umbriel — ensure ~/.config/umbriel exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/umbriel"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Umbriel — link config.toml
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/noctalia/umbriel/config.toml"
+    dest: "{{ home_dir }}/.config/umbriel/config.toml"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"
+
+- name: Umbriel — validate config
+  ansible.builtin.command: umbriel validate
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false

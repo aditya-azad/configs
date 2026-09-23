@@ -1,0 +1,25 @@
+- name: Noctalia Greeter — install greeter, greetd, and AccountsService
+  ansible.builtin.apt:
+    name:
+      - noctalia-greeter
+      - greetd
+      - accountsservice
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Noctalia Greeter — disable competing display managers
+  ansible.builtin.shell: |
+    for dm in gdm3 gdm sddm lightdm lxdm; do
+      if systemctl list-unit-files "${dm}.service" 2>/dev/null | grep -q "${dm}.service"; then
+        systemctl disable --now "${dm}.service" 2>/dev/null || true
+      fi
+    done
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Noctalia Greeter — enable greetd
+  ansible.builtin.systemd:
+    name: greetd
+    enabled: true
