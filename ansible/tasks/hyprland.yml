@@ -8,21 +8,18 @@
     state: present
 
 # ── nwg-displays: GUI monitor arranger (read-only helper for kanshi) ────────
-- name: nwg-displays — install build & runtime deps
+- name: nwg-displays — install build & runtime deps (system python3)
   ansible.builtin.apt:
     name:
-      # Language-agnostic GObject-introspection typelibs + runtime libs (used by
-      # any python's `gi`, incl. the mise python). No system-python bindings are
-      # installed here: nwg-displays is built & run under mise-managed python.
       - gir1.2-gtk-3.0
       - gir1.2-gtk-layer-shell-0.1
       - libgtk-layer-shell0
-      # Headers needed to compile PyGObject (the `gi` module) for the mise python:
-      - libgirepository1.0-dev
-      - libcairo2-dev
-      - libglib2.0-dev
-      - pkg-config
-      - gobject-introspection
+      - python3-gi
+      - python3-i3ipc
+      - python3-build
+      - python3-installer
+      - python3-wheel
+      - python3-setuptools
       - git
     state: present
 
@@ -35,42 +32,15 @@
   become: true
   become_user: "{{ username }}"
 
-- name: nwg-displays — install python build tools & runtime deps (mise python)
+- name: nwg-displays — build & install wheel (system python3, root)
   ansible.builtin.shell: |
     set -e
-    eval "$({{ mise_bin }} activate bash)"
-    python -m pip install --upgrade \
-      build installer wheel setuptools \
-      pygobject i3ipc
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: nwg_pip
-  changed_when: "'Successfully installed' in (nwg_pip.stdout | default(''))"
-
-- name: nwg-displays — build & install wheel (mise python)
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
     cd "{{ code_dir }}/nwg-displays"
     rm -rf dist
-    python -m build --wheel --no-isolation
-    python -m installer dist/*.whl
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  creates: "{{ home_dir }}/.local/share/mise/installs/python/3.14/bin/nwg-displays"
-
-- name: nwg-displays — system integration (.desktop, icon, PATH symlink)
-  ansible.builtin.shell: |
-    set -e
-    cd "{{ code_dir }}/nwg-displays"
+    python3 -m build --wheel --no-isolation
+    python3 -m installer dist/*.whl
     install -Dm 644 -t /usr/share/applications nwg-displays.desktop
     install -Dm 644 -t /usr/share/pixmaps nwg-displays.svg
-    ln -sf "{{ home_dir }}/.local/share/mise/installs/python/3.14/bin/nwg-displays" \
-      /usr/local/bin/nwg-displays
   args:
     executable: /bin/bash
     creates: /usr/local/bin/nwg-displays

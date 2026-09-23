@@ -1,4 +1,8 @@
 ---
+# tasks/mise_runtimes.yml — install mise only. mise is used project-scoped
+# (via .mise.toml / .tool-versions in each project), NOT for global runtimes.
+# No global language pins here; bashrc_common.yml activates mise in shells so
+# `mise install` / per-project versions work on cd into a project.
 - name: Install mise (creates ~/.local/bin/mise)
   ansible.builtin.shell: |
     set -e
@@ -8,71 +12,3 @@
     executable: /bin/bash
   become: true
   become_user: "{{ username }}"
-
-- name: Pin python@3.14 as the global default (mise)
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
-    {{ mise_bin }} use -g python@3.14
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: mise_py
-  changed_when: >-
-    ('already' not in ((mise_py.stdout | default('')) ~ (mise_py.stderr | default(''))) | lower)
-    and ((mise_py.stdout | default('')) ~ (mise_py.stderr | default(''))) | trim != ''
-
-- name: Ensure pip is present and current for the global python
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
-    python -m pip install --upgrade pip
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: mise_pip_up
-  changed_when: "'Successfully installed' in (mise_pip_up.stdout | default(''))"
-
-- name: Pin node@lts as the global default (mise)
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
-    {{ mise_bin }} use -g node@lts
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: mise_node
-  changed_when: >-
-    ('already' not in ((mise_node.stdout | default('')) ~ (mise_node.stderr | default(''))) | lower)
-    and ((mise_node.stdout | default('')) ~ (mise_node.stderr | default(''))) | trim != ''
-
-- name: Pin go@latest as the global default (mise)
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
-    {{ mise_bin }} use -g go@latest
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: mise_go
-  changed_when: >-
-    ('already' not in ((mise_go.stdout | default('')) ~ (mise_go.stderr | default(''))) | lower)
-    and ((mise_go.stdout | default('')) ~ (mise_go.stderr | default(''))) | trim != ''
-
-- name: Pin uv@latest as the global default (mise)
-  ansible.builtin.shell: |
-    set -e
-    eval "$({{ mise_bin }} activate bash)"
-    {{ mise_bin }} use -g uv@latest
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ username }}"
-  register: mise_uv
-  changed_when: >-
-    ('already' not in ((mise_uv.stdout | default('')) ~ (mise_uv.stderr | default(''))) | lower)
-    and ((mise_uv.stdout | default('')) ~ (mise_uv.stderr | default(''))) | trim != ''

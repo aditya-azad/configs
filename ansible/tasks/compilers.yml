@@ -17,4 +17,5 @@
       - libfontconfig1-dev
       - libxcb-xfixes0-dev
       - libxkbcommon-dev
+      - python3-pip            # system pip (mise is project-scoped only)
     state: present

@@ -2,7 +2,9 @@
 # tasks/pi.yml — pi (pi.coding-agent) integration.
 # Mirrors configs-nix home/programs/pi.nix: sets default provider/model + the
 # pi extension packages in ~/.pi/agent/settings.json, preserving any other keys
-# pi itself has written (theme, thinking level, changelog, ...). Runs as the user.
+# pi itself has written (theme, thinking level, changelog, ...).
+# Node.js & npm are installed system-wide via apt (not mise) — pi is system
+# software, and mise is project-scoped only.
 
 - name: Ensure ~/.pi/agent exists
   ansible.builtin.file:
@@ -12,16 +14,20 @@
   become: true
   become_user: "{{ username }}"
 
-- name: Ensure pi is installed (npm global via mise)
+- name: Install Node.js & npm system-wide
+  ansible.builtin.apt:
+    name:
+      - nodejs
+      - npm
+    state: present
+
+- name: Ensure pi is installed (npm global, system node)
   ansible.builtin.shell: |
     set -e
-    eval "$({{ mise_bin }} activate bash)"
     npm install -g @earendil-works/pi-coding-agent
   args:
     executable: /bin/bash
-    creates: "{{ home_dir }}/.local/share/mise/installs/node/latest/bin/pi"
-  become: true
-  become_user: "{{ username }}"
+    creates: /usr/bin/pi
 
 - name: Merge pi settings (provider/model/packages), preserving the rest
   ansible.builtin.shell: |

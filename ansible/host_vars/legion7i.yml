@@ -32,7 +32,6 @@ programs:
   - nvtop
   - texlab
   - neovim
-  - python_lsp
   - kitty
   - ros2
   - docker
