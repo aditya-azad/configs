@@ -1,6 +1,7 @@
 ---
 
 username: azada
+configs_repo: "{{ playbook_dir | dirname | dirname }}"
 git_full_name: "Aditya Azad"
 git_email: "adityaazad121@gmail.com"
 

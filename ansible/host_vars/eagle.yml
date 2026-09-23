@@ -1,7 +1,6 @@
 ---
 
 username: eagle7
-configs_repo: "{{ home_dir }}/code/configs"
 git_full_name: "Aditya Azad"
 git_email: "adityaazad121@gmail.com"
 
