@@ -45,8 +45,6 @@
       alias z='zellij'
       alias tmux='zellij'
       alias scp='rsync -avP'
-      alias du='dust'
-      alias ls='eza'
 
 - name: Common bashrc — editor
   ansible.builtin.blockinfile:

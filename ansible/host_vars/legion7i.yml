@@ -25,9 +25,7 @@ programs:
   - keepass2
   - xournalpp
   - calibre
-  - du_dust
   - ripgrep
-  - eza
   - brave
   - nvidia_driver
   - latex

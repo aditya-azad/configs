@@ -14,9 +14,7 @@ programs:
   - net_tools
   - chrony
   - zellij
-  - du_dust
   - ripgrep
-  - eza
   - python_lsp
   - pytorch
   - neovim
