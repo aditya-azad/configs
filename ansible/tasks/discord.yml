@@ -1,5 +1,16 @@
 ---
 
+- name: Ensure snapd is installed
+  ansible.builtin.apt:
+    name: snapd
+    state: present
+
+- name: Ensure snapd socket is enabled and active
+  ansible.builtin.systemd:
+    name: snapd.socket
+    enabled: true
+    state: started
+
 - name: Install discord via snap
   community.general.snap:
     name: discord

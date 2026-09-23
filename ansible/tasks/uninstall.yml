@@ -1,6 +1,6 @@
 ---
 
-- name: Remove telemetry / crash-reporting / snap (apt, purge)
+- name: Remove bloat
   ansible.builtin.apt:
     name:
       - apport
@@ -12,8 +12,6 @@
       - landscape-client
       - popularity-contest
       - motd-news-config
-      - snapd
-      - fwupd-snap
     state: absent
     purge: true
   failed_when: false
