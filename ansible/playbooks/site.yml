@@ -25,15 +25,6 @@
       ansible.builtin.set_fact:
         user_uid: "{{ user_uid_res.stdout }}"
 
-    - name: Ensure configs repo exists at {{ configs_repo }}
-      ansible.builtin.git:
-        repo: "https://github.com/aditya-azad/configs.git"
-        dest: "{{ configs_repo }}"
-        version: main
-      become: true
-      become_user: "{{ username }}"
-      tags: always
-
   tasks:
     - name: Run selected programs
       ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/{{ item }}.yml"
