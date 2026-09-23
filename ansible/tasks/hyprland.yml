@@ -83,6 +83,7 @@
     - name: Ensure /etc/sudoers includes /etc/sudoers.d
       ansible.builtin.lineinfile:
         path: /etc/sudoers
+        regexp: '^#*@includedir\s+/etc/sudoers\.d\s*$'
         line: "@includedir /etc/sudoers.d"
         state: present
         validate: /usr/sbin/visudo -cf %s
@@ -97,10 +98,31 @@
       when: not hyprland_bin.stat.exists
 
     - name: Verify managed user has non-interactive sudo
-      ansible.builtin.command: sudo -n true
-      become: true
-      become_user: "{{ username }}"
-      changed_when: false
+      block:
+        - name: Check sudo works as managed user
+          ansible.builtin.command: sudo -v
+          become: true
+          become_user: "{{ username }}"
+          changed_when: false
+      rescue:
+        - name: Dump sudo diagnostics (as root)
+          ansible.builtin.shell: |
+            echo "===== /etc/sudoers include lines ====="
+            grep -nE 'includedir|@include' /etc/sudoers || true
+            echo "===== /etc/sudoers.d listing ====="
+            ls -la /etc/sudoers.d/ || true
+            echo "===== drop-in content ====="
+            cat /etc/sudoers.d/ansible-hyprbuntu 2>&1 || true
+            echo "===== sudo -l -U {{ username }} ====="
+            sudo -l -U {{ username }} 2>&1 || true
+            echo "===== visudo -c ====="
+            visudo -c 2>&1 || true
+          args:
+            executable: /bin/bash
+          changed_when: false
+        - name: Fail — managed user lacks non-interactive sudo
+          ansible.builtin.fail:
+            msg: "Managed user '{{ username }}' still cannot run 'sudo -n' non-interactively. See diagnostic output above."
       when: not hyprland_bin.stat.exists
 
     - name: Run hyprbuntu installer (build from source, gcc-16)
