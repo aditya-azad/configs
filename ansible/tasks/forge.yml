@@ -314,21 +314,6 @@
   changed_when: false
   failed_when: false
 
-- name: Plymouth — install simple spinner theme
-  ansible.builtin.apt:
-    name: plymouth-theme-spinner
-    state: present
-
-- name: Plymouth — read current default theme
-  ansible.builtin.command: plymouth-set-default-theme
-  changed_when: false
-  register: plymouth_current_theme
-  failed_when: false
-
-- name: Plymouth — set spinner as default theme + rebuild initrd
-  ansible.builtin.command: plymouth-set-default-theme -R spinner
-  when: plymouth_current_theme.stdout | trim != 'spinner'
-
 - name: logind — lid-close = ignore
   ansible.builtin.copy:
     dest: /etc/systemd/logind.conf.d/lid.conf
