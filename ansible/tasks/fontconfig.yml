@@ -41,33 +41,14 @@
   become: true
   become_user: "{{ username }}"
 
-- name: Unzip FiraCode Nerd Font to /tmp/firacode (on target)
+- name: Unzip FiraCode Nerd Font into user fonts dir
   ansible.builtin.unarchive:
     src: "{{ configs_repo }}/font/FiraCode.zip"
-    dest: /tmp/firacode
+    dest: "{{ home_dir }}/.local/share/fonts"
     remote_src: true
-    creates: /tmp/firacode
+    creates: "{{ home_dir }}/.local/share/fonts/FiraCodeNerdFont-Regular.ttf"
   become: true
   become_user: "{{ username }}"
-
-- name: Find extracted font files
-  ansible.builtin.find:
-    paths: /tmp/firacode
-    file_type: file
-  register: firacode_files
-  become: true
-  become_user: "{{ username }}"
-
-- name: Copy FiraCode Nerd Font files into user fonts dir
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: "{{ home_dir }}/.local/share/fonts/{{ item.path | basename }}"
-    remote_src: true
-    mode: "0644"
-    force: true
-  become: true
-  become_user: "{{ username }}"
-  loop: "{{ firacode_files.files }}"
 
 - name: Refresh font cache
   ansible.builtin.command: fc-cache -f -v
