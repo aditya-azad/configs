@@ -27,7 +27,6 @@ programs:
   - local_scripts
   - bashrc_common
   - bashrc_jetson
-  - git
   - pi
 
 # Jetson-specific

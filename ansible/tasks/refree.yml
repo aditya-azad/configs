@@ -4,9 +4,12 @@
 
 - name: Clone refree
   ansible.builtin.git:
-    repo: https://github.com/aditya-azad/refree.git
+    repo: "git@github.com:aditya-azad/refree.git"
     dest: "{{ code_dir }}/refree"
     update: true
+    accept_hostkey: true
+    key_file: "{{ home_dir }}/.ssh/id_ed25519"
+    ssh_opts: "-o StrictHostKeyChecking=accept-new"
   become: true
   become_user: "{{ username }}"
 

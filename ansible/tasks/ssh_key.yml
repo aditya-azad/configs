@@ -1,0 +1,49 @@
+---
+# tasks/ssh_key.yml — ensure the user's ed25519 SSH key exists, print the
+# public key so it can be pasted into GitHub, and pause until the user has
+# added it and tells Ansible to continue. Runs as a pre-task before every
+# program task, so private SSH clones (e.g. refree) work later in the run.
+#
+# Idempotent: if the key already exists, nothing is generated and the run
+# continues without prompting.
+
+- name: Ensure ~/.ssh exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.ssh"
+    state: directory
+    mode: "0700"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+
+- name: Generate ed25519 SSH key (if absent)
+  ansible.builtin.shell: >
+    ssh-keygen -t ed25519 -C "{{ git_email }}"
+    -f {{ home_dir }}/.ssh/id_ed25519 -N ""
+  args:
+    creates: "{{ home_dir }}/.ssh/id_ed25519"
+  become: true
+  become_user: "{{ username }}"
+  register: ssh_keygen
+
+- name: Read public key
+  ansible.builtin.slurp:
+    src: "{{ home_dir }}/.ssh/id_ed25519.pub"
+  register: ssh_pubkey
+
+- name: Show public key to add to GitHub
+  ansible.builtin.debug:
+    msg: >-
+      A new SSH key was generated for '{{ username }}'
+      ({{ home_dir }}/.ssh/id_ed25519). Add this public key to GitHub:
+      Settings → SSH and GPG keys → New SSH key.
+
+      {{ ssh_pubkey.content | b64decode | trim }}
+
+  when: ssh_keygen.changed
+
+- name: Wait for user to add the key to GitHub
+  ansible.builtin.pause:
+    prompt: >-
+      Paste the public key above into GitHub, then press Enter to continue
+      (Ctrl+C to abort).
+  when: ssh_keygen.changed

@@ -25,6 +25,14 @@
       ansible.builtin.set_fact:
         user_uid: "{{ user_uid_res.stdout }}"
 
+    - name: Ensure SSH key exists + prompt for GitHub access
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/ssh_key.yml"
+      tags: always
+
+    - name: Configure git identity + ssh-agent (before any clone)
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/git.yml"
+      tags: always
+
   tasks:
     - name: Run selected programs
       ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/{{ item }}.yml"

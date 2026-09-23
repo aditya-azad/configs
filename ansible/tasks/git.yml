@@ -1,6 +1,7 @@
 ---
-# tasks/git.yml — git identity + SSH key. Runs as the user.
-# Identity comes from host_vars (git_full_name / git_email).
+# tasks/git.yml — git identity + ssh-agent. Runs as the user.
+# Identity comes from host_vars (git_full_name / git_email). The SSH key
+# itself is created earlier by tasks/ssh_key.yml (pre-task in site.yml).
 
 - name: Configure git user.name
   community.general.git_config:
@@ -15,22 +16,6 @@
     name: user.email
     value: "{{ git_email }}"
     scope: global
-  become: true
-  become_user: "{{ username }}"
-
-- name: Ensure ~/.ssh exists
-  ansible.builtin.file:
-    path: "{{ home_dir }}/.ssh"
-    state: directory
-    mode: "0700"
-  become: true
-  become_user: "{{ username }}"
-
-- name: Generate ed25519 SSH key (if absent)
-  ansible.builtin.shell: |
-    ssh-keygen -t ed25519 -C "{{ git_email }}" -f {{ home_dir }}/.ssh/id_ed25519 -N ""
-  args:
-    creates: "{{ home_dir }}/.ssh/id_ed25519"
   become: true
   become_user: "{{ username }}"
 

@@ -50,7 +50,6 @@ programs:
   - bashrc_desktop
   - setup_hosts
   - bizon
-  - git
   - pi
 
 # Desktop-specific
