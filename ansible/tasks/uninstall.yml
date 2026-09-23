@@ -1,6 +1,4 @@
 ---
-# tasks/uninstall.yml — strip telemetry / crash-reporting / snap from the
-# base install so only selected programs remain.
 
 - name: Remove telemetry / crash-reporting / snap (apt, purge)
   ansible.builtin.apt:

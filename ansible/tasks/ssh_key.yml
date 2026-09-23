@@ -1,11 +1,4 @@
 ---
-# tasks/ssh_key.yml — ensure the user's ed25519 SSH key exists, print the
-# public key so it can be pasted into GitHub, and pause until the user has
-# added it and tells Ansible to continue. Runs as a pre-task before every
-# program task, so private SSH clones (e.g. refree) work later in the run.
-#
-# Idempotent: if the key already exists, nothing is generated and the run
-# continues without prompting.
 
 - name: Ensure ~/.ssh exists
   ansible.builtin.file:

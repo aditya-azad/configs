@@ -1,6 +1,4 @@
 ---
-# tasks/singularity.yml — SingularityCE 4.3.0 built from source. Runs as the user.
-# Idempotent: guarded by /usr/local/bin/singularity.
 
 - name: Install singularity build/runtime deps
   ansible.builtin.apt:

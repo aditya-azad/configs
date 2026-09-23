@@ -1,5 +1,4 @@
 ---
-# tasks/krita.yml
 
 - name: Install krita
   ansible.builtin.apt:

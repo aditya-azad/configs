@@ -1,7 +1,4 @@
 ---
-# tasks/git.yml — git identity + ssh-agent. Runs as the user.
-# Identity comes from host_vars (git_full_name / git_email). The SSH key
-# itself is created earlier by tasks/ssh_key.yml (pre-task in site.yml).
 
 - name: Configure git user.name
   community.general.git_config:

@@ -1,4 +1,4 @@
-# ── apt deps ──────────────────────────────────────────────────────────────────
+# apt deps
 - name: Local scripts — install common deps
   ansible.builtin.apt:
     name:
@@ -20,7 +20,7 @@
     state: present
   when: ansible_architecture == "x86_64"
 
-# ── dirs ──────────────────────────────────────────────────────────────────────
+# dirs
 - name: Ensure ~/.local/{bin,lib,share} and ~/.vms exist
   ansible.builtin.file:
     path: "{{ item }}"
@@ -34,7 +34,7 @@
     - "{{ home_dir }}/.local/share"
     - "{{ home_dir }}/.vms"
 
-# ── st (theme-switch) ────────────────────────────────────────────────────────
+# st
 - name: Deploy theme-switch dir to ~/.local/share/theme-switch
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../files/packages/theme-switch/"
@@ -59,7 +59,7 @@
   become: true
   become_user: "{{ username }}"
 
-# ── db (distrobox) ───────────────────────────────────────────────────────────
+# distrobox
 - name: Deploy distrobox dir to ~/.local/share/distrobox
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../files/packages/distrobox/"
@@ -84,7 +84,7 @@
   become: true
   become_user: "{{ username }}"
 
-# ── wpi-vpn ───────────────────────────────────────────────────────────────────
+# wpi-vpn
 - name: Deploy wpi-vpn to ~/.local/bin
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../files/packages/wpi-vpn/wpi-vpn"
@@ -93,7 +93,7 @@
   become: true
   become_user: "{{ username }}"
 
-# ── ghclone ───────────────────────────────────────────────────────────────────
+# ghclone
 - name: Deploy ghclone to ~/.local/bin
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../files/packages/ghclone/ghclone"
@@ -102,7 +102,7 @@
   become: true
   become_user: "{{ username }}"
 
-# ── qvm + windows VM spec ─────────────────────────────────────────────────────
+# qvm + windows VM spec
 - name: Deploy qvm to ~/.local/bin
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../files/packages/qvm/qvm"
@@ -119,7 +119,7 @@
   become: true
   become_user: "{{ username }}"
 
-# ── venvup + rdid (sourced helpers) ───────────────────────────────────────────
+# venvup + rdid
 - name: Deploy venvup to ~/.local/lib
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../files/packages/venvup/venvup"
@@ -136,7 +136,7 @@
   become: true
   become_user: "{{ username }}"
 
-# ── qvm OVMF env (bashrc) ─────────────────────────────────────────────────────
+# qvm OVMF env
 - name: qvm OVMF firmware paths (bashrc)
   ansible.builtin.blockinfile:
     path: "{{ bashrc_file }}"

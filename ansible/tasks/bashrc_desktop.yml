@@ -1,6 +1,4 @@
 ---
-# tasks/bashrc_desktop.yml — desktop-specific shell config (legion7i).
-# Idempotent via blockinfile; the rdid function uses fixed markers.
 
 - name: Desktop bashrc — prompt
   ansible.builtin.blockinfile:
@@ -15,13 +13,6 @@
     marker: "# {mark} ANSIBLE desktop-directories"
     block: |
       alias cdw='cd ~/database/workspace'
-
-- name: Desktop bashrc — utils
-  ansible.builtin.blockinfile:
-    path: "{{ bashrc_file }}"
-    marker: "# {mark} ANSIBLE desktop-utils"
-    block: |
-      alias cat='bat'
 
 - name: Desktop bashrc — documents
   ansible.builtin.blockinfile:

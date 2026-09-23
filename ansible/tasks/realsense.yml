@@ -1,6 +1,4 @@
 ---
-# tasks/realsense.yml — librealsense v2.56.3 udev rules (no firmware patch).
-# Idempotent: clone guarded by dest presence; udev script is safe to re-run.
 
 - name: Install v4l-utils
   ansible.builtin.apt:

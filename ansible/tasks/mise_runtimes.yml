@@ -1,8 +1,4 @@
 ---
-# tasks/mise_runtimes.yml — install mise only. mise is used project-scoped
-# (via .mise.toml / .tool-versions in each project), NOT for global runtimes.
-# No global language pins here; bashrc_common.yml activates mise in shells so
-# `mise install` / per-project versions work on cd into a project.
 - name: Install mise (creates ~/.local/bin/mise)
   ansible.builtin.shell: |
     set -e

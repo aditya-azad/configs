@@ -1,5 +1,4 @@
 ---
-# tasks/calibre.yml
 
 - name: Install calibre
   ansible.builtin.apt:

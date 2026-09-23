@@ -1,5 +1,4 @@
 ---
-# tasks/net_tools.yml
 
 - name: Install net-tools
   ansible.builtin.apt:

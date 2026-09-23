@@ -1,6 +1,4 @@
 ---
-# tasks/bashrc_common.yml — common shell aliases/env for all hosts.
-# Idempotent: every contribution is a marked blockinfile block in ~/.bashrc.
 
 - name: Common bashrc — system shortcuts
   ansible.builtin.blockinfile:

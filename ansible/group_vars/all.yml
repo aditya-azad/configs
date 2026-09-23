@@ -1,28 +1,16 @@
 ---
-# Shared variables for every host.
 
-# Target user's home directory. The playbook is run as root
-# (`sudo ansible-playbook ...`), so ansible_env.HOME would be /root;
-# this resolves to the real managed user's home instead.
 home_dir: "{{ '/home/' + username }}"
 
-# Where the configs live on the target host. The playbook is run from
-# inside the configs repo itself (ansible/playbooks/site.yml), so the
-# repo root is two levels up from the playbook directory.
 configs_repo: "{{ playbook_dir }}/../.."
 
-# Code/build workspace.
 code_dir: "{{ home_dir }}/code"
 
-# Local software prefix (mirrors the original ~/.software usage).
 software_dir: "{{ home_dir }}/.software"
 
-# Bashrc file managed with idempotent blockinfile sections.
 bashrc_file: "{{ home_dir }}/.bashrc"
 
-# Mise
 mise_bin: "{{ home_dir }}/.local/bin/mise"
 
-# Cargo
 cargo_env: "{{ home_dir }}/.cargo/env"
 cargo_bin: "{{ home_dir }}/.cargo/bin"

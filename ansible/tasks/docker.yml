@@ -1,5 +1,4 @@
 ---
-# tasks/docker.yml — Docker CE + buildx/compose + Docker Desktop (desktop, x86_64).
 
 - name: Install docker prerequisites
   ansible.builtin.apt:

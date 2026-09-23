@@ -1,5 +1,4 @@
 ---
-# tasks/discord.yml
 
 - name: Install discord via snap
   community.general.snap:

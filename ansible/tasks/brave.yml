@@ -1,10 +1,4 @@
 ---
-# tasks/brave.yml — Brave browser + managed policies (bookmarks, extensions,
-# Brave-specific toggles). Mirrors configs-nix home/programs/brave.nix.
-#
-# Policies land in /etc/brave/policies/managed/ (Chrome/Brave enterprise policy).
-# ManagedBookmarks + BookmarkBarEnabled + BrowserSignin + Brave toggles +
-# ExtensionInstallForcelist (Vimium, Dark Reader, Zotero Connector).
 
 - name: Install Brave (creates /usr/bin/brave-browser)
   ansible.builtin.shell: |

@@ -1,5 +1,4 @@
 ---
-# tasks/heif.yml — HEIC picture support.
 
 - name: Install HEIF support packages
   ansible.builtin.apt:

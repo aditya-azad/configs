@@ -1,26 +1,18 @@
 ---
-# Lenovo Legion 7 16IAX7 (Gen 7, model 82TD)
 
-# Identity
 username: azada
 git_full_name: "Aditya Azad"
 git_email: "adityaazad121@gmail.com"
 
-# Ordered list of independent program task files (tasks/<name>.yml).
-# Order matters: compilers/registry setup before cargo installs, etc.
 programs:
   - uninstall
   - upgrade
   - laptop_base
   - compilers
   - mise_runtimes
-  - rust
   - net_tools
   - chrony
   - zellij
-  - bat
-  - bacon
-  - cargo_info
   - heif
   - krita
   - keepass2
@@ -42,8 +34,7 @@ programs:
   - discord
   - fontconfig
   - hyprland
-  - symlinks_common
-  - symlinks_desktop
+  - refree
   - local_scripts
   - bashrc_common
   - bashrc_desktop
@@ -51,10 +42,7 @@ programs:
   - bizon
   - pi
 
-# Desktop-specific
 ros_domain_id: 0
 
-# NVIDIA driver line (CUDA itself is not installed on the host; PyTorch
-# wheels bundle the runtime, and CUDA-C compilation lives in distrobox).
 nvidia_driver_version: 580
 px4_path: "{{ home_dir }}/code/PX4-Autopilot"

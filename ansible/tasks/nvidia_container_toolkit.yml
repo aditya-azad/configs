@@ -1,6 +1,4 @@
 ---
-# tasks/nvidia_container_toolkit.yml — NVIDIA Container Toolkit (jetson, pinned 1.17.8-1).
-# Idempotent: apt keyring + repo + package state=present.
 
 - name: Install curl
   ansible.builtin.apt:

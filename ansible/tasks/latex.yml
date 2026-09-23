@@ -1,5 +1,4 @@
 ---
-# tasks/latex.yml
 
 - name: Install LaTeX
   ansible.builtin.apt:

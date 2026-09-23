@@ -1,5 +1,4 @@
 ---
-# tasks/zellij.yml — cargo install zellij. Runs as the user.
 
 - name: Install zellij via cargo
   ansible.builtin.shell: |
@@ -9,5 +8,14 @@
   args:
     executable: /bin/bash
     creates: "{{ cargo_bin }}/zellij"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Link zellij config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/zellij"
+    dest: "{{ home_dir }}/.config/zellij"
+    state: link
+    force: true
   become: true
   become_user: "{{ username }}"

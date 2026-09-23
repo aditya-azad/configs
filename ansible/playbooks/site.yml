@@ -1,14 +1,4 @@
 ---
-# Site playbook. Each host runs only the programs it selected (host_vars `programs`).
-#
-#   sudo ansible-playbook playbooks/site.yml                  # all hosts
-#   sudo ansible-playbook playbooks/site.yml -l legion7i      # desktop only
-#   sudo ansible-playbook playbooks/site.yml -l eagle         # jetson only
-#   sudo ansible-playbook playbooks/site.yml --tags neovim    # single program (tagged)
-#   sudo ansible-playbook playbooks/site.yml --skip-tags upgrade
-#
-# Each entry in `programs` maps to tasks/<name>.yml, which installs and configures
-# exactly that piece of software, idempotently.
 
 - name: Provision host according to its selected programs
   hosts: workstations
@@ -31,6 +21,10 @@
 
     - name: Configure git identity + ssh-agent (before any clone)
       ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/git.yml"
+      tags: always
+
+    - name: Install rustup (prerequisite for cargo-based programs)
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/rust.yml"
       tags: always
 
   tasks:

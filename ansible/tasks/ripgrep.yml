@@ -1,5 +1,4 @@
 ---
-# tasks/ripgrep.yml — cargo install ripgrep. Runs as the user.
 
 - name: Install ripgrep via cargo
   ansible.builtin.shell: |

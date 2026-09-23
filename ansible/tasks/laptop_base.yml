@@ -1,6 +1,4 @@
 ---
-# tasks/laptop_base.yml — laptop runtime that Ubuntu Desktop would have
-# provided but a minimal Ubuntu Server base does not.
 
 - name: Laptop base — install runtime
   ansible.builtin.apt:

@@ -1,6 +1,4 @@
 ---
-# tasks/bashrc_jetson.yml — jetson-specific shell config (eagle).
-# Idempotent via blockinfile/lineinfile.
 
 - name: Jetson bashrc — prompt
   ansible.builtin.blockinfile:

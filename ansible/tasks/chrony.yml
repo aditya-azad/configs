@@ -1,5 +1,4 @@
 ---
-# tasks/chrony.yml
 
 - name: Install chrony
   ansible.builtin.apt:

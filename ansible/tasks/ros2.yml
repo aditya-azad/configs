@@ -1,5 +1,4 @@
 ---
-# tasks/ros2.yml — ROS 2 Humble desktop + dev tools (desktop, x86_64).
 
 - name: Install software-properties-common
   ansible.builtin.apt:

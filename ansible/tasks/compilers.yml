@@ -1,5 +1,4 @@
 ---
-# tasks/compilers.yml — build toolchain apt dependencies shared by desktop & jetson.
 
 - name: Install compiler/build dependencies
   ansible.builtin.apt:
@@ -17,5 +16,5 @@
       - libfontconfig1-dev
       - libxcb-xfixes0-dev
       - libxkbcommon-dev
-      - python3-pip            # system pip (mise is project-scoped only)
+      - python3-pip
     state: present

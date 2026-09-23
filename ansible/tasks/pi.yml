@@ -1,10 +1,4 @@
 ---
-# tasks/pi.yml — pi (pi.coding-agent) integration.
-# Mirrors configs-nix home/programs/pi.nix: sets default provider/model + the
-# pi extension packages in ~/.pi/agent/settings.json, preserving any other keys
-# pi itself has written (theme, thinking level, changelog, ...).
-# Node.js & npm are installed system-wide via apt (not mise) — pi is system
-# software, and mise is project-scoped only.
 
 - name: Ensure ~/.pi/agent exists
   ansible.builtin.file:

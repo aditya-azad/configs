@@ -1,5 +1,4 @@
 ---
-# tasks/keepass2.yml
 
 - name: Install keepass2
   ansible.builtin.apt:

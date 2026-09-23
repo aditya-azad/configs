@@ -1,5 +1,4 @@
 ---
-# tasks/nvtop.yml
 
 - name: Install nvtop
   ansible.builtin.apt:

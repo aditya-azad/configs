@@ -1,6 +1,4 @@
 ---
-# tasks/kitty.yml — install kitty terminal via official installer. Runs as the user.
-# Idempotent: guarded by ~/.local/kitty.app/bin/kitty.
 
 - name: Ensure ~/.local/bin exists
   ansible.builtin.file:
@@ -74,3 +72,12 @@
   loop:
     - kitty.desktop
     - kitty-open.desktop
+
+- name: Link kitty config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/kitty"
+    dest: "{{ home_dir }}/.config/kitty"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"

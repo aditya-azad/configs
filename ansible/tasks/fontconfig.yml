@@ -1,6 +1,4 @@
 ---
-# tasks/fontconfig.yml — proper fontconfig defaults + Noto + FiraCode Nerd Font.
-# Installs the font packages, drops a managed fontconfig preset, and refreshes cache.
 
 - name: Install font packages
   ansible.builtin.apt:

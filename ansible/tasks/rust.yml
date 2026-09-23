@@ -1,5 +1,4 @@
 ---
-# tasks/rust.yml — rustup + cargo env. Runs as the user.
 
 - name: Install rustup (creates ~/.cargo/bin/cargo)
   ansible.builtin.shell: |

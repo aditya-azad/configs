@@ -1,6 +1,4 @@
 ---
-# tasks/nvliblist.yml — extend Singularity's nvliblist.conf with Jetson libs.
-# Idempotent: blockinfile with a fixed marker appends the library list once.
 
 - name: Ensure singularity config dir exists
   ansible.builtin.file:

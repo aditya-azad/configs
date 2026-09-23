@@ -1,13 +1,11 @@
 ---
-# ── Runtime helpers hyprbuntu does not install ───────────────────────────────
 - name: Hyprland — install runtime helpers
   ansible.builtin.apt:
     name:
-      - wlsunset   # night-light helper
-      - kanshi      # per-setup monitor profiles (auto-switches on hotplug)
+      - wlsunset
+      - kanshi
     state: present
 
-# ── nwg-displays: GUI monitor arranger (read-only helper for kanshi) ────────
 - name: nwg-displays — install build & runtime deps (system python3)
   ansible.builtin.apt:
     name:
@@ -45,29 +43,27 @@
     executable: /bin/bash
     creates: /usr/local/bin/nwg-displays
 
-# ── Recommended Wayland/Hyprland desktop apps ───────────────────────────────
 - name: Hyprland — install recommended desktop apps
   ansible.builtin.apt:
     name:
-      - thunar                 # file manager (replaces nautilus)
-      - thunar-archive-plugin  # thunar: extract/create archives
-      - thunar-volman          # thunar: removable media
-      - file-roller            # archive backend for thunar-archive-plugin
-      - gvfs                   # trash / mounts / recent in thunar
+      - thunar
+      - thunar-archive-plugin
+      - thunar-volman
+      - file-roller
+      - gvfs
       - gvfs-backends
-      - mpv                    # video player (replaces vlc/totem)
-      - imv                    # image viewer (replaces eog) — Wayland-native
-      - zathura                # document viewer (replaces evince/papers)
-      - zathura-pdf-poppler    # zathura: PDF backend
-      - zathura-djvu           # zathura: DjVu backend
-      - zathura-cb             # zathura: comic-book backend
-      - qalculate-gtk          # calculator (replaces gnome-calculator)
-      - blueman                # bluetooth (replaces gnome-bluetooth)
-      - pavucontrol            # audio mixer (replaces gnome sound settings)
-      - brightnessctl          # backlight control (replaces gnome power)
+      - mpv
+      - imv
+      - zathura
+      - zathura-pdf-poppler
+      - zathura-djvu
+      - zathura-cb
+      - qalculate-gtk
+      - blueman
+      - pavucontrol
+      - brightnessctl
     state: present
 
-# ── Hyprland + ecosystem: build from source via hyprbuntu (Ubuntu 26.04) ────
 - name: Hyprland — download hyprbuntu installer
   ansible.builtin.get_url:
     url: https://gitlab.com/kralos/hyprbuntu/-/raw/main/hyprbuntu.sh
@@ -91,17 +87,16 @@
     DISABLE_CONFIRM: "true"
     HYPRIDLE_SETUP: "true"
     HYPRLOCK_SETUP: "true"
-    HYPRPAPER_SETUP: "true"       # wallpaper daemon; config written by `st` setter
+    HYPRPAPER_SETUP: "true"
     HYPRSHOT_SETUP: "true"
     NOTIFICATION_DAEMON_PREF: "swaync"
-    NVIDIA_SETUP: "true"          # legion7i has NVIDIA; hyprbuntu auto-detects too
+    NVIDIA_SETUP: "true"
     SWAYOSD_SETUP: "true"
-    THEME_PREF: "none"            # theme is toggled manually via `st`, not pinned here
-    THUNAR_SETUP: "false"          # thunar installed idempotently via apt below
-    TUIGREET_SETUP: "true"         # greetd + tuigreet login manager (replaces GDM)
+    THEME_PREF: "none"
+    THUNAR_SETUP: "false"
+    TUIGREET_SETUP: "true"
     WAYBAR_SETUP: "true"
 
-# ── Appearance (gsettings, read by GTK via dconf under any session) ──────────
 - name: Hyprland — GTK / interface settings
   ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
   args:
@@ -116,10 +111,7 @@
     - { schema: "org.gnome.desktop.interface", key: "clock-format", value: "'12h'" }
     - { schema: "org.gnome.desktop.peripherals.keyboard", key: "delay", value: "150" }
     - { schema: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['caps:none']" }
-  # color-scheme is intentionally NOT set here — it is toggled by the `st`
-  # theme-switch script (setters/gtk.sh) so dark/light follows your choice.
 
-# ── Default browser & terminal ───────────────────────────────────────────────
 - name: Hyprland — default browser & terminal
   ansible.builtin.shell: "{{ item }}"
   args:
@@ -139,7 +131,6 @@
     executable: /bin/bash
   changed_when: false
 
-# ── Boot splash: simple spinner (replaces Ubuntu's branded animation) ───────
 - name: Plymouth — install simple spinner theme
   ansible.builtin.apt:
     name: plymouth-theme-spinner
@@ -155,7 +146,6 @@
   ansible.builtin.command: plymouth-set-default-theme -R spinner
   when: plymouth_current_theme.stdout | trim != 'spinner'
 
-# ── Power: lid-close → nothing ───────────────────────────────────────────────
 - name: Hyprland — logind lid-close = ignore
   ansible.builtin.copy:
     dest: /etc/systemd/logind.conf.d/lid.conf
@@ -165,3 +155,37 @@
       HandleLidSwitch=ignore
       HandleLidSwitchExternalMonitors=ignore
       HandleLidSwitchDocked=ignore
+
+- name: Ensure ~/.config/hypr exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/hypr"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Link hyprland.lua config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/hypr/hyprland.lua"
+    dest: "{{ home_dir }}/.config/hypr/hyprland.lua"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"
+
+- name: Ensure ~/.config/kanshi exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/kanshi"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Link kanshi config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/hypr/kanshi/config"
+    dest: "{{ home_dir }}/.config/kanshi/config"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"

@@ -1,7 +1,4 @@
 ---
-# tasks/neovim.yml — build Neovim 0.13.0-dev (master) from source. Runs as the user.
-# Rebuilds when new commits land on master; idempotent otherwise.
-# Idempotency is tracked via /usr/local/share/nvim-commit (the installed HEAD).
 
 - name: Ensure build deps present
   ansible.builtin.apt:
@@ -86,3 +83,12 @@
     mode: "0644"
   become: true
   when: nvim_rebuild
+
+- name: Link nvim config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/nvim"
+    dest: "{{ home_dir }}/.config/nvim"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"

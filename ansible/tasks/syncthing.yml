@@ -1,6 +1,4 @@
 ---
-# tasks/syncthing.yml — install Syncthing + enable user systemd service. Runs as the user.
-# Desktop uses v2.0.11 linux-amd64; the host selects the right archive via arch vars.
 
 - name: Set syncthing archive facts
   ansible.builtin.set_fact:

@@ -1,5 +1,4 @@
 ---
-# tasks/upgrade.yml — apt update + upgrade (idempotent).
 
 - name: apt update
   ansible.builtin.apt:

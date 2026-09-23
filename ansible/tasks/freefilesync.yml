@@ -1,9 +1,4 @@
 ---
-# tasks/freefilesync.yml — FreeFileSync folder comparison/sync GUI (desktop, x86_64).
-#
-# The official Linux download is a tarball containing a self-extracting
-# installer (FreeFileSync_<ver>_Install.run). It is run non-interactively with
-# --accept-license --skip-overview into /opt/FreeFileSync, system-wide.
 
 - name: Set FreeFileSync facts
   ansible.builtin.set_fact:

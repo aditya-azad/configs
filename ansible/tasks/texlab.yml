@@ -1,6 +1,4 @@
 ---
-# tasks/texlab.yml — build texlab LSP from source. Runs as the user.
-# Idempotent: skipped if ~/.software/texlab/release/texlab exists.
 
 - name: Clone texlab
   ansible.builtin.git:
