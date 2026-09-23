@@ -15,44 +15,72 @@
       - firefox
       - vlc
       - vlc-data
-      # ── GNOME app suite (replaced by Wayland/Hyprland equivalents) ──
-      - nautilus                       # → thunar
+      - nautilus
       - nautilus-extension-gnome-terminal
-      - gnome-terminal                 # → kitty (already installed)
+      - gnome-terminal
       - gnome-terminal-data
-      - gnome-calculator               # → qalculate-gtk
-      - gnome-screenshot               # → hyprshot (hyprbuntu)
-      - gnome-weather                  # dropped (no replacement)
-      - gnome-clocks                   # dropped
-      - gnome-contacts                 # dropped
-      - gnome-calendar                 # dropped
-      - gnome-text-editor              # → neovim (already installed)
-      - totem                          # → mpv
-      - eog                            # → imv
-      - gnome-power-manager            # → hypridle + brightnessctl
-      - gnome-software                 # → apt (no app store)
-      - gnome-control-center           # removed (no Hyprland replacement)
-      - gnome-system-monitor           # removed (no Hyprland replacement)
-      - gnome-keyring                  # secrets → keepass2 (already installed)
-      - gnome-keyring-pkcs11
-      - gdm3                           # login manager → greetd + tuigreet
-      - gnome-shell                    # only ran the GDM greeter; not needed
+      - gnome-calculator
+      - gnome-screenshot
+      - gnome-weather
+      - gnome-clocks
+      - gnome-contacts
+      - gnome-calendar
+      - gnome-text-editor
+      - totem
+      - eog
+      - gnome-power-manager
+      - gnome-software
+      - gnome-control-center
+      - gnome-system-monitor
+      - gdm3
+      - gnome-shell
       - gnome-shell-common
-      - gnome-session                  # GNOME session manager (gdm3 dep)
-      - ubuntu-session                 # Ubuntu GNOME session metapackage
-      - simple-scan                    # dropped (document scanner)
-      - yelp                           # dropped (GNOME help browser)
+      - gnome-session
+      - ubuntu-session
+      - simple-scan
+      - yelp
+      - ptyxis
+      - loupe
+      - showtime
+      - baobab
+      - gnome-disk-utility
+      - gnome-initial-setup
+      - gnome-package-updater
+      - gnome-remote-desktop
+      - gnome-session-canberra
+      - gnome-settings-daemon
+      - gnome-shell-ubuntu-extensions
+      - gnome-snapshot
+      - gnome-bluetooth-sendto
+      - nautilus-sendto
+      - rhythmbox
+      - shotwell
+      - transmission-gtk
+      - remmina
+      - seahorse
+      - sysprof
+      - usb-creator-gtk
+      - orca
+      - gnome-menus
+      - gir1.2-gmenu-3.0
+      - yaru-theme-gnome-shell
+      - yaru-theme-sound
     state: absent
     purge: true
+
+# NOTE: gnome-keyring / libpam-gnome-keyring are intentionally NOT purged —
+# hyprbuntu reinstalls them: gnome-keyring provides the gcr SSH agent
+# (SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/gcr/ssh) and the secret-service backend
+# used under Hyprland. Purging then letting hyprbuntu reinstall it is a no-op.
 
 - name: Remove renamed/uncertain GNOME packages (graceful if absent)
   ansible.builtin.apt:
     name:
-      - evince              # GNOME renamed Evince → Papers; either may exist
+      - evince
       - evince-common
-      - papers              # → zathura
-      - gedit               # may be absent (superseded by gnome-text-editor)
-      - gnome-bluetooth     # package renamed across releases → blueman
+      - papers
+      - gedit
+      - gnome-bluetooth
       - gnome-bluetooth3
       - gnome-characters
       - gnome-font-viewer
@@ -61,13 +89,70 @@
     purge: true
   failed_when: false
 
-- name: Clean up now-unused dependencies (autoremove)
+- name: Remove Ubuntu telemetry / update machinery / portal backend (apt, purge)
   ansible.builtin.apt:
-    autoremove: true
+    name:
+      # ── crash / bug reporting ──
+      - apport-gtk
+      - apport
+      - apport-symptoms
+      - whoopsie
+      - whoopsie-preferences
+      # ── Ubuntu telemetry ──
+      - ubuntu-report
+      - ubuntu-insights
+      - ubuntu-pro-client
+      - landscape-client
+      - popularity-contest
+      - motd-news-config
+      # ── GUI update tools (keep CLI do-release-upgrade via ...-core) ──
+      - update-manager
+      - update-notifier
+      - update-notifier-common
+      - ubuntu-release-upgrader-gtk
+      # ── Ubuntu docs / wallpapers (config ships its own wallpapers) ──
+      - ubuntu-docs
+      - ubuntu-wallpapers
+      - ubuntu-desktop-minimal
+      - ubuntu-settings
+      - language-selector-gnome
+      # ── Portal: GNOME backend conflicts with xdg-desktop-portal-hyprland ──
+      - xdg-desktop-portal-gnome
+    state: absent
     purge: true
 
-- name: Remove firefox snap
+- name: Remove accessibility / VM-guest / legacy packages (apt, purge)
+  ansible.builtin.apt:
+    name:
+      - brltty
+      - speech-dispatcher
+      - spice-vdagent
+      - pcmciautils
+      - inputattach
+      - laptop-detect
+      - libpam-sss
+      - kdump-tools
+      - zenity
+    state: absent
+    purge: true
+  failed_when: false
+
+- name: Remove firefox snap (while snapd still present)
   community.general.snap:
     name: firefox
     state: absent
   failed_when: false
+
+- name: Remove snapd entirely (no snaps used)
+  ansible.builtin.apt:
+    name:
+      - snapd
+      - fwupd-snap
+    state: absent
+    purge: true
+  failed_when: false
+
+- name: Clean up now-unused dependencies (final autoremove)
+  ansible.builtin.apt:
+    autoremove: true
+    purge: true

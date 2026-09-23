@@ -1,10 +1,79 @@
 ---
-# ── Runtime helpers hyprbuntu does NOT install ───────────────────────────────
-- name: Hyprland — install night-light helper
+# ── Runtime helpers hyprbuntu does not install ───────────────────────────────
+- name: Hyprland — install runtime helpers
   ansible.builtin.apt:
     name:
-      - wlsunset
+      - wlsunset   # night-light helper
+      - kanshi      # per-setup monitor profiles (auto-switches on hotplug)
     state: present
+
+# ── nwg-displays: GUI monitor arranger (read-only helper for kanshi) ────────
+- name: nwg-displays — install build & runtime deps
+  ansible.builtin.apt:
+    name:
+      # Language-agnostic GObject-introspection typelibs + runtime libs (used by
+      # any python's `gi`, incl. the mise python). No system-python bindings are
+      # installed here: nwg-displays is built & run under mise-managed python.
+      - gir1.2-gtk-3.0
+      - gir1.2-gtk-layer-shell-0.1
+      - libgtk-layer-shell0
+      # Headers needed to compile PyGObject (the `gi` module) for the mise python:
+      - libgirepository1.0-dev
+      - libcairo2-dev
+      - libglib2.0-dev
+      - pkg-config
+      - gobject-introspection
+      - git
+    state: present
+
+- name: nwg-displays — clone repo
+  ansible.builtin.git:
+    repo: https://github.com/nwg-piotr/nwg-displays.git
+    dest: "{{ code_dir }}/nwg-displays"
+    version: "v0.4.4"
+    depth: 1
+  become: true
+  become_user: "{{ username }}"
+
+- name: nwg-displays — install python build tools & runtime deps (mise python)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    python -m pip install --upgrade \
+      build installer wheel setuptools \
+      pygobject i3ipc
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  register: nwg_pip
+  changed_when: "'Successfully installed' in (nwg_pip.stdout | default(''))"
+
+- name: nwg-displays — build & install wheel (mise python)
+  ansible.builtin.shell: |
+    set -e
+    eval "$({{ mise_bin }} activate bash)"
+    cd "{{ code_dir }}/nwg-displays"
+    rm -rf dist
+    python -m build --wheel --no-isolation
+    python -m installer dist/*.whl
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  creates: "{{ home_dir }}/.local/share/mise/installs/python/3.14/bin/nwg-displays"
+
+- name: nwg-displays — system integration (.desktop, icon, PATH symlink)
+  ansible.builtin.shell: |
+    set -e
+    cd "{{ code_dir }}/nwg-displays"
+    install -Dm 644 -t /usr/share/applications nwg-displays.desktop
+    install -Dm 644 -t /usr/share/pixmaps nwg-displays.svg
+    ln -sf "{{ home_dir }}/.local/share/mise/installs/python/3.14/bin/nwg-displays" \
+      /usr/local/bin/nwg-displays
+  args:
+    executable: /bin/bash
+    creates: /usr/local/bin/nwg-displays
 
 # ── Recommended Wayland/Hyprland desktop apps ───────────────────────────────
 - name: Hyprland — install recommended desktop apps
@@ -99,6 +168,22 @@
   args:
     executable: /bin/bash
   changed_when: false
+
+# ── Boot splash: simple spinner (replaces Ubuntu's branded animation) ───────
+- name: Plymouth — install simple spinner theme
+  ansible.builtin.apt:
+    name: plymouth-theme-spinner
+    state: present
+
+- name: Plymouth — read current default theme
+  ansible.builtin.command: plymouth-set-default-theme
+  changed_when: false
+  register: plymouth_current_theme
+  failed_when: false
+
+- name: Plymouth — set spinner as default theme + rebuild initrd
+  ansible.builtin.command: plymouth-set-default-theme -R spinner
+  when: plymouth_current_theme.stdout | trim != 'spinner'
 
 # ── Power: lid-close → nothing ───────────────────────────────────────────────
 - name: Hyprland — logind lid-close = ignore

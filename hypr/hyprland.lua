@@ -5,12 +5,8 @@ local browser     = "brave"
 local launcher    = "hyprlauncher"
 
 -- ── Monitors ────────────────────────────────────────────────────────────────
-hl.monitor({
-    output   = "",
-    mode     = "preferred",
-    position = "auto",
-    scale    = "auto",
-})
+-- Use kanshi instead
+-- The leftmost output (position 0,0) is treated as primary by Hyprland.
 
 -- ── Environment ──────────────────────────────────────────────────────────────
 hl.env("XCURSOR_SIZE", "24")
@@ -20,6 +16,7 @@ hl.env("HYPRCURSOR_SIZE", "24")
 hl.on("hyprland.start", function()
     hl.exec_cmd("wlsunset -s 19:00 -S 06:00")
     hl.exec_cmd("waybar")
+    hl.exec_cmd("kanshi")
 end)
 
 -- ── Look and feel ────────────────────────────────────────────────────────────
@@ -96,6 +93,7 @@ hl.config({
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Slash", hl.dsp.exec_cmd(launcher))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nwg-displays"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + Comma", hl.dsp.window.float({ action = "toggle" }))
 

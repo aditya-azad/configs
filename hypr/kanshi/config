@@ -1,0 +1,46 @@
+# kanshi — per-setup monitor profiles.
+# kanshi watches for output hotplug and applies the first profile whose set of
+# connected outputs matches. Run `hyprctl monitors` / `kanshi -p` to get exact
+# connector names and modes for your hardware, then edit the profiles below.
+#
+# Workflow: launch nwg-displays (Super+M) to visually arrange/scale/rotate and
+# read off the mode + position numbers it shows, then copy those values into the
+# profiles here. nwg-displays also writes ~/.config/hypr/monitors.conf, but that
+# file is NOT sourced — kanshi owns the outputs, so ignore monitors.conf.
+#
+# fields per `output <name>`:
+#   enable|disable
+#   mode <WxH> | mode <WxH@Hz> | mode preferred
+#   position <x,y>              # top-left coords; place screens side by side here
+#   scale <n>                   # integer or .5 (e.g. 1, 1.5, 2); "auto" not supported
+#   transform <0-7>             # 0 normal, 1 90° CW, 2 180°, 3 270°, 4-7 flips
+#   alias <name>                # friendly alias usable elsewhere
+#
+# NOTE: there is NO "primary" concept in kanshi. To make a screen primary in
+# Hyprland, set its position to 0,0 (workspaces spawn on the first/top-left
+# output) — Hyprland treats the leftmost output as primary. So whichever output
+# you want as primary, give it position 0,0 and shift the others right/below.
+
+# ── Laptop only (internal panel) ─────────────────────────────────────────────
+profile laptop-only {
+    output eDP-1 mode preferred position 0,0 scale 1
+}
+
+# ── Docked: external only, internal off ─────────────────────────────────────
+# Example: external on HDMI becomes primary (position 0,0), internal disabled.
+profile docked-external {
+    output eDP-1 disable
+    output HDMI-A-1 mode 2560x1440@144 position 0,0 scale 1
+}
+
+# ── Dual: internal primary, external to the right ───────────────────────────
+profile dual-right {
+    output eDP-1    mode preferred position 0,0    scale 1
+    output HDMI-A-1 mode 2560x1440@144 position 1920,0 scale 1
+}
+
+# ── Dual: external primary, internal to the right ────────────────────────────
+profile dual-external-primary {
+    output eDP-1    mode preferred position 2560,0 scale 1
+    output HDMI-A-1 mode 2560x1440@144 position 0,0   scale 1
+}

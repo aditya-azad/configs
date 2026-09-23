@@ -35,3 +35,20 @@
     force: true
   become: true
   become_user: "{{ username }}"
+
+- name: Ensure ~/.config/kanshi exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/kanshi"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Link kanshi config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/hypr/kanshi/config"
+    dest: "{{ home_dir }}/.config/kanshi/config"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"
