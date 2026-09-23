@@ -2,6 +2,8 @@
 
 My config files. Use if you feel risky
 
+TODO: personal software setup
+
 ## Setup
 
 ### Run as root
