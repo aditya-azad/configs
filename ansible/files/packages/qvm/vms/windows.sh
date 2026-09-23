@@ -4,7 +4,7 @@
 # with a Looking-Glass framebuffer.
 #
 # GPU passthrough model (Ubuntu host):
-#   • Normal boot → host owns the dGPU (NVIDIA driver, Umbriel, Steam).
+#   • Normal boot → host owns the dGPU (NVIDIA driver, Hyprland, Steam).
 #                   The VM cannot run.
 #   • \"Ubuntu (Windows VFIO / Looking-Glass)\" grub entry → IOMMU on,
 #     vfio-pci.ids=<dGPU>,<dGPU-audio>, nvidia blacklisted. Host renders on

@@ -1,0 +1,236 @@
+---
+- name: Hyprland — install runtime helpers
+  ansible.builtin.apt:
+    name:
+      - wlsunset
+      - kanshi
+    state: present
+
+- name: nwg-displays — install build & runtime deps (system python3)
+  ansible.builtin.apt:
+    name:
+      - gir1.2-gtk-3.0
+      - gir1.2-gtklayershell-0.1
+      - libgtk-layer-shell0
+      - python3-gi
+      - python3-i3ipc
+      - python3-build
+      - python3-installer
+      - python3-wheel
+      - python3-setuptools
+      - git
+    state: present
+
+- name: nwg-displays — clone repo
+  ansible.builtin.git:
+    repo: https://github.com/nwg-piotr/nwg-displays.git
+    dest: "{{ code_dir }}/nwg-displays"
+    version: "v0.4.4"
+    depth: 1
+  become: true
+  become_user: "{{ username }}"
+
+- name: nwg-displays — build & install wheel (system python3, root)
+  ansible.builtin.shell: |
+    set -e
+    cd "{{ code_dir }}/nwg-displays"
+    rm -rf dist
+    python3 -m build --wheel --no-isolation
+    python3 -m installer dist/*.whl
+    install -Dm 644 -t /usr/share/applications nwg-displays.desktop
+    install -Dm 644 -t /usr/share/pixmaps nwg-displays.svg
+  args:
+    executable: /bin/bash
+    creates: /usr/local/bin/nwg-displays
+
+- name: Hyprland — install recommended desktop apps
+  ansible.builtin.apt:
+    name:
+      - thunar
+      - thunar-archive-plugin
+      - thunar-volman
+      - file-roller
+      - gvfs
+      - gvfs-backends
+      - mpv
+      - imv
+      - zathura
+      - zathura-pdf-poppler
+      - zathura-djvu
+      - zathura-cb
+      - qalculate-gtk
+      - blueman
+      - pavucontrol
+      - brightnessctl
+    state: present
+
+- name: Hyprland — download hyprbuntu installer
+  ansible.builtin.get_url:
+    url: https://gitlab.com/kralos/hyprbuntu/-/raw/main/hyprbuntu.sh
+    dest: "{{ home_dir }}/.local/bin/hyprbuntu.sh"
+    mode: "0755"
+    force: true
+  become: true
+  become_user: "{{ username }}"
+
+- name: Hyprland — patch hyprbuntu sudo check for non-interactive shells
+  ansible.builtin.replace:
+    path: "{{ home_dir }}/.local/bin/hyprbuntu.sh"
+    regexp: 'sudo -v &> /dev/null'
+    replace: 'sudo -n true &> /dev/null'
+  become: true
+  become_user: "{{ username }}"
+
+- name: Hyprland — check if already installed
+  ansible.builtin.stat:
+    path: /usr/bin/Hyprland
+  register: hyprland_bin
+
+- name: Hyprland — install via hyprbuntu (temp passwordless sudo, reverted on failure)
+  block:
+    - name: Ensure /etc/sudoers includes /etc/sudoers.d
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        regexp: '^#*@includedir\s+/etc/sudoers\.d\s*$'
+        line: "@includedir /etc/sudoers.d"
+        state: present
+        validate: /usr/sbin/visudo -cf %s
+      when: not hyprland_bin.stat.exists
+
+    - name: Grant managed user temporary passwordless sudo
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/ansible-hyprbuntu
+        content: "{{ username }} ALL=(ALL) NOPASSWD: ALL\n"
+        mode: "0440"
+        validate: /usr/sbin/visudo -csf %s
+      when: not hyprland_bin.stat.exists
+
+    - name: Verify managed user can run sudo non-interactively
+      ansible.builtin.command: sudo -n true
+      become: true
+      become_user: "{{ username }}"
+      changed_when: false
+      when: not hyprland_bin.stat.exists
+
+    - name: Run hyprbuntu installer (build from source, gcc-16)
+      ansible.builtin.shell: |
+        set -e
+        {{ home_dir }}/.local/bin/hyprbuntu.sh
+      args:
+        executable: /bin/bash
+      become: true
+      become_user: "{{ username }}"
+      environment:
+        BUILD_DIR: "{{ code_dir }}/hyprbuntu"
+        DISABLE_CONFIRM: "true"
+        HYPRIDLE_SETUP: "true"
+        HYPRLOCK_SETUP: "true"
+        HYPRPAPER_SETUP: "true"
+        HYPRSHOT_SETUP: "true"
+        NOTIFICATION_DAEMON_PREF: "swaync"
+        NVIDIA_SETUP: "true"
+        SWAYOSD_SETUP: "true"
+        THEME_PREF: "none"
+        THUNAR_SETUP: "false"
+        TUIGREET_SETUP: "true"
+        WAYBAR_SETUP: "true"
+      when: not hyprland_bin.stat.exists
+
+  always:
+    - name: Revoke temporary passwordless sudo
+      ansible.builtin.file:
+        path: /etc/sudoers.d/ansible-hyprbuntu
+        state: absent
+
+- name: Hyprland — GTK / interface settings
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - { schema: "org.gnome.desktop.interface", key: "icon-theme", value: "Yaru" }
+    - { schema: "org.gnome.desktop.interface", key: "gtk-theme", value: "Adwaita" }
+    - { schema: "org.gnome.desktop.interface", key: "enable-animations", value: "false" }
+    - { schema: "org.gnome.desktop.interface", key: "clock-format", value: "'12h'" }
+    - { schema: "org.gnome.desktop.peripherals.keyboard", key: "delay", value: "150" }
+    - { schema: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['caps:none']" }
+
+- name: Hyprland — default browser & terminal
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
+  loop:
+    - "xdg-settings set default-web-browser brave-browser.desktop"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec 'kitty'"
+    - "gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''"
+
+- name: Hyprland — register kitty as x-terminal-emulator alternative
+  ansible.builtin.shell: |
+    update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$(which kitty)" 50
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Plymouth — install simple spinner theme
+  ansible.builtin.apt:
+    name: plymouth-theme-spinner
+    state: present
+
+- name: Plymouth — read current default theme
+  ansible.builtin.command: plymouth-set-default-theme
+  changed_when: false
+  register: plymouth_current_theme
+  failed_when: false
+
+- name: Plymouth — set spinner as default theme + rebuild initrd
+  ansible.builtin.command: plymouth-set-default-theme -R spinner
+  when: plymouth_current_theme.stdout | trim != 'spinner'
+
+- name: Hyprland — logind lid-close = ignore
+  ansible.builtin.copy:
+    dest: /etc/systemd/logind.conf.d/lid.conf
+    mode: "0644"
+    content: |
+      [Login]
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalMonitors=ignore
+      HandleLidSwitchDocked=ignore
+
+- name: Ensure ~/.config/hypr exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/hypr"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Link hyprland.lua config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/hypr/hyprland.lua"
+    dest: "{{ home_dir }}/.config/hypr/hyprland.lua"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"
+
+- name: Ensure ~/.config/kanshi exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/kanshi"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ username }}"
+
+- name: Link kanshi config
+  ansible.builtin.file:
+    src: "{{ configs_repo }}/hypr/kanshi/config"
+    dest: "{{ home_dir }}/.config/kanshi/config"
+    state: link
+    force: true
+  become: true
+  become_user: "{{ username }}"

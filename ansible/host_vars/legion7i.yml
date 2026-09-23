@@ -33,10 +33,7 @@ programs:
   - steam
   - discord
   - fontconfig
-  - noctalia_repo
-  - umbriel
-  - noctalia
-  - noctalia_greeter
+  - hyprland
   - refree
   - local_scripts
   - vfio

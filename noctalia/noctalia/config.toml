@@ -1,8 +1,0 @@
-[theme]
-mode = "dark"
-
-[wallpaper]
-enabled = true
-fill_mode = "crop"
-transition = ["fade"]
-transition_duration = 1500

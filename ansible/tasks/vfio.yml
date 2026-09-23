@@ -87,7 +87,7 @@
       iGPU={{ vfio_igpu_bdf }};
       IOMMU={{ vfio_iommu }};
       BT={{ vfio_bt_vendor }}:{{ vfio_bt_product }};
-      WLR_DRM_DEVICES={{ vfio_drm }}
+      AQ_DRM_DEVICES={{ vfio_drm }}
 
 - name: vfio — fail if no NVIDIA dGPU was found
   ansible.builtin.fail:
@@ -267,11 +267,11 @@
   become: true
   become_user: "{{ username }}"
 
-- name: vfio — write WLR_DRM_DEVICES (dGPU first, iGPU fallback)
+- name: vfio — write AQ_DRM_DEVICES (dGPU first, iGPU fallback)
   ansible.builtin.copy:
-    dest: "{{ home_dir }}/.config/environment.d/umbriel-drm.conf"
+    dest: "{{ home_dir }}/.config/environment.d/hypr-drm.conf"
     mode: "0644"
-    content: "WLR_DRM_DEVICES={{ vfio_drm }}\n"
+    content: "AQ_DRM_DEVICES={{ vfio_drm }}\n"
   become: true
   become_user: "{{ username }}"
 
