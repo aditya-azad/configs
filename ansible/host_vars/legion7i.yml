@@ -9,6 +9,7 @@ git_email: "adityaazad121@gmail.com"
 # Ordered list of independent program task files (tasks/<name>.yml).
 # Order matters: compilers/registry setup before cargo installs, etc.
 programs:
+  - ansible_sudoers
   - uninstall
   - upgrade
   - compilers
