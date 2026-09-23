@@ -93,17 +93,40 @@
       ansible.builtin.copy:
         dest: /etc/sudoers.d/ansible-hyprbuntu
         content: |
-          Defaults:{{ username }} verifypw = any
+          Defaults verifypw = never
           {{ username }} ALL=(ALL) NOPASSWD: ALL
         mode: "0440"
         validate: /usr/sbin/visudo -csf %s
       when: not hyprland_bin.stat.exists
 
     - name: Verify managed user can run sudo non-interactively
-      ansible.builtin.command: sudo -v
-      become: true
-      become_user: "{{ username }}"
-      changed_when: false
+      block:
+        - name: Check sudo -v works as managed user
+          ansible.builtin.command: sudo -v
+          become: true
+          become_user: "{{ username }}"
+          changed_when: false
+      rescue:
+        - name: Write sudo diagnostics to file
+          ansible.builtin.shell: |
+            {
+              echo "===== /etc/sudoers (full) ====="
+              cat /etc/sudoers 2>&1
+              echo "===== /etc/sudoers.d listing ====="
+              ls -la /etc/sudoers.d/ 2>&1
+              echo "===== drop-in content ====="
+              cat /etc/sudoers.d/ansible-hyprbuntu 2>&1
+              echo "===== sudo -l -U {{ username }} ====="
+              sudo -l -U {{ username }} 2>&1
+              echo "===== sudo -V ====="
+              sudo -V 2>&1 | head -5
+            } > /tmp/hyprbuntu_sudo_diag.log 2>&1
+          args:
+            executable: /bin/bash
+          changed_when: false
+        - name: Fail — point at diagnostic log
+          ansible.builtin.fail:
+            msg: "sudo -v still requires a password. Diagnostics written to /tmp/hyprbuntu_sudo_diag.log — share that file."
       when: not hyprland_bin.stat.exists
 
     - name: Run hyprbuntu installer (build from source, gcc-16)
