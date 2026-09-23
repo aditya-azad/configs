@@ -80,12 +80,27 @@
 
 - name: Hyprland — install via hyprbuntu (temp passwordless sudo, reverted on failure)
   block:
+    - name: Ensure /etc/sudoers includes /etc/sudoers.d
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        line: "@includedir /etc/sudoers.d"
+        state: present
+        validate: /usr/sbin/visudo -cf %s
+      when: not hyprland_bin.stat.exists
+
     - name: Grant managed user temporary passwordless sudo
       ansible.builtin.copy:
         dest: /etc/sudoers.d/ansible-hyprbuntu
         content: "{{ username }} ALL=(ALL) NOPASSWD: ALL\n"
         mode: "0440"
         validate: /usr/sbin/visudo -csf %s
+      when: not hyprland_bin.stat.exists
+
+    - name: Verify managed user has non-interactive sudo
+      ansible.builtin.command: sudo -n true
+      become: true
+      become_user: "{{ username }}"
+      changed_when: false
       when: not hyprland_bin.stat.exists
 
     - name: Run hyprbuntu installer (build from source, gcc-16)
