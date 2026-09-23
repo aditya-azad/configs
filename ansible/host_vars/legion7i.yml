@@ -27,7 +27,6 @@ programs:
   - texlab
   - neovim
   - kitty
-  - ros2
   - docker
   - syncthing
   - freefilesync
