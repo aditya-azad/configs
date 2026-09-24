@@ -45,7 +45,7 @@ hl.config({
         },
     },
     animations = {
-        enabled = false,
+        enabled = true,
     },
 })
 
@@ -83,35 +83,33 @@ hl.config({
     },
 })
 
--- ─────────────────────────────────────────────────────────────────────────────
--- Keybindings
--- ─────────────────────────────────────────────────────────────────────────────
+-- Launchers & apps
 
--- Launchers & apps ────────────────────────────────────────────────────────────
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Slash", hl.dsp.exec_cmd(launcher))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("nwg-displays"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + Comma", hl.dsp.window.float({ action = "toggle" }))
 
--- Window ops ──────────────────────────────────────────────────────────────────
+-- Window ops
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle", mode = "maximized" }))
 hl.bind(mainMod .. " + SHIFT + Colon", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region"))
 
--- Power ───────────────────────────────────────────────────────────────────────
+-- Power
 hl.bind(mainMod .. " + CTRL + ALT + Q", hl.dsp.exec_cmd("systemctl poweroff"))
 hl.bind(mainMod .. " + CTRL + ALT + R", hl.dsp.exec_cmd("systemctl reboot"))
 
--- Focus — Super+hjkl ──────────────────────────────────────────────────────────
+-- Focus — Super+hjkl
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 
--- Move window — Super+Shift+hjkl ──────────────────────────────────────────────
+-- Move window — Super+Shift+hjkl
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "left" }))
 hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
 hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "up" }))

@@ -86,27 +86,6 @@ ShellRoot {
             id: launcherWindow
         }
 
-        MouseArea {
-            id: launcherTrigger
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            width: 2
-            z: 100
-            height: 600
-
-            onEntered: {
-                launcherWindow.toggle()
-            }
-
-            hoverEnabled: true
-
-            Rectangle {
-                anchors.fill: parent
-                color: parent.containsMouse ? "#40FFFFFF" : "transparent"
-                visible: parent.containsMouse
-            }
-        }
-
         property bool altHeld: false
 
         mask: Region {
@@ -124,9 +103,6 @@ ShellRoot {
             }
             Region {
                 item: controlCenterLoader.item && controlCenterLoader.item.visible ? controlCenterLoader.item : null
-            }
-            Region {
-                item: launcherTrigger
             }
             Region {
                 item: launcherWindow.isOpen ? launcherWindow : null
