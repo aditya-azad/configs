@@ -64,7 +64,7 @@ Singleton {
 
     Process {
         id: tempProc
-        command: ["bash","-c","sensors | grep 'Package id 0:' | awk '{print $4}' | sed 's/+//;s/°C//' || echo '0'"]
+        command: ["bash","-c","for d in /sys/class/hwmon/*; do [ \"$(cat $d/name 2>/dev/null)\" = coretemp ] || continue; for f in $d/temp*_label; do [ \"$(cat $f 2>/dev/null)\" = 'Package id 0' ] && awk '{printf \"%d\", $1/1000}' \"${f%_label}_input\"; done; done"]
         stdout: StdioCollector {
             onStreamFinished: stats.temp = parseFloat(text) || 0
         }
