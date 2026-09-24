@@ -23,6 +23,7 @@ for prog in "${programs[@]}"; do
     echo ":: $prog"
     bash "$task"
   else
-    echo "!! no task for $prog (expected $task) — skipping" >&2
+    echo "!! no task for $prog (expected $task)" >&2
+    exit 1
   fi
 done
