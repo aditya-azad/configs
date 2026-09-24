@@ -52,7 +52,6 @@ hl.config({
 -- ── Layout: dwindle ──────────────────────────────────────────────────────────
 hl.config({
     dwindle = {
-        pseudotile    = true,
         preserve_split = true,
     },
 })
@@ -62,8 +61,7 @@ hl.config({
     misc = {
         force_default_wallpaper  = 0,
         disable_hyprland_logo    = true,
-        disable_splash           = true,
-        suppress_portal_warnings = true,
+        disable_splash_rendering = true,
     },
 })
 
@@ -132,11 +130,11 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key,    hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
-hl.bind(",XF86AudioRaiseVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'))
-hl.bind(",XF86AudioLowerVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'))
-hl.bind(",XF86AudioMute", hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -t 2000 Mute toggled'))
-hl.bind(",XF86MonBrightnessUp", hl.dsp.exec_cmd('brightnessctl set +5% && notify-send -t 2000 Brightness +'))
-hl.bind(",XF86MonBrightnessDown", hl.dsp.exec_cmd('brightnessctl set 5%- && notify-send -t 2000 Brightness -'))
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'), { locked = true, repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -t 2000 Mute toggled'), { locked = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd('brightnessctl set +5% && notify-send -t 2000 Brightness +'), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd('brightnessctl set 5%- && notify-send -t 2000 Brightness -'), { locked = true, repeating = true })
 
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
