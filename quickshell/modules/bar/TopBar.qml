@@ -22,7 +22,8 @@ Item {
             Cpu {}
             Battery {}
             Clock {}
-            Bluetooth {}
+            Temp {}
+            Memory {}
         }
 
         MediaPill {
@@ -36,10 +37,9 @@ Item {
             spacing: 8
 
             Network {}
-            Temp {}
-            Volume {}
-            Memory {}
             SystemTray {}
+            Bluetooth {}
+            Volume {}
         }
     }
 }

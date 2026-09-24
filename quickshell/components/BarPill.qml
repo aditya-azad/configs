@@ -20,6 +20,7 @@ Rectangle {
     property alias cursorShape: mouse.cursorShape
 
     signal clicked
+    signal wheel(int angleDelta)
 
     radius: 13
     color: Colors.surface_container
@@ -38,6 +39,7 @@ Rectangle {
                 proc.running = true;
             root.clicked();
         }
+        onWheel: (wheel) => root.wheel(wheel.angleDelta.y)
     }
 
     StyledText {

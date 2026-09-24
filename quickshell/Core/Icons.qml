@@ -39,6 +39,7 @@ QtObject {
     readonly property string music: "󰝚"
     readonly property string weather: "󰖐"
     readonly property string system: "󰍛"
+    readonly property string memory: "󰘚"
     readonly property string bluetooth: "󰂯"
     readonly property string airplane: "󰀝"
     readonly property string dnd: "󰂛"
