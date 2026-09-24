@@ -40,12 +40,20 @@ Item {
         hintText.opacity   = 0
 
         openAnim.restart()
-        searchField.forceActiveFocus()
+        focusTimer.restart()
     }
 
     function close() {
         if (!isOpen) return
+        focusTimer.stop()
         closeAnim.restart()
+    }
+
+    Timer {
+        id: focusTimer
+        interval: 50
+        repeat: false
+        onTriggered: searchField.forceActiveFocus()
     }
 
     anchors.fill: parent

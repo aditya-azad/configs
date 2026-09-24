@@ -70,17 +70,6 @@ Item {
             }
         }
 
-        Rectangle {
-            width: 3
-            height: parent.height
-            anchors.left: parent.left
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: Colors.primary }
-                GradientStop { position: 0.5; color: Colors.secondary }
-                GradientStop { position: 1.0; color: Colors.tertiary }
-            }
-        }
-
         FocusScope {
             anchors.fill: parent
             focus: controlCenter.opened
@@ -98,8 +87,6 @@ Item {
                     width: parent.width
                     spacing: 0
 
-                    Header { }
-
                     QuickSettings { }
 
                     SliderSection { }
@@ -108,10 +95,6 @@ Item {
                         anchors.left: parent.left
                         anchors.right: parent.right
                     }
-
-                    StatsSection { }
-
-                    InfoSection { }
 
                     Notifications { }
 

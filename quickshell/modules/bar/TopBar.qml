@@ -19,6 +19,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 8
 
+            Workspace {}
             Temp {}
             Memory {}
             Battery {}

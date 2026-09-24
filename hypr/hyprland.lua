@@ -22,8 +22,8 @@ end)
 -- ── Look and feel ────────────────────────────────────────────────────────────
 hl.config({
     general = {
-        gaps_in     = 2,
-        gaps_out    = 2,
+        gaps_in     = 6,
+        gaps_out    = 8,
         border_size = 2,
         col = {
             active_border   = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
@@ -144,7 +144,7 @@ hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x = 20, y = 0, relative
 -- Switch workspace — Super+1..9 / Super+0 ─────────────────────────────────────
 for i = 1, 10 do
     local key = i % 10
-    hl.bind(mainMod .. " + " .. key,            hl.dsp.focus({ workspace = i }))
+    hl.bind(mainMod .. " + " .. key,            hl.dsp.focus({ workspace = i, on_current_monitor = true }))
     hl.bind(mainMod .. " + SHIFT + " .. key,    hl.dsp.window.move({ workspace = i, follow = false }))
 end
 

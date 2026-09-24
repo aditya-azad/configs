@@ -82,50 +82,10 @@ PanelWindow {
                             height: index > 0 ? 10 : 0
                         }
 
-                        // timer progress track
-                        Rectangle {
-                            id: timerTrack
-                            width: parent.width
-                            height: 3
-                            radius: 1.5
-                            color: Colors.outline_variant
-                            clip: true
-
-                            Rectangle {
-                                id: timerBar
-                                anchors.left: parent.left
-                                height: parent.height
-                                radius: parent.radius
-                                color: Colors.primary
-                                width: timerTrack.width
-
-                                Component.onCompleted: {
-                                    const totalDuration = modelData.notification.expireTimeout > 0
-                                        ? modelData.notification.expireTimeout
-                                        : 5000
-                                    const elapsed = Date.now() - modelData.time.getTime()
-                                    const remaining = Math.max(0, totalDuration - elapsed)
-                                    timerAnim.duration = remaining
-                                    timerAnim.from = timerTrack.width * (remaining / totalDuration)
-                                    timerAnim.start()
-                                }
-
-                                NumberAnimation {
-                                    id: timerAnim
-                                    target: timerBar
-                                    property: "width"
-                                    to: 0
-                                    easing.type: Easing.Linear
-                                }
-                            }
-                        }
-
-                        // spacing between bar and content
-                        Item { width: parent.width; height: 8 }
-
                         // notification row
                         RowLayout {
-                            width: parent.width
+                            x: 12
+                            width: parent.width - 12
                             spacing: 10
 
                             Rectangle {

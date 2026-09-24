@@ -29,7 +29,9 @@ ShellRoot {
             right: true
         }
         color: "transparent"
-        focusable: true
+        WlrLayershell.keyboardFocus: launcherWindow.isOpen
+            ? WlrKeyboardFocus.Exclusive
+            : WlrKeyboardFocus.OnDemand
 
         Loader {
             id: networkPanelLoader

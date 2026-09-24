@@ -13,6 +13,7 @@ Item {
 
     property bool opened: false
     property int currentTab: 0
+    property int edgeGap: 12
 
     onOpenedChanged: {
         if (opened) {
@@ -52,6 +53,7 @@ Item {
         width: 384
         height: 620
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: edgeGap
         x: networkPanel.width
 
         radius: 22
@@ -171,7 +173,7 @@ Item {
         }
         NumberAnimation {
             target: panel; property: "x"
-            to: networkPanel.width - panel.width
+            to: networkPanel.width - panel.width - edgeGap
             duration: 320; easing.type: Easing.OutCubic
         }
     }
