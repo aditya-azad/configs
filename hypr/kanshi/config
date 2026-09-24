@@ -26,21 +26,8 @@ profile laptop-only {
     output eDP-1 mode preferred position 0,0 scale 1
 }
 
-# ── Docked: external only, internal off ─────────────────────────────────────
-# Example: external on HDMI becomes primary (position 0,0), internal disabled.
-profile docked-external {
-    output eDP-1 disable
-    output HDMI-A-1 mode 2560x1440@144 position 0,0 scale 1
-}
-
 # ── Dual: internal primary, external to the right ───────────────────────────
-profile dual-right {
-    output eDP-1    mode preferred position 0,0    scale 1
-    output HDMI-A-1 mode 2560x1440@144 position 1920,0 scale 1
-}
-
-# ── Dual: external primary, internal to the right ────────────────────────────
-profile dual-external-primary {
-    output eDP-1    mode preferred position 2560,0 scale 1
-    output HDMI-A-1 mode 2560x1440@144 position 0,0   scale 1
+profile dual-left-home {
+    output DP-5 mode 2560x1440@59.95Hz position 0,0 scale 1.0
+    output eDP-1 mode 2560x1600@165Hz position 2560,0 scale 1.6
 }

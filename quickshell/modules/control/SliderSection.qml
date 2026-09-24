@@ -7,6 +7,7 @@ ColumnLayout {
     Layout.leftMargin: 20
     Layout.rightMargin: 20
     Layout.topMargin: 8
+    Layout.bottomMargin: 16
     spacing: 14
 
     SliderRow {

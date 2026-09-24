@@ -3,6 +3,7 @@ import Quickshell
 import qs.components
 import qs.services as Services
 import Quickshell.Io
+import Quickshell.Wayland
 
 PanelWindow {
     id: calendarWindow
@@ -10,6 +11,8 @@ PanelWindow {
     // Stay mapped while the close animation plays out, then unmap.
     visible: Services.CalendarState.open || wrapper.opacity > 0.001
     color: "transparent"
+    exclusionMode: ExclusionMode.Ignore
+    WlrLayershell.layer: WlrLayer.Overlay
     focusable: true
 
     anchors.top: true

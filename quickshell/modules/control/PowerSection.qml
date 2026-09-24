@@ -10,11 +10,14 @@ ColumnLayout {
     Layout.bottomMargin: 30
     spacing: 14
 
-    SectionHeader {
-        title: "Power Options"
-        icon: "󰐥"
-        titleColor: Colors.error
-        iconColor: Colors.on_primary_container
+    StyledText {
+        Layout.topMargin: 8
+        Layout.bottomMargin: 4
+        text: "Power Options"
+        color: Colors.on_surface_variant
+        font.pixelSize: 11
+        font.letterSpacing: 1.2
+        font.weight: Font.Medium
     }
 
     GridLayout {

@@ -33,6 +33,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: 12
         Layout.rightMargin: 12
+        Layout.topMargin: 8
         Layout.bottomMargin: 12
         spacing: 3
 
@@ -163,10 +164,4 @@ ColumnLayout {
         }
     }
 
-    Divider {
-        Layout.fillWidth: true
-        Layout.leftMargin: 16
-        Layout.rightMargin: 16
-        opacity: 0.4
-    }
 }

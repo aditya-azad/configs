@@ -142,10 +142,44 @@ hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.resize({ x = 0,  y = -20, relati
 hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
 
 -- Switch workspace — Super+1..9 / Super+0 ─────────────────────────────────────
+local function split_workspace(n)
+    local monitors = hl.get_monitors()
+    if #monitors == 0 then return end
+    local active = hl.get_active_monitor() or monitors[1]
+    local aidx = 0
+    for i, m in ipairs(monitors) do
+        if m.id == active.id then aidx = i - 1 end
+    end
+    for i, m in ipairs(monitors) do
+        if m.id ~= active.id then
+            local target = n + (i - 1) * 10
+            if hl.get_workspace(target) then
+                m:set_workspace({ workspace = target })
+            else
+                hl.dispatch(hl.dsp.focus({ monitor = m }))
+                hl.dispatch(hl.dsp.focus({ workspace = target }))
+            end
+        end
+    end
+    hl.dispatch(hl.dsp.focus({ monitor = active }))
+    hl.dispatch(hl.dsp.focus({ workspace = n + aidx * 10 }))
+end
+
+local function split_move_to_workspace(n)
+    local active = hl.get_active_monitor()
+    if not active then return end
+    local aidx = 0
+    for i, m in ipairs(hl.get_monitors()) do
+        if m.id == active.id then aidx = i - 1 end
+    end
+    hl.dispatch(hl.dsp.window.move({ workspace = n + aidx * 10, follow = false }))
+end
+
 for i = 1, 10 do
     local key = i % 10
-    hl.bind(mainMod .. " + " .. key,            hl.dsp.focus({ workspace = i, on_current_monitor = true }))
-    hl.bind(mainMod .. " + SHIFT + " .. key,    hl.dsp.window.move({ workspace = i, follow = false }))
+    local n = i
+    hl.bind(mainMod .. " + " .. key,         function() split_workspace(n) end)
+    hl.bind(mainMod .. " + SHIFT + " .. key, function() split_move_to_workspace(n) end)
 end
 
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'), { locked = true, repeating = true })

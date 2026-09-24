@@ -10,16 +10,12 @@ ColumnLayout {
     Layout.leftMargin: 20
     Layout.rightMargin: 20
     Layout.topMargin: 20
+    Layout.bottomMargin: 20
     spacing: 14
 
     property bool dndEnabled: false
     property bool nightLightEnabled: false
     property bool airplaneModeEnabled: false
-
-    SectionHeader {
-        title: "Quick Settings"
-        icon: "󰒓"
-    }
 
     GridLayout {
         Layout.fillWidth: true

@@ -18,7 +18,22 @@ ShellRoot {
     CalendarWindow {}
 
     PanelWindow {
-        id: rootPanel
+        id: barPanel
+        anchors.top: true
+        anchors.left: true
+        anchors.right: true
+        implicitHeight: 42
+        exclusionMode: ExclusionMode.Normal
+        color: "transparent"
+        WlrLayershell.layer: WlrLayer.Top
+
+        TopBar {
+            id: topBar
+        }
+    }
+
+    PanelWindow {
+        id: overlayPanel
         exclusionMode: ExclusionMode.Ignore
         implicitHeight: screen.height
         implicitWidth: screen.width
@@ -29,6 +44,7 @@ ShellRoot {
             right: true
         }
         color: "transparent"
+        WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: launcherWindow.isOpen
             ? WlrKeyboardFocus.Exclusive
             : WlrKeyboardFocus.OnDemand
@@ -44,20 +60,6 @@ ShellRoot {
 
         OsdWindow {}
 
-        PanelWindow {
-            implicitHeight: 42
-            implicitWidth: 0
-            anchors {
-                top: true
-            }
-            color: "transparent"
-            mask: rootPanel.mask
-        }
-
-        TopBar {
-            id: topBar
-        }
-
         Loader {
             id: controlCenterLoader
             active: false
@@ -72,12 +74,7 @@ ShellRoot {
             id: launcherWindow
         }
 
-        property bool altHeld: false
-
         mask: Region {
-            Region {
-                item: topBar
-            }
             Region {
                 item: networkPanelLoader.item && networkPanelLoader.item.visible ? networkPanelLoader.item : null
             }
