@@ -14,13 +14,12 @@ if [[ ! -x /usr/bin/Hyprland ]]; then
       HYPRLOCK_SETUP=true \
       HYPRPAPER_SETUP=true \
       HYPRSHOT_SETUP=true \
-      NOTIFICATION_DAEMON_PREF=swaync \
       NVIDIA_SETUP=true \
-      SWAYOSD_SETUP=true \
+      SWAYOSD_SETUP=false \
       THEME_PREF=none \
       THUNAR_SETUP=false \
       TUIGREET_SETUP=true \
-      WAYBAR_SETUP=true \
+      WAYBAR_SETUP=false \
       "$HOME_DIR/.local/bin/hyprbuntu.sh"
 fi
 

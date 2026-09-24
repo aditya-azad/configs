@@ -2,7 +2,7 @@ local mainMod     = "SUPER"
 local terminal    = "kitty"
 local fileManager = "thunar"
 local browser     = "brave"
-local launcher    = "hyprlauncher"
+local launcher    = "fuzzel"
 
 -- ── Monitors ────────────────────────────────────────────────────────────────
 -- Use kanshi instead
@@ -15,7 +15,7 @@ hl.env("HYPRCURSOR_SIZE", "24")
 -- ── Autostart ────────────────────────────────────────────────────────────────
 hl.on("hyprland.start", function()
     hl.exec_cmd("wlsunset -s 19:00 -S 06:00")
-    hl.exec_cmd("waybar")
+    hl.exec_cmd("quickshell")
     hl.exec_cmd("kanshi")
 end)
 
@@ -127,11 +127,16 @@ hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x = 20, y = 0, relative
 
 -- Switch workspace — Super+1..9 / Super+0 ─────────────────────────────────────
 for i = 1, 10 do
-    local key = i % 10  -- workspace 10 maps to key 0
+    local key = i % 10
     hl.bind(mainMod .. " + " .. key,            hl.dsp.focus({ workspace = i }))
     hl.bind(mainMod .. " + SHIFT + " .. key,    hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
--- Mouse binds  ────────────────────────────────────────────────────────────────
+hl.bind(",XF86AudioRaiseVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'))
+hl.bind(",XF86AudioLowerVolume", hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify-send -t 2000 Volume "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'))
+hl.bind(",XF86AudioMute", hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -t 2000 Mute toggled'))
+hl.bind(",XF86MonBrightnessUp", hl.dsp.exec_cmd('brightnessctl set +5% && notify-send -t 2000 Brightness +'))
+hl.bind(",XF86MonBrightnessDown", hl.dsp.exec_cmd('brightnessctl set 5%- && notify-send -t 2000 Brightness -'))
+
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
