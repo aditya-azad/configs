@@ -31,7 +31,7 @@ gsettings set org.gnome.desktop.interface clock-format "'12h'"
 gsettings set org.gnome.desktop.peripherals.keyboard delay 150
 gsettings set org.gnome.desktop.input-sources xkb-options "['caps:none']"
 
-xdg-settings set default-web-browser brave-browser.desktop
+xdg-settings set default-web-browser firefox.desktop
 gsettings set org.gnome.desktop.default-applications.terminal exec "'kitty'"
 gsettings set org.gnome.desktop.default-applications.terminal exec-arg "''"
 
