@@ -317,6 +317,12 @@
   changed_when: false
   failed_when: false
 
+- name: logind — ensure conf.d exists
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    mode: "0755"
+
 - name: logind — lid-close = ignore
   ansible.builtin.copy:
     dest: /etc/systemd/logind.conf.d/lid.conf
