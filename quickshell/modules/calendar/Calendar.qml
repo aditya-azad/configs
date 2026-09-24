@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import qs.colors
 import qs.components
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: root
@@ -53,6 +54,20 @@ Item {
         height: col.height + 32
         radius: 26
         border.width: 0
+        layer.enabled: true
+        layer.effect: DropShadow {
+            horizontalOffset: 0
+            verticalOffset: 3
+            radius: 16
+            samples: 24
+            color: Colors.shadow
+        }
+
+        Rectangle {
+            width: calCard.width
+            height: calCard.radius
+            color: calCard.color
+        }
 
         Column {
             id: col
