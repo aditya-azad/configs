@@ -16,6 +16,8 @@ programs:
   - zellij
   - heif
   - krita
+  - inkscape
+  - kdenlive
   - keepass2
   - xournalpp
   - calibre

@@ -1,0 +1,6 @@
+---
+
+- name: Install inkscape
+  ansible.builtin.apt:
+    name: inkscape
+    state: present

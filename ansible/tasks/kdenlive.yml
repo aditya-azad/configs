@@ -1,0 +1,6 @@
+---
+
+- name: Install kdenlive
+  ansible.builtin.apt:
+    name: kdenlive
+    state: present
