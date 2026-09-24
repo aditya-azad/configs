@@ -2,7 +2,7 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+sudo apt-get install -y \
   ninja-build gettext cmake unzip curl build-essential
 
 if [[ -d "$CODE_DIR/neovim/.git" ]]; then

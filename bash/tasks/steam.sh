@@ -6,4 +6,4 @@ set -euo pipefail
 
 [[ -f /tmp/steam.deb ]] || \
   curl -fsSL -o /tmp/steam.deb "https://cdn.fastly.steamstatic.com/client/installer/steam.deb"
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y /tmp/steam.deb
+sudo apt-get install -y /tmp/steam.deb

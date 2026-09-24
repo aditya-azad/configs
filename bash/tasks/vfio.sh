@@ -72,9 +72,9 @@ if [[ -z "$vfio_igpu_bdf" ]]; then
   exit 1
 fi
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-modules-extra-$KERNEL"
+sudo apt-get install -y "linux-modules-extra-$KERNEL"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+sudo apt-get install -y \
   build-essential cmake ninja-build git pkg-config \
   libegl-dev libegl1-mesa-dev libgl1-mesa-dev libgles-dev libpulse-dev \
   libpipewire-0.3-dev libwayland-dev wayland-protocols libx11-dev \

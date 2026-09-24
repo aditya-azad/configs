@@ -5,7 +5,7 @@ set -euo pipefail
 mkdir -p "$HOME_DIR/.pi/agent"
 chmod 0755 "$HOME_DIR/.pi/agent"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs npm
+sudo apt-get install -y nodejs npm
 
 [[ -x /usr/bin/pi ]] || sudo npm install -g @earendil-works/pi-coding-agent
 

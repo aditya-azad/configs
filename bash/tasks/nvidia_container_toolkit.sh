@@ -2,7 +2,7 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y curl
+sudo apt-get install -y curl
 
 sudo install -d -m 0755 /usr/share/keyrings
 tmp=$(mktemp)
@@ -15,7 +15,7 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-contai
   | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list >/dev/null
 
 sudo apt-get update
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+sudo apt-get install -y \
   nvidia-container-toolkit=1.17.8-1 \
   nvidia-container-toolkit-base=1.17.8-1 \
   libnvidia-container-tools=1.17.8-1 \

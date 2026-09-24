@@ -2,7 +2,7 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+sudo apt-get install -y \
   autoconf automake cryptsetup fuse2fs git fuse libfuse-dev \
   libseccomp-dev libtool pkg-config runc squashfs-tools squashfs-tools-ng \
   uidmap wget zlib1g-dev

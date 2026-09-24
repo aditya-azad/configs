@@ -2,7 +2,7 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y v4l-utils
+sudo apt-get install -y v4l-utils
 mkdir -p "$CODE_DIR"
 chmod 0755 "$CODE_DIR"
 

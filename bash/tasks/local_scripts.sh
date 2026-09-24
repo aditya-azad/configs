@@ -2,10 +2,10 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y jq zip gh distrobox openconnect
+sudo apt-get install -y jq zip gh distrobox openconnect
 
 if [[ "$ARCH" == "x86_64" ]]; then
-  sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  sudo apt-get install -y \
     qemu-system qemu-utils swtpm virt-viewer ovmf
 fi
 
