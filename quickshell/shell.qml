@@ -3,9 +3,7 @@ import Quickshell
 import qs.modules.network
 import qs.modules.control
 import qs.modules.calendar
-import qs.modules.media
 import qs.modules.bar
-import qs.modules.system
 import Quickshell.Io
 import qs.services as Services
 import qs.components
@@ -32,20 +30,6 @@ ShellRoot {
         }
         color: "transparent"
         focusable: true
-
-        Loader {
-            id: mediaPanelLoader
-            active: false
-            anchors.horizontalCenter: parent.horizontalCenter
-            sourceComponent: MediaPanel {
-                id: mediaPanel
-            }
-            focus: true
-        }
-
-        SystemPanel {
-            id: systemPanel
-        }
 
         Loader {
             id: networkPanelLoader
@@ -90,12 +74,6 @@ ShellRoot {
 
         mask: Region {
             Region {
-                item: mediaPanelLoader.active ? mediaPanelLoader : null
-            }
-            Region {
-                item: systemPanel
-            }
-            Region {
                 item: topBar
             }
             Region {
@@ -108,21 +86,6 @@ ShellRoot {
                 item: launcherWindow.isOpen ? launcherWindow : null
             }
         }
-    }
-
-    Connections {
-        target: mediaPanelLoader.item
-        function onOpenedChanged() {
-            if (!mediaPanelLoader.item.opened) {
-                closeTimer.start()
-            }
-        }
-    }
-
-    Timer {
-        id: closeTimer
-        interval: 600
-        onTriggered: mediaPanelLoader.active = false
     }
 
     Timer {
@@ -151,19 +114,6 @@ ShellRoot {
         function onOpenedChanged() {
             if (controlCenterLoader.item && !controlCenterLoader.item.opened) {
                 closeControlCenterTimer.start()
-            }
-        }
-    }
-
-    IpcHandler {
-        target: "mediaPanel"
-
-        function toggle(): void {
-            if (!mediaPanelLoader.active) {
-                mediaPanelLoader.active = true
-                mediaPanelLoader.item.opened = true
-            } else {
-                mediaPanelLoader.item.opened = !mediaPanelLoader.item.opened
             }
         }
     }

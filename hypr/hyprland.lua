@@ -49,6 +49,8 @@ hl.config({
     },
 })
 
+hl.animation({ leaf = "global", enabled = true, speed = 4, bezier = "default" })
+
 -- ── Layout: dwindle ──────────────────────────────────────────────────────────
 hl.config({
     dwindle = {

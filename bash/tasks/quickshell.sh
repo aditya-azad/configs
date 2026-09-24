@@ -19,7 +19,6 @@ sudo apt-get install -y \
   libpolkit-gobject-1-dev libglib2.0-dev \
   libjemalloc-dev libunwind-dev \
   libcli11-dev spirv-tools \
-  playerctl cava \
   libnotify-bin
 
 if [[ ! -x /usr/local/bin/quickshell ]]; then

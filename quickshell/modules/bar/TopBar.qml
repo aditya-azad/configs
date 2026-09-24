@@ -19,15 +19,15 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 8
 
-            Cpu {}
-            Battery {}
-            Clock {}
             Temp {}
             Memory {}
+            Battery {}
+            Cpu {}
         }
 
-        MediaPill {
+        Row {
             anchors.centerIn: parent
+            Clock {}
         }
 
         Row {

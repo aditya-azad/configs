@@ -14,7 +14,6 @@ Rectangle {
     property int fontPixelSize: 17
     property int horizontalPadding: 16
     property int maxWidth: 0
-    // Optional command to run on click, e.g. ["qs", "ipc", "call", "systemPanel", "toggle"].
     property var command: null
     property bool interactive: root.command !== null
     property alias cursorShape: mouse.cursorShape
