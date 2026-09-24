@@ -5,7 +5,7 @@ import qs.Core
 BarPill {
     z: 100
     text: Icons.bluetooth + " " + bluetoothLabel
-    horizontalPadding: 20
+    horizontalPadding: 24
     maxWidth: 200
     command: ["qs", "ipc", "call", "networkPanel", "changeVisible", "bluetooth"]
 

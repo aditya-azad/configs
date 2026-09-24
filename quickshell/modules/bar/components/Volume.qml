@@ -4,7 +4,7 @@ import qs.Core
 
 BarPill {
     text: volumeIcon + " " + Math.round(Services.Volume.volume * 100) + "%"
-    horizontalPadding: 20
+    horizontalPadding: 24
     maxWidth: 160
     interactive: true
 

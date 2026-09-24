@@ -26,10 +26,10 @@ PanelWindow {
         + Services.CalendarState.anchorWidth / 2
         - implicitWidth / 2))
 
-    // Fixed surface size — large enough for the calendar plus a fully expanded
-    // notes panel. The layer-shell surface must NOT resize per-frame on Wayland
-    // (doing so leaves the newly exposed area unpainted), so we keep it constant
-    // and let the calendar grow/shrink inside it.
+    // Fixed surface size — large enough for the calendar. The layer-shell
+    // surface must NOT resize per-frame on Wayland (doing so leaves the newly
+    // exposed area unpainted), so we keep it constant and let the calendar
+    // grow/shrink inside it.
     implicitWidth: 360
     implicitHeight: Math.min(screen.height, 760)
 
@@ -37,7 +37,7 @@ PanelWindow {
     // the (transparent) surface stays click-through.
     mask: Region { item: cal }
 
-    // Start fresh (current month, today, notes closed) each time it opens.
+    // Start fresh (current month, today) each time it opens.
     Connections {
         target: Services.CalendarState
         function onOpenChanged() {

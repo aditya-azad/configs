@@ -12,7 +12,7 @@ Rectangle {
     property alias text: label.text
     property color textColor: Colors.on_surface
     property int fontPixelSize: 17
-    property int horizontalPadding: 16
+    property int horizontalPadding: 24
     property int maxWidth: 0
     property var command: null
     property bool interactive: root.command !== null

@@ -14,6 +14,24 @@ import qs.modules.launcher
 
 ShellRoot {
     id: root
+
+    function primaryScreen() {
+        const monitors = Services.Hyprland.monitorsInfo
+        if (!monitors || monitors.length === 0) return null
+        let primary = monitors[0]
+        for (let i = 1; i < monitors.length; i++) {
+            const m = monitors[i]
+            if (m.x < primary.x || (m.x === primary.x && m.y < primary.y))
+                primary = m
+        }
+        const screens = Quickshell.screens
+        for (let i = 0; i < screens.length; i++) {
+            if (screens[i].name === primary.name)
+                return screens[i]
+        }
+        return null
+    }
+
     NotificationToasts {}
     CalendarWindow {}
 
@@ -23,6 +41,7 @@ ShellRoot {
         anchors.left: true
         anchors.right: true
         implicitHeight: 42
+        screen: primaryScreen()
         exclusionMode: ExclusionMode.Normal
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Top
