@@ -15,6 +15,7 @@ if [[ ! -x /usr/bin/Hyprland ]]; then
       HYPRPAPER_SETUP=true \
       HYPRSHOT_SETUP=true \
       NVIDIA_SETUP=true \
+      NOTIFICATION_DAEMON_PREF=none \
       SWAYOSD_SETUP=false \
       THEME_PREF=none \
       THUNAR_SETUP=false \
