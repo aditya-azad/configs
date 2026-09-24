@@ -3,15 +3,22 @@ set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
 sudo apt-get install -y \
-  cmake build-essential \
-  qt6-base-dev qt6-declarative-dev qt6-wayland-dev \
+  cmake ninja-build pkg-config build-essential \
+  qt6-base-dev qt6-shadertools-dev qt6-svg-dev \
+  qt6-declarative-dev qt6-declarative-private-dev \
+  qt6-wayland-dev qt6-wayland-private-dev \
   qml6-module-qt5compat-graphicaleffects \
   qml6-module-qtquick-controls \
   qml6-module-qtquick-layouts \
   qml6-module-qtquick-shapes \
+  libdrm-dev libgbm-dev libvulkan-dev \
   libwayland-dev wayland-protocols \
+  libxcb1-dev libxkbcommon-dev \
   libpipewire-0.3-dev libspa-0.2-dev libpulse-dev \
-  libdbus-1-dev libxkbcommon-dev \
+  libdbus-1-dev libpam0g-dev \
+  libpolkit-gobject-1-dev libglib2.0-dev \
+  libjemalloc-dev libunwind-dev \
+  libcli11-dev spirv-tools \
   playerctl cava \
   libnotify-bin
 
@@ -22,11 +29,10 @@ if [[ ! -x /usr/local/bin/quickshell ]]; then
   cd "$CODE_DIR/quickshell"
   git pull || true
   git submodule update --init --recursive || true
-  mkdir -p build
-  cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
-  make -j"$NPROC"
-  sudo make install
+  cmake -GNinja -B build -DCMAKE_INSTALL_PREFIX=/usr/local \
+    -DCMAKE_BUILD_TYPE=Release -DVENDOR_CPPTRACE=ON
+  cmake --build build -j"$NPROC"
+  sudo cmake --install build
   sudo ldconfig
 fi
 
