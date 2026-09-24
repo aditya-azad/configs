@@ -209,13 +209,13 @@
   become_user: "{{ username }}"
   changed_when: false
   loop:
-    - { id: custom0, name: "Terminal",   command: "kitty",                                       binding: "['<Super>Return']" }
-    - { id: custom1, name: "Browser",    command: "brave",                                       binding: "['<Super>b']" }
-    - { id: custom2, name: "Files",      command: "nautilus",                                    binding: "['<Super>e']" }
-    - { id: custom3, name: "Displays",   command: "gnome-control-center display",                binding: "['<Super>m']" }
-    - { id: custom4, name: "Lock",       command: "loginctl lock-session",                      binding: "['<Super><Shift>colon']" }
-    - { id: custom5, name: "Power off",  command: "gnome-session-quit --power-off --no-prompt", binding: "['<Super><Ctrl><Alt>q']" }
-    - { id: custom6, name: "Reboot",     command: "gnome-session-quit --reboot --no-prompt",    binding: "['<Super><Ctrl><Alt>r']" }
+    - { id: custom0, name: "Terminal",   command: "{{ home_dir }}/.local/kitty.app/bin/kitty",   binding: "['<Super>Return']" }
+    - { id: custom1, name: "Browser",    command: "/usr/bin/brave-browser",                       binding: "['<Super>b']" }
+    - { id: custom2, name: "Files",      command: "/usr/bin/nautilus",                            binding: "['<Super>e']" }
+    - { id: custom3, name: "Displays",   command: "/usr/bin/gnome-control-center display",        binding: "['<Super>m']" }
+    - { id: custom4, name: "Lock",       command: "/usr/bin/loginctl lock-session",              binding: "['<Super><Shift>colon']" }
+    - { id: custom5, name: "Power off",  command: "/usr/bin/gnome-session-quit --power-off --no-prompt", binding: "['<Super><Ctrl><Alt>q']" }
+    - { id: custom6, name: "Reboot",     command: "/usr/bin/gnome-session-quit --reboot --no-prompt",    binding: "['<Super><Ctrl><Alt>r']" }
 
 - name: GNOME — GTK / interface settings
   ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
