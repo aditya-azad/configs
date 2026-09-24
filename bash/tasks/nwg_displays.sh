@@ -3,7 +3,7 @@ set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
 sudo apt-get install -y \
-  gir1.2-gtk-3.0 gir1.2-gtk-layer-shell-0.1 libgtk-layer-shell0 \
+  gir1.2-gtk-3.0 gir1.2-gtklayershell-0.1 libgtk-layer-shell0 \
   python3-gi python3-i3ipc python3-build python3-installer python3-wheel \
   python3-setuptools git
 
