@@ -10,19 +10,17 @@ sudo apt-get install -y nodejs npm
 [[ -x /usr/bin/pi ]] || sudo npm install -g @earendil-works/pi-coding-agent
 
 cfg="$HOME_DIR/.pi/agent/settings.json"
-touch "$cfg"
-tmp="$(mktemp)"
-jq --arg p "openrouter" \
-   --arg m "z-ai/glm-5.2" \
-   '. + {
-     "defaultProvider": $p,
-     "defaultModel": $m,
-     "packages": [
-       "npm:pi-subagents",
-       "npm:@zhushanwen/pi-ask-user",
-       "npm:pi-agent-browser-native",
-       "npm:pi-mcp-adapter",
-       "npm:pi-notify",
-       "npm:pi-vim"
-     ]
-   }' "$cfg" > "$tmp" && mv "$tmp" "$cfg"
+
+cat > "$cfg" <<'EOF'
+{
+  "defaultProvider": "openrouter",
+  "defaultModel": "z-ai/glm-5.2"
+}
+EOF
+
+pi install npm:pi-subagents
+pi install npm:@zhushanwen/pi-ask-user
+pi install npm:pi-agent-browser-native
+pi install npm:pi-mcp-adapter
+pi install npm:pi-notify
+pi install npm:pi-vim
