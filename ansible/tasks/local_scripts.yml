@@ -33,6 +33,7 @@
     - "{{ home_dir }}/.local/lib"
     - "{{ home_dir }}/.local/share"
     - "{{ home_dir }}/.vms"
+    - "{{ home_dir }}/.vms/windows"
 
 # st
 - name: Deploy theme-switch dir to ~/.local/share/theme-switch

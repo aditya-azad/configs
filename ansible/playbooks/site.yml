@@ -23,6 +23,16 @@
       ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/git.yml"
       tags: always
 
+    - name: Ensure code_dir + software_dir exist (before any clone/copy)
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+        owner: "{{ username }}"
+      loop:
+        - "{{ code_dir }}"
+        - "{{ software_dir }}"
+
     - name: Install rustup (prerequisite for cargo-based programs)
       ansible.builtin.include_tasks: "{{ playbook_dir }}/../tasks/rust.yml"
       tags: always
