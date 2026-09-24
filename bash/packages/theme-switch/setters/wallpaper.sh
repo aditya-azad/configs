@@ -7,17 +7,18 @@
 # stays portable — it just switches themes for the apps that are present.
 command -v hyprpaper >/dev/null 2>&1 || return 0
 
-# hyprpaper reads ~/.config/hypr/hyprpaper.conf by default. `wallpaper[*]`
-# targets all monitors; hyprpaper's config language (hyprlang) is a special
-# category keyed on the monitor name, with `*` meaning every output.
+# hyprpaper reads ~/.config/hypr/hyprpaper.conf by default. Unlike Hyprland,
+# hyprpaper does NOT use the hyprlang `wallpaper[*] { path = ... }` category
+# form — it uses flat `preload =` and `wallpaper = monitor,path` directives.
+# An empty monitor means the default/first output.
 mkdir -p "$HOME/.config/hypr"
 
-# Wallpapers live in the configs repo. Use the absolute path — hyprlang does
+# Wallpapers live in the configs repo. Use the absolute path — hyprpaper does
 # not reliably expand `~`.
+WP_PATH="$HOME/code/configs/wallpapers/$WALLPAPER"
 cat > "$HOME/.config/hypr/hyprpaper.conf" <<EOF
-wallpaper[*] {
-    path = $HOME/code/configs/wallpapers/$WALLPAPER
-}
+preload = $WP_PATH
+wallpaper = ,$WP_PATH
 EOF
 
 systemctl --user restart hyprpaper 2>/dev/null || true

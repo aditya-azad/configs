@@ -26,6 +26,7 @@ Singleton {
         return primary
     }
     readonly property int primaryWorkspaceId: primaryMonitor?.activeWorkspace?.id ?? 1
+    readonly property int primaryWorkspaceBase: ((primaryWorkspaceId - 1) % 10) + 1
     property real screenW: focusedMonitor ? focusedMonitor.width : 0
     property real screenH: focusedMonitor ? focusedMonitor.height : 0
     property real screenScale: focusedMonitor ? focusedMonitor.scale : 1

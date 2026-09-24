@@ -156,7 +156,8 @@ Item {
                                         return "file://" + icon;
                                     if (icon.includes("://"))
                                         return icon;
-                                    return "image://icon/" + icon;
+                                    if (Quickshell.iconPath(icon, true).length > 0)
+                                        return "image://icon/" + icon;
                                 }
                                 return Services.AppRegistry.fallbackIcon;
                             }

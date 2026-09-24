@@ -25,7 +25,8 @@ Singleton {
         if (icon.startsWith("/"))
             return "file://" + icon
 
-        return Quickshell.iconPath(icon)
+        const resolved = Quickshell.iconPath(icon, true)
+        return resolved ? resolved : ""
     }
 
     function iconForClass(id) {

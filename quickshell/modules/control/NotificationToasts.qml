@@ -67,15 +67,6 @@ PanelWindow {
                         width: parent.width
                         spacing: 0
 
-                        // separator above (all except the first notification)
-                        Rectangle {
-                            visible: index > 0
-                            width: parent.width
-                            height: visible ? 1 : 0
-                            color: Colors.outline_variant
-                            opacity: 0.4
-                        }
-
                         // top spacing
                         Item {
                             width: parent.width
@@ -107,7 +98,8 @@ PanelWindow {
                                                 return "file://" + icon;
                                             if (icon.includes("://"))
                                                 return icon;
-                                            return "image://icon/" + icon;
+                                            if (Quickshell.iconPath(icon, true).length > 0)
+                                                return "image://icon/" + icon;
                                         }
                                         return Services.AppRegistry.fallbackIcon;
                                     }
