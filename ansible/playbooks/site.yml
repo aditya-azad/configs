@@ -5,6 +5,10 @@
   become: true
   gather_facts: true
 
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_uid | default(omit) }}/bus"
+    XDG_RUNTIME_DIR: "/run/user/{{ user_uid | default(omit) }}"
+
   pre_tasks:
     - name: Resolve target user uid (run as root)
       ansible.builtin.command: "id -u {{ username }}"
