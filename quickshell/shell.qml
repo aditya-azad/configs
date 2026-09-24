@@ -54,6 +54,7 @@ ShellRoot {
     PanelWindow {
         id: overlayPanel
         exclusionMode: ExclusionMode.Ignore
+        screen: primaryScreen()
         implicitHeight: screen.height
         implicitWidth: screen.width
         anchors {

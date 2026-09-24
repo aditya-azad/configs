@@ -25,7 +25,7 @@ Item {
         }
     }
 
-    Card {
+    Rectangle {
         anchors.fill: parent
         radius: 20
         color: Colors.surface_container_high

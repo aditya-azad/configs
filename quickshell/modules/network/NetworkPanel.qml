@@ -13,7 +13,6 @@ Item {
 
     property bool opened: false
     property int currentTab: 0
-    property int edgeGap: 12
 
     onOpenedChanged: {
         if (opened) {
@@ -48,23 +47,17 @@ Item {
 
     // ── Panel ─────────────────────────────────────────────────────────────────
 
-    Card {
+    Rectangle {
         id: panel
         width: 384
-        height: 620
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: edgeGap
+        height: parent.height
         x: networkPanel.width
 
-        radius: 22
-
+        color: Colors.surface_container_low
         layer.enabled: true
-        layer.smooth: true
 
-        // subtle top accent wash
         Rectangle {
             anchors.fill: parent
-            radius: parent.radius
             gradient: Gradient {
                 GradientStop { position: 0.0; color: Qt.rgba(panel.accent.r, panel.accent.g, panel.accent.b, 0.05) }
                 GradientStop { position: 0.35; color: "transparent" }
@@ -173,7 +166,7 @@ Item {
         }
         NumberAnimation {
             target: panel; property: "x"
-            to: networkPanel.width - panel.width - edgeGap
+            to: networkPanel.width - panel.width
             duration: 320; easing.type: Easing.OutCubic
         }
     }
