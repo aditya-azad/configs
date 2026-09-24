@@ -24,6 +24,7 @@
     dest: "{{ code_dir }}/forge"
     version: main
     depth: 1
+    force: true
   become: true
   become_user: "{{ username }}"
 
