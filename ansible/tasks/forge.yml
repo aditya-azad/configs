@@ -198,9 +198,9 @@
 
 - name: GNOME — set each custom command keybinding
   ansible.builtin.shell: |
-    gsettings set org.gnome.settings-daemon.plugins.media-keys:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ name "{{ item.name }}"
-    gsettings set org.gnome.settings-daemon.plugins.media-keys:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ command "{{ item.command }}"
-    gsettings set org.gnome.settings-daemon.plugins.media-keys:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ binding "{{ item.binding }}"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ name "{{ item.name }}"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ command "{{ item.command }}"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{{ item.id }}/ binding "{{ item.binding }}"
   args:
     executable: /bin/bash
   become: true
