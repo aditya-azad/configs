@@ -76,10 +76,14 @@ sudo apt-get install -y \
   build-essential cmake ninja-build git pkg-config \
   libegl-dev libegl1-mesa-dev libgl1-mesa-dev libgles-dev libpulse-dev \
   libpipewire-0.3-dev libwayland-dev wayland-protocols libx11-dev \
-  libxfixes-dev libxi-dev libxpresent-dev libxscrnsaver-dev libxinerama-dev \
-  libxcursor-dev libxss-dev libxrandr-dev libfontconfig-dev fonts-freefont-ttf
+  libxfixes-dev libxi-dev libxpresent-dev libxinerama-dev \
+  libxcursor-dev libxss-dev libxrandr-dev libfontconfig-dev fonts-freefont-ttf \
+  libsamplerate0-dev \
+  libspice-protocol-dev \
+  libxkbcommon-dev nettle-dev libwayland-bin gawk \
+  binutils-dev
 
-lg_tag="B6"
+lg_tag="B7"
 lg_src="$HOME_DIR/.local/src/looking-glass"
 lg_bin="$HOME_DIR/.local/bin/looking-glass-client"
 lg_marker="$HOME_DIR/.local/share/.looking-glass.tag"
@@ -88,14 +92,16 @@ lg_installed=""
 [[ -f "$lg_marker" ]] && lg_installed="$(cat "$lg_marker")"
 
 if [[ "$lg_installed" != "$lg_tag" || ! -x "$lg_bin" ]]; then
-  mkdir -p "$lg_src" "$lg_src/client/build"
-  chmod 0755 "$lg_src" "$lg_src/client/build"
   if [[ -d "$lg_src/.git" ]]; then
     git -C "$lg_src" fetch --all --tags 2>/dev/null || true
     git -C "$lg_src" checkout "$lg_tag" 2>/dev/null || true
+    git -C "$lg_src" submodule update --init --recursive --depth 1
   else
-    git clone --depth 1 --branch "$lg_tag" https://looking-glass.io/git/looking-glass.git "$lg_src"
+    rm -rf "$lg_src"
+    git clone --depth 1 --branch "$lg_tag" --recurse-submodules --shallow-submodules https://github.com/gnif/LookingGlass.git "$lg_src"
   fi
+  mkdir -p "$lg_src/client/build"
+  chmod 0755 "$lg_src" "$lg_src/client/build"
   bash -c "set -e; cd '$lg_src/client/build'; cmake -G Ninja -DENABLE_PULSEAUDIO=ON -DENABLE_PIPEWIRE=ON .."
   bash -c "set -e; cd '$lg_src/client/build'; cmake --build . --parallel $NPROC"
   cp -f "$lg_src/client/build/looking-glass-client" "$lg_bin"
