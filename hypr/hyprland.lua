@@ -64,6 +64,18 @@ hl.config({
     },
 })
 
+hl.window_rule({
+    name = "kitty-no-auto-fullscreen",
+    match = { class = "kitty" },
+    suppress_event = "fullscreen",
+})
+
+hl.window_rule({
+    name = "kitty-no-auto-maximize",
+    match = { class = "kitty" },
+    suppress_event = "maximize",
+})
+
 -- ── Misc ─────────────────────────────────────────────────────────────────────
 hl.config({
     misc = {
