@@ -3,8 +3,7 @@
 - name: Install zellij via cargo
   ansible.builtin.shell: |
     set -e
-    source {{ cargo_env }}
-    cargo install zellij
+    {{ cargo_bin }}/cargo install zellij
   args:
     executable: /bin/bash
     creates: "{{ cargo_bin }}/zellij"

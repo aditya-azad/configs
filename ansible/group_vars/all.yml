@@ -12,5 +12,4 @@ bashrc_file: "{{ home_dir }}/.bashrc"
 
 mise_bin: "{{ home_dir }}/.local/bin/mise"
 
-cargo_env: "{{ home_dir }}/.cargo/env"
 cargo_bin: "{{ home_dir }}/.cargo/bin"

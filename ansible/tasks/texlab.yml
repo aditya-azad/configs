@@ -11,9 +11,8 @@
 - name: Build texlab (release)
   ansible.builtin.shell: |
     set -e
-    source {{ cargo_env }}
     cd {{ code_dir }}/texlab
-    cargo build --release
+    {{ cargo_bin }}/cargo build --release
   args:
     executable: /bin/bash
     creates: "{{ code_dir }}/texlab/target/release/texlab"
