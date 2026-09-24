@@ -11,6 +11,6 @@
     path: "{{ bashrc_file }}"
     marker: "# {mark} ANSIBLE bizon-ssh"
     block: |
-      alias bizon='ssh -Y {{ bizon_user | default(\"aazad\") }}@bizon'
+      alias bizon='ssh -Y {{ bizon_user | default("aazad") }}@bizon'
   become: true
   become_user: "{{ username }}"
