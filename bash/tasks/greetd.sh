@@ -18,3 +18,7 @@ if [[ "$cfg_changed" == 1 ]]; then
 fi
 
 sudo systemctl enable greetd.service 2>/dev/null || true
+
+if systemctl list-unit-files 2>/dev/null | grep -qE '^gdm\.service[[:space:]]'; then
+  sudo systemctl disable gdm.service 2>/dev/null || true
+fi
