@@ -62,7 +62,7 @@
   become_user: "{{ username }}"
 
 - name: Forge — enable extension
-  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} {{ item.value }}"
+  ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
   become: true
