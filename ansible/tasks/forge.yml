@@ -74,7 +74,7 @@
     - { schema: "org.gnome.shell", key: "enabled-extensions", value: "['forge@jmmaranan.com']" }
 
 - name: Forge — set tiling keybindings
-  ansible.builtin.shell: "gsettings set org.gnome.shell.extensions.forge {{ item.key }} \"{{ item.value }}\""
+  ansible.builtin.shell: "gsettings set org.gnome.shell.extensions.forge.keybindings {{ item.key }} \"{{ item.value }}\""
   args:
     executable: /bin/bash
   environment:
