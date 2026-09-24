@@ -20,7 +20,7 @@ PanelWindow {
     // Drop straight out of the clock pill: center the card under the pill and
     // leave a gap below the bar. Clamped so a pill near the screen edge can't
     // push the card off-screen.
-    margins.top: 54
+    margins.top: 52
     margins.left: Math.max(8, Math.round(
         Services.CalendarState.anchorX
         + Services.CalendarState.anchorWidth / 2

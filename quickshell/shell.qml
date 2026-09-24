@@ -32,7 +32,7 @@ ShellRoot {
         return null
     }
 
-    NotificationToasts {}
+    NotificationToasts { screen: primaryScreen() }
     CalendarWindow {}
 
     PanelWindow {
@@ -40,9 +40,12 @@ ShellRoot {
         anchors.top: true
         anchors.left: true
         anchors.right: true
-        implicitHeight: 42
+        margins.top: 8
+        margins.left: 4
+        margins.right: 4
+        implicitHeight: 32
         screen: primaryScreen()
-        exclusionMode: ExclusionMode.Normal
+        exclusionMode: ExclusionMode.Exclusive
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Top
 

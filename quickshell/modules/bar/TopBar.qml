@@ -8,14 +8,14 @@ Item {
 
     anchors.left: parent.left
     anchors.right: parent.right
-    implicitHeight: 42
+    implicitHeight: 32
 
     Item {
         anchors.fill: parent
 
         Row {
             anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.leftMargin: 4
             anchors.verticalCenter: parent.verticalCenter
             spacing: 8
 
@@ -33,7 +33,7 @@ Item {
 
         Row {
             anchors.right: parent.right
-            anchors.rightMargin: 20
+            anchors.rightMargin: 4
             anchors.verticalCenter: parent.verticalCenter
             spacing: 8
 

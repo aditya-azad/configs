@@ -109,12 +109,12 @@ PanelWindow {
                                                 return icon;
                                             return "image://icon/" + icon;
                                         }
-                                        return "image://icon/dialog-information";
+                                        return Services.AppRegistry.fallbackIcon;
                                     }
 
                                     onStatusChanged: {
                                         if (status === Image.Error)
-                                            source = "image://icon/dialog-information";
+                                            source = Services.AppRegistry.fallbackIcon;
                                     }
                                 }
                             }

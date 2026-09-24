@@ -17,6 +17,15 @@ Singleton {
     readonly property HyprlandWorkspace focusedWorkspace: Hyprland.focusedWorkspace
     readonly property HyprlandMonitor focusedMonitor: Hyprland.focusedMonitor
     readonly property int focusedWorkspaceId: focusedWorkspace?.id ?? 1
+    readonly property HyprlandMonitor primaryMonitor: {
+        let primary = null
+        for (const m of Hyprland.monitors.values) {
+            if (!primary || m.x < primary.x || (m.x === primary.x && m.y < primary.y))
+                primary = m
+        }
+        return primary
+    }
+    readonly property int primaryWorkspaceId: primaryMonitor?.activeWorkspace?.id ?? 1
     property real screenW: focusedMonitor ? focusedMonitor.width : 0
     property real screenH: focusedMonitor ? focusedMonitor.height : 0
     property real screenScale: focusedMonitor ? focusedMonitor.scale : 1

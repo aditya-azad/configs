@@ -39,8 +39,8 @@ find_icon() {
     icon_name="${icon_name#theme://}"
     [[ "$icon_name" == /* ]] && { echo "$icon_name"; return; }
 
-    local exts=(png svg xpm)
-    local sizes=(16 22 24 32 48 64 128 256 512 scalable)
+    local exts=(svg png xpm)
+    local sizes=(1024 512 384 256 192 160 128 96 72 64 48 36 32 24 22 16)
     local icon_bases=(
         "$HOME/.local/share/icons/$theme"
         "/usr/share/icons/$theme"
@@ -49,14 +49,21 @@ find_icon() {
     )
 
     for base in "${icon_bases[@]}"; do
-        for size in "${sizes[@]}"; do
+        for subdir in apps actions status devices places panel mimetypes; do
             for ext in "${exts[@]}"; do
-                for subdir in apps actions status devices places panel mimetypes; do
+                local scalable="$base/scalable/$subdir/$icon_name.$ext"
+                [[ -f "$scalable" ]] && { echo "$scalable"; return; }
+            done
+        done
+    done
+
+    for base in "${icon_bases[@]}"; do
+        for size in "${sizes[@]}"; do
+            for subdir in apps actions status devices places panel mimetypes; do
+                for ext in "${exts[@]}"; do
                     local candidate="$base/${size}x${size}/$subdir/$icon_name.$ext"
                     [[ -f "$candidate" ]] && { echo "$candidate"; return; }
                 done
-                local scalable="$base/scalable/apps/$icon_name.$ext"
-                [[ -f "$scalable" ]] && { echo "$scalable"; return; }
             done
         done
     done

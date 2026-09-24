@@ -53,14 +53,6 @@ Item {
         height: col.height + 32
         radius: 26
 
-        Rectangle {
-            anchors.fill: parent
-            radius: parent.radius
-            color: "transparent"
-            border.width: 1
-            border.color: Qt.rgba(1, 1, 1, 0.04)
-        }
-
         Column {
             id: col
             x: 16; y: 16

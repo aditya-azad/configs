@@ -12,6 +12,8 @@ Singleton {
     property var desktopIdToIcon: ({})
     property var nameToIcon: ({})
 
+    readonly property url fallbackIcon: Qt.resolvedUrl("../assets/app-fallback.svg")
+
     signal ready()
 
     function iconForDesktopIcon(icon) {
@@ -65,7 +67,7 @@ Singleton {
 
     // Extra helper: resolve icon using any metadata we might have (Hyprland, Niri, etc.)
     function iconForAppMeta(meta) {
-        if (!meta) return Quickshell.iconPath("application-x-executable")
+        if (!meta) return fallbackIcon
 
         const candidates = [
             meta.appId,
@@ -83,23 +85,13 @@ Singleton {
         }
 
         // fallback: try compositor provided icon name
-        if (meta.icon)
-            return iconForDesktopIcon(meta.icon)
-
-        // hard fallback icons (guaranteed to exist in most themes)
-        const fallbacks = [
-            "application-x-executable",
-            "application-default-icon",
-            "window"
-        ]
-
-        for (let f of fallbacks) {
-            const resolved = Quickshell.iconPath(f)
-            if (resolved)
-                return resolved
+        if (meta.icon) {
+            const icon = iconForDesktopIcon(meta.icon)
+            if (icon !== "")
+                return icon
         }
 
-        return ""
+        return fallbackIcon
     }
 
     function registerApp(displayName, comment, icon, exec, wmClass, desktopId) {

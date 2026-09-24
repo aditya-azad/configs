@@ -323,20 +323,13 @@ Item {
                             fillMode: Image.PreserveAspectFit
                             smooth: true; antialiasing: true
 
-                            Rectangle {
+                            Image {
                                 anchors.fill: parent
-                                radius: 10
-                                color: Colors.primary_container
+                                source: Services.AppRegistry.fallbackIcon
+                                sourceSize.width: 88; sourceSize.height: 88
+                                fillMode: Image.PreserveAspectFit
+                                smooth: true; antialiasing: true
                                 visible: parent.status === Image.Error || parent.status === Image.Null
-
-                                StyledText {
-                                    anchors.centerIn: parent
-                                    text: delegateRoot.app && delegateRoot.app.name
-                                        ? delegateRoot.app.name.charAt(0).toUpperCase() : "?"
-                                    font.pixelSize: 20
-                                    font.weight: Font.Medium
-                                    color: Colors.on_primary_container
-                                }
                             }
                         }
 

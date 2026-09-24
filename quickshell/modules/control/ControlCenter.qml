@@ -10,7 +10,12 @@ import qs.modules.control
 
 Item {
     id: controlCenter
-    anchors.fill: parent
+    anchors {
+        top: parent.top
+        bottom: parent.bottom
+        left: parent.left
+        right: parent.right
+    }
     visible: false
 
     property bool opened: false
