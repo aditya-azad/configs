@@ -12,7 +12,7 @@ if [[ ! -x /usr/bin/Hyprland ]]; then
       DISABLE_CONFIRM=true \
       HYPRIDLE_SETUP=true \
       HYPRLOCK_SETUP=true \
-      HYPRPAPER_SETUP=true \
+      HYPRPAPER_SETUP=false \
       HYPRSHOT_SETUP=true \
       NVIDIA_SETUP=true \
       NOTIFICATION_DAEMON_PREF=none \

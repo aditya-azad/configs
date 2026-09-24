@@ -1,0 +1,14 @@
+[Unit]
+Description=swaybg wallpaper
+PartOf=graphical-session.target
+Requires=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=%h/.local/bin/swaybg-wallpaper
+Restart=on-failure
+Slice=session.slice
+
+[Install]
+WantedBy=graphical-session.target

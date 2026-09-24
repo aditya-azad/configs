@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+command -v swaybg >/dev/null 2>&1 || exit 0
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/themes"
+WP_FILE="$STATE_DIR/current/wallpaper"
+[[ -f "$WP_FILE" ]] || exit 0
+WP="$(cat "$WP_FILE")"
+[[ -n "$WP" && -f "$WP" ]] || exit 0
+exec swaybg -i "$WP" -m fill

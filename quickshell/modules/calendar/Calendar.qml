@@ -52,6 +52,7 @@ Item {
         y: 0
         height: col.height + 32
         radius: 26
+        border.width: 0
 
         Column {
             id: col
