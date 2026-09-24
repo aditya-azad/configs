@@ -51,7 +51,7 @@
   become_user: "{{ username }}"
 
 - name: Refresh font cache
-  ansible.builtin.command: fc-cache -f -v
-  become: true
-  become_user: "{{ username }}"
+  ansible.builtin.command: fc-cache -f
+  environment:
+    HOME: "{{ home_dir }}"
   changed_when: false
