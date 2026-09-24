@@ -5,9 +5,5 @@
 - each host runs only the programs in its host_vars `programs` list
 - each `programs` entry maps to tasks/<name>.yml, which installs and configures one program idempotently
 - `programs` order matters: setup tasks precede installs; ssh_key runs as a pre-task
-- the playbook runs as root (sudo); the `home` var resolves the managed user's home (ansible_env.HOME would be /root)
-- the configs repo root is two levels above ansible/playbooks/
-- bashrc is managed with idempotent blockinfile sections (marker `# {mark} ANSIBLE …`)
-- GTK color-scheme is toggled by the `st` theme-switch script, not set in ansible
-- scripts under ansible/files/packages/ are personal software
+- GTK color-scheme is toggled by the `st` theme-switch script
 - don't put comments anywhere unless asked by user
