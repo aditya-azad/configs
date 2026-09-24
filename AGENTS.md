@@ -1,4 +1,4 @@
-- the target for legionn 7i is ubuntu 26 desktop
+- the target for legion 7i is ubuntu 26 server (minimal base) with hyprland
 - all software and settings must be idempotently installed
 - do not run any of the code without explicit user permission
 - mise is used per project basis only
