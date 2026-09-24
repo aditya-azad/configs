@@ -36,6 +36,7 @@ cat > "$tmp" <<'JSON'
     { "name": "OpenRouter", "url": "https://openrouter.ai/settings/credits" },
     { "name": "Hacker News", "url": "https://news.ycombinator.com/" },
     { "name": "MyFitnessPal", "url": "https://www.myfitnesspal.com/" },
+    { "name": "Syncthing", "url": "http://127.0.0.1:8384/" },
     { "name": "Refree", "url": "http://127.0.0.1:23119/" }
   ],
   "ExtensionInstallForcelist": [

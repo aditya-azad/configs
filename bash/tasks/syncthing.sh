@@ -25,8 +25,11 @@ cp -f "$HOME_DIR/syncthing/etc/linux-systemd/user/syncthing.service" \
       "$HOME_DIR/.config/systemd/user/syncthing.service"
 chmod 0644 "$HOME_DIR/.config/systemd/user/syncthing.service"
 
-blockinfile "$BASHRC_FILE" "syncthing-path" <<'EOF'
+sed -i '/# BEGIN configs syncthing-path/,/# END configs syncthing-path/d' "$BASHRC_FILE"
+cat >> "$BASHRC_FILE" <<'EOF'
+# BEGIN configs syncthing-path
 export PATH=${PATH}:${HOME}/syncthing/
+# END configs syncthing-path
 EOF
 
 systemctl --user daemon-reload

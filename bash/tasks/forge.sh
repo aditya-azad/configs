@@ -2,8 +2,6 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-gset() { gsettings set "$1" "$2" "$3"; }
-
 sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y \
   ubuntu-desktop gdm3 make gettext libglib2.0-bin git vlc
 sudo systemctl enable --now gdm.service
@@ -28,18 +26,18 @@ cp -f "$CODE_DIR/forge/schemas/org.gnome.shell.extensions.forge.gschema.xml" \
 chmod 0644 "$HOME_DIR/.local/share/glib-2.0/schemas/org.gnome.shell.extensions.forge.gschema.xml"
 glib-compile-schemas "$HOME_DIR/.local/share/glib-2.0/schemas/"
 
-gset org.gnome.shell disable-user-extensions "false"
-gset org.gnome.shell enabled-extensions "['forge@jmmaranan.com']"
+gsettings set org.gnome.shell disable-user-extensions "false"
+gsettings set org.gnome.shell enabled-extensions "['forge@jmmaranan.com']"
 
-gset org.gnome.shell.extensions.forge.keybindings window-focus-left  "['<Super>h']"
-gset org.gnome.shell.extensions.forge.keybindings window-focus-down  "['<Super>j']"
-gset org.gnome.shell.extensions.forge.keybindings window-focus-up    "['<Super>k']"
-gset org.gnome.shell.extensions.forge.keybindings window-focus-right "['<Super>l']"
-gset org.gnome.shell.extensions.forge.keybindings window-move-left   "['<Super><Shift>h']"
-gset org.gnome.shell.extensions.forge.keybindings window-move-down   "['<Super><Shift>j']"
-gset org.gnome.shell.extensions.forge.keybindings window-move-up     "['<Super><Shift>k']"
-gset org.gnome.shell.extensions.forge.keybindings window-move-right  "['<Super><Shift>l']"
-gset org.gnome.shell.extensions.forge.keybindings window-toggle-float "['<Super>comma']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-focus-left  "['<Super>h']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-focus-down  "['<Super>j']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-focus-up    "['<Super>k']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-focus-right "['<Super>l']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-move-left   "['<Super><Shift>h']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-move-down   "['<Super><Shift>j']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-move-up     "['<Super><Shift>k']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-move-right  "['<Super><Shift>l']"
+gsettings set org.gnome.shell.extensions.forge.keybindings window-toggle-float "['<Super>comma']"
 
 bash <<'CLEAN'
 set -e
@@ -58,29 +56,29 @@ done
 gsettings set org.gnome.mutter overlay-key "" 2>/dev/null || true
 CLEAN
 
-gset org.gnome.desktop.wm.keybindings close            "['<Super><Shift>q']"
-gset org.gnome.desktop.wm.keybindings toggle-maximized "['<Super>f']"
-for n in 1 2 3 4 5 6 7 8 9 10; do gset org.gnome.desktop.wm.keybindings "switch-to-workspace-$n" "['<Super>$n']"; done
-for n in 1 2 3 4 5 6 7 8;      do gset org.gnome.desktop.wm.keybindings "move-to-workspace-$n"   "['<Super><Shift>$n']"; done
+gsettings set org.gnome.desktop.wm.keybindings close            "['<Super><Shift>q']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Super>f']"
+for n in 1 2 3 4 5 6 7 8 9 10; do gsettings set org.gnome.desktop.wm.keybindings "switch-to-workspace-$n" "['<Super>$n']"; done
+for n in 1 2 3 4 5 6 7 8;      do gsettings set org.gnome.desktop.wm.keybindings "move-to-workspace-$n"   "['<Super><Shift>$n']"; done
 
-for n in 1 2 3 4 5 6 7 8 9; do gset org.gnome.shell.keybindings "switch-to-application-$n" "[]"; done
-gset org.gnome.settings-daemon.plugins.media-keys lock-screen "[]"
+for n in 1 2 3 4 5 6 7 8 9; do gsettings set org.gnome.shell.keybindings "switch-to-application-$n" "[]"; done
+gsettings set org.gnome.settings-daemon.plugins.media-keys lock-screen "[]"
 
-gset org.gnome.mutter workspaces-only-on-primary "true"
-gset org.gnome.mutter dynamic-workspaces "false"
-gset org.gnome.desktop.wm.preferences num-workspaces "10"
+gsettings set org.gnome.mutter workspaces-only-on-primary "true"
+gsettings set org.gnome.mutter dynamic-workspaces "false"
+gsettings set org.gnome.desktop.wm.preferences num-workspaces "10"
 
-gset org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s']"
-gset org.gnome.settings-daemon.plugins.power idle-dim "false"
-gset org.gnome.settings-daemon.plugins.color night-light-enabled "true"
-gset org.gnome.settings-daemon.plugins.color night-light-schedule-from "19.0"
-gset org.gnome.settings-daemon.plugins.color night-light-schedule-to "6.0"
-gset org.gnome.desktop.background picture-uri      "'file://$CONFIGS_REPO/wallpapers/carnation-lily-lily-rose.jpg'"
-gset org.gnome.desktop.background picture-uri-dark  "'file://$CONFIGS_REPO/wallpapers/zima-blue.png'"
+gsettings set org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s']"
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim "false"
+gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled "true"
+gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from "19.0"
+gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to "6.0"
+gsettings set org.gnome.desktop.background picture-uri      "'file://$CONFIGS_REPO/wallpapers/carnation-lily-lily-rose.jpg'"
+gsettings set org.gnome.desktop.background picture-uri-dark  "'file://$CONFIGS_REPO/wallpapers/zima-blue.png'"
 
-gset org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
+gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com']"
 
-gset org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
   "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/',
     '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/',
     '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/',
@@ -89,31 +87,35 @@ gset org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
     '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/',
     '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/']"
 
-set_custom_kb() {
-  local id="$1" name="$2" command="$3" binding="$4"
-  local base="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/$id/"
-  gsettings set "$base" name "$name"
-  gsettings set "$base" command "$command"
-  gsettings set "$base" binding "$binding"
-}
-set_custom_kb custom0 "Terminal"  "/usr/bin/gtk-launch kitty.desktop"               "['<Super>t']"
-set_custom_kb custom1 "Browser"   "/usr/bin/gtk-launch brave-browser.desktop"       "['<Super>b']"
-set_custom_kb custom2 "Files"     "/usr/bin/gtk-launch org.gnome.Nautilus.desktop" "['<Super>e']"
-set_custom_kb custom3 "Displays"  "/usr/bin/gnome-control-center display"           "['<Super>m']"
-set_custom_kb custom4 "Lock"      "/usr/bin/loginctl lock-session"                   "['<Super><Shift>colon']"
-set_custom_kb custom5 "Power off" "/usr/bin/gnome-session-quit --power-off --no-prompt" "['<Super><Ctrl><Alt>q']"
-set_custom_kb custom6 "Reboot"    "/usr/bin/gnome-session-quit --reboot --no-prompt"    "['<Super><Ctrl><Alt>r']"
+kb_ids=(custom0 custom1 custom2 custom3 custom4 custom5 custom6)
+kb_names=("Terminal" "Browser" "Files" "Displays" "Lock" "Power off" "Reboot")
+kb_cmds=(
+  "/usr/bin/gtk-launch kitty.desktop"
+  "/usr/bin/gtk-launch brave-browser.desktop"
+  "/usr/bin/gtk-launch org.gnome.Nautilus.desktop"
+  "/usr/bin/gnome-control-center display"
+  "/usr/bin/loginctl lock-session"
+  "/usr/bin/gnome-session-quit --power-off --no-prompt"
+  "/usr/bin/gnome-session-quit --reboot --no-prompt"
+)
+kb_binds=("['<Super>t']" "['<Super>b']" "['<Super>e']" "['<Super>m']" "['<Super><Shift>colon']" "['<Super><Ctrl><Alt>q']" "['<Super><Ctrl><Alt>r']")
+for i in "${!kb_ids[@]}"; do
+  base="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${kb_ids[$i]}/"
+  gsettings set "$base" name    "${kb_names[$i]}"
+  gsettings set "$base" command "${kb_cmds[$i]}"
+  gsettings set "$base" binding "${kb_binds[$i]}"
+done
 
-gset org.gnome.desktop.interface icon-theme        "'Yaru'"
-gset org.gnome.desktop.interface gtk-theme         "'Adwaita'"
-gset org.gnome.desktop.interface enable-animations "false"
-gset org.gnome.desktop.interface clock-format      "'12h'"
-gset org.gnome.desktop.peripherals.keyboard delay "150"
-gset org.gnome.desktop.input-sources xkb-options   "['caps:none']"
+gsettings set org.gnome.desktop.interface icon-theme        "'Yaru'"
+gsettings set org.gnome.desktop.interface gtk-theme         "'Adwaita'"
+gsettings set org.gnome.desktop.interface enable-animations "false"
+gsettings set org.gnome.desktop.interface clock-format      "'12h'"
+gsettings set org.gnome.desktop.peripherals.keyboard delay "150"
+gsettings set org.gnome.desktop.input-sources xkb-options   "['caps:none']"
 
 xdg-settings set default-web-browser brave-browser.desktop
-gset org.gnome.desktop.default-applications.terminal exec    "'kitty'"
-gset org.gnome.desktop.default-applications.terminal exec-arg "''"
+gsettings set org.gnome.desktop.default-applications.terminal exec     "'kitty'"
+gsettings set org.gnome.desktop.default-applications.terminal exec-arg "''"
 
 for m in video/mp4 video/x-msvideo video/quicktime video/x-matroska video/webm \
   video/x-flv video/x-ms-wmv video/mpeg video/ogg video/3gpp \
@@ -133,7 +135,7 @@ if ! dpkg -s nautilus-extension-any-terminal >/dev/null 2>&1; then
       https://github.com/Stunkymonkey/nautilus-open-any-terminal/releases/download/0.8.3/nautilus-extension-any-terminal_0.8.3-1_all.deb
   sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y /tmp/nautilus-extension-any-terminal.deb
 fi
-gset com.github.stunkymonkey.nautilus-open-any-terminal terminal "'kitty'"
+gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal "'kitty'"
 nautilus -q 2>/dev/null || true
 
 sudo mkdir -p /etc/systemd/logind.conf.d

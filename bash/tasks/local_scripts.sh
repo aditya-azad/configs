@@ -32,7 +32,10 @@ install -m 0644 "$PACKAGES_DIR/qvm/vms/windows.sh" "$HOME_DIR/.vms/windows/windo
 install -m 0644 "$PACKAGES_DIR/venvup/venvup" "$HOME_DIR/.local/lib/venvup"
 install -m 0644 "$PACKAGES_DIR/rdid/rdid"     "$HOME_DIR/.local/lib/rdid"
 
-blockinfile "$BASHRC_FILE" "qvm-ovmf" <<'EOF'
+sed -i '/# BEGIN configs qvm-ovmf/,/# END configs qvm-ovmf/d' "$BASHRC_FILE"
+cat >> "$BASHRC_FILE" <<'EOF'
+# BEGIN configs qvm-ovmf
 export QVM_OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 export QVM_OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+# END configs qvm-ovmf
 EOF

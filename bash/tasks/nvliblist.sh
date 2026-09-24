@@ -5,7 +5,11 @@ set -euo pipefail
 sudo mkdir -p /usr/local/etc/singularity
 sudo chmod 0755 /usr/local/etc/singularity
 
-blockinfile --sudo /usr/local/etc/singularity/nvliblist.conf "jetson-nvliblist" <<'EOF'
+sudo touch /usr/local/etc/singularity/nvliblist.conf
+
+sudo sed -i '/# BEGIN configs jetson-nvliblist/,/# END configs jetson-nvliblist/d' /usr/local/etc/singularity/nvliblist.conf
+sudo tee -a /usr/local/etc/singularity/nvliblist.conf >/dev/null <<'EOF'
+# BEGIN configs jetson-nvliblist
 libv4l2.so.0
 color-lcms.so
 desktop-shell.so
@@ -218,4 +222,5 @@ libwayland-client.so
 libwayland-cursor.so
 libwayland-egl.so
 libwayland-server.so
+# END configs jetson-nvliblist
 EOF

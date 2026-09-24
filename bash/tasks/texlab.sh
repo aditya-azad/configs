@@ -16,6 +16,9 @@ fi
 mkdir -p "$SOFTWARE_DIR/texlab"
 cp -a "$CODE_DIR/texlab/target/release/." "$SOFTWARE_DIR/texlab/"
 
-blockinfile "$BASHRC_FILE" "texlab-path" <<'EOF'
+sed -i '/# BEGIN configs texlab-path/,/# END configs texlab-path/d' "$BASHRC_FILE"
+cat >> "$BASHRC_FILE" <<'EOF'
+# BEGIN configs texlab-path
 export PATH=$PATH:$HOME/.software/texlab
+# END configs texlab-path
 EOF

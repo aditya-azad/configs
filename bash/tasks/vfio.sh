@@ -2,9 +2,7 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-jget() { printf '%s' "$vfio_json" | sed -n 's/.*"'"$1"'":"\([^"]*\)".*/\1/p'; }
-
-vfio_json="$(bash <<'DETECT'
+eval "$(bash <<'DETECT'
 set -uo pipefail
 cv=$(awk -F: '/^vendor_id/{gsub(/ /,"",$2); print tolower($2); exit}' /proc/cpuinfo)
 case "$cv" in
@@ -39,10 +37,9 @@ for link in /sys/class/bluetooth/*/device; do
   fi
 done
 
-bypath() { printf '/dev/dri/by-path/pci-0000:%s-card' "$1"; }
 drm=""
 if [ -n "$igpu_bdf" ] && [ -n "$gpu_bdf" ]; then
-  drm="$(bypath "$gpu_bdf"):$(bypath "$igpu_bdf")"
+  drm="/dev/dri/by-path/pci-0000:${gpu_bdf}-card:/dev/dri/by-path/pci-0000:${igpu_bdf}-card"
 fi
 
 vfio_ids="$gpu_ids"
@@ -53,19 +50,16 @@ if [ -n "$bt_v" ] && [ -n "$bt_p" ]; then
   bt_extra="-device usb-host,vendorid=0x$bt_v,productid=0x$bt_p"
 fi
 
-printf '{"iommu":"%s","gpu_bdf":"%s","gpu_ids":"%s","audio_ids":"%s","vfio_ids":"%s","igpu_bdf":"%s","drm":"%s","bt_vendor":"%s","bt_product":"%s","bt_extra":"%s"}\n' \
-  "$iommu" "$gpu_bdf" "$gpu_ids" "$audio_ids" "$vfio_ids" "$igpu_bdf" "$drm" "$bt_v" "$bt_p" "$bt_extra"
+printf 'vfio_iommu=%q\n'      "$iommu"
+printf 'vfio_gpu_bdf=%q\n'     "$gpu_bdf"
+printf 'vfio_vfio_ids=%q\n'    "$vfio_ids"
+printf 'vfio_igpu_bdf=%q\n'    "$igpu_bdf"
+printf 'vfio_drm=%q\n'         "$drm"
+printf 'vfio_bt_vendor=%q\n'   "$bt_v"
+printf 'vfio_bt_product=%q\n'  "$bt_p"
+printf 'vfio_bt_extra=%q\n'    "$bt_extra"
 DETECT
 )"
-
-vfio_iommu="$(jget iommu)"
-vfio_gpu_bdf="$(jget gpu_bdf)"
-vfio_vfio_ids="$(jget vfio_ids)"
-vfio_igpu_bdf="$(jget igpu_bdf)"
-vfio_drm="$(jget drm)"
-vfio_bt_vendor="$(jget bt_vendor)"
-vfio_bt_product="$(jget bt_product)"
-vfio_bt_extra="$(jget bt_extra)"
 
 echo "!! dGPU=$vfio_gpu_bdf ids=$vfio_vfio_ids; iGPU=$vfio_igpu_bdf; IOMMU=$vfio_iommu; BT=$vfio_bt_vendor:$vfio_bt_product; AQ_DRM_DEVICES=$vfio_drm" >&2
 
@@ -147,9 +141,12 @@ else
 fi
 
 vfio_devs="${vfio_vfio_ids//,/ }"
-blockinfile "$BASHRC_FILE" "qvm-vfio" <<EOF
+sed -i '/# BEGIN configs qvm-vfio/,/# END configs qvm-vfio/d' "$BASHRC_FILE"
+cat >> "$BASHRC_FILE" <<EOF
+# BEGIN configs qvm-vfio
 export VM_VFIO_DEVS="$vfio_devs"
 export VM_EXTRA_ARGS="$vfio_bt_extra"
+# END configs qvm-vfio
 EOF
 
 mkdir -p "$HOME_DIR/.config/environment.d"
