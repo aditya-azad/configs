@@ -1,7 +1,0 @@
----
-
-- name: Ensure eagle/jetson is in /etc/hosts
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    regexp: '^\s*192\.168\.55\.1\s+jetson\s*$'
-    line: "192.168.55.1 jetson"

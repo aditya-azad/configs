@@ -1,6 +1,0 @@
----
-
-- name: Install keepass2
-  ansible.builtin.apt:
-    name: keepass2
-    state: present

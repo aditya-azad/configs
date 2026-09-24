@@ -1,6 +1,0 @@
----
-
-- name: Install krita
-  ansible.builtin.apt:
-    name: krita
-    state: present

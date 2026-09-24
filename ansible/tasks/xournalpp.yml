@@ -1,6 +1,0 @@
----
-
-- name: Install xournal++
-  ansible.builtin.apt:
-    name: xournalpp
-    state: present

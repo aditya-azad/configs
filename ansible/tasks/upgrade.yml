@@ -1,9 +1,0 @@
----
-
-- name: apt update
-  ansible.builtin.apt:
-    update_cache: true
-
-- name: apt upgrade
-  ansible.builtin.apt:
-    upgrade: yes
