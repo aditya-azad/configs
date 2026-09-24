@@ -38,10 +38,18 @@ gsettings set org.gnome.desktop.default-applications.terminal exec-arg "''"
 sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator \
   "$HOME_DIR/.local/kitty.app/bin/kitty" 50 2>/dev/null || true
 
-sudo apt-get install -y plymouth-theme-spinner
-cur="$(plymouth-set-default-theme 2>/dev/null || true)"
+sudo apt-get install -y plymouth plymouth-theme-spinner
+ply_conf=/etc/plymouth/plymouthd.conf
+cur="$(awk -F= '/^Theme=/{print $2}' "$ply_conf" 2>/dev/null || true)"
 if [[ "$cur" != "spinner" ]]; then
-  sudo plymouth-set-default-theme -R spinner
+  tmp="$(mktemp)"
+  cat > "$tmp" <<'EOF'
+[Daemon]
+Theme=spinner
+EOF
+  sudo install -m 0644 "$tmp" "$ply_conf"
+  rm -f "$tmp"
+  sudo update-initramfs -u
 fi
 
 sudo mkdir -p /etc/systemd/logind.conf.d
