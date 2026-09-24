@@ -1,0 +1,9 @@
+- the target for legion 7i is ubuntu 26 server (minimal base) with hyprland
+- all software and settings must be idempotently installed
+- do not run any of the code without explicit user permission
+- mise is used per project basis only
+- each host runs only the programs in its host_vars `programs` list
+- each `programs` entry maps to tasks/<name>.yml, which installs and configures one program idempotently
+- `programs` order matters: setup tasks precede installs; ssh_key runs as a pre-task
+- GTK color-scheme is toggled by the `st` theme-switch script
+- don't put comments anywhere unless asked by user

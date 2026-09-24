@@ -1,0 +1,35 @@
+# rdid — set ROS_DOMAIN_ID in the current shell and persist to ~/.bashrc.
+#
+# Sourced function library: loaded by home.nix initExtra via
+#   source ${…/home/packages/rdid/rdid}
+# Runs in the current (interactive) shell so the export takes effect.
+#
+#   rdid <domain_id>   export ROS_DOMAIN_ID=<id> now + persist in ~/.bashrc
+
+rdid() {
+  if [ -z "${1-}" ]; then
+    echo "Usage: rdid <domain_id>" >&2
+    return 2
+  fi
+  case "$1" in
+    ''|*[!0-9]*)
+      echo "Error: domain_id must be a non-negative integer." >&2
+      return 2
+      ;;
+    *)
+      if [ "$1" -gt 232 ] 2>/dev/null; then
+        echo "Warning: domain_id > 232 may be unsupported by some ROS 2 setups." >&2
+      fi
+      ;;
+  esac
+  local id="$1"
+  local bashrc="$HOME/.bashrc"
+  local line="export ROS_DOMAIN_ID=${id}"
+  export ROS_DOMAIN_ID="$id"
+  if grep -qE "^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=[0-9]+" "$bashrc"; then
+    sed -i.bak -E "s|^[[:space:]]*export[[:space:]]+ROS_DOMAIN_ID=[0-9]+$|$line|" "$bashrc"
+  else
+    printf "\n%s\n" "$line" >> "$bashrc"
+  fi
+  echo "ROS_DOMAIN_ID set to ${id} (current shell) and persisted in ~/.bashrc"
+}
