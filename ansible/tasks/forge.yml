@@ -95,6 +95,31 @@
     - { key: "window-move-right",  value: "['<Super><Shift>l']" }
     - { key: "window-toggle-float", value: "['<Super>comma']" }
 
+- name: GNOME — unbind every default keybinding (clean slate; only user-set binds remain)
+  ansible.builtin.shell: |
+    set -e
+    for schema in \
+      org.gnome.desktop.wm.keybindings \
+      org.gnome.shell.keybindings \
+      org.gnome.mutter.keybindings \
+      org.gnome.mutter.wayland.keybindings \
+      org.gnome.settings-daemon.plugins.media-keys ; do
+      for key in $(gsettings list-keys "$schema" 2>/dev/null); do
+        [ "$key" = "custom-keybindings" ] && continue
+        [ "$(gsettings range "$schema" "$key" 2>/dev/null)" = "type as" ] || continue
+        gsettings set "$schema" "$key" "[]" 2>/dev/null || true
+      done
+    done
+    gsettings set org.gnome.mutter overlay-key "" 2>/dev/null || true
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_uid }}/bus"
+    XDG_RUNTIME_DIR: "/run/user/{{ user_uid }}"
+  changed_when: false
+
 - name: GNOME — window-manager keybindings (close, maximize, workspaces)
   ansible.builtin.shell: "gsettings set org.gnome.desktop.wm.keybindings {{ item.key }} \"{{ item.value }}\""
   args:
@@ -143,6 +168,14 @@
     - switch-to-application-7
     - switch-to-application-8
     - switch-to-application-9
+
+- name: GNOME — clear default lock-screen (conflicts with Forge focus-right on Super+l)
+  ansible.builtin.shell: gsettings set org.gnome.settings-daemon.plugins.media-keys lock-screen "[]"
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ username }}"
+  changed_when: false
 
 - name: GNOME — static workspaces
   ansible.builtin.shell: "gsettings set {{ item.schema }} {{ item.key }} {{ item.value }}"
