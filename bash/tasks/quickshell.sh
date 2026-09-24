@@ -5,10 +5,15 @@ set -euo pipefail
 sudo apt-get install -y \
   cmake build-essential \
   qt6-base-dev qt6-declarative-dev qt6-wayland-dev \
+  qml6-module-qt5compat-graphicaleffects \
+  qml6-module-qtquick-controls \
+  qml6-module-qtquick-layouts \
+  qml6-module-qtquick-shapes \
   libwayland-dev wayland-protocols \
   libpipewire-0.3-dev libspa-0.2-dev libpulse-dev \
   libdbus-1-dev libxkbcommon-dev \
-  fuzzel libnotify-bin
+  playerctl cava \
+  libnotify-bin
 
 if [[ ! -x /usr/local/bin/quickshell ]]; then
   if [[ ! -d "$CODE_DIR/quickshell/.git" ]]; then
@@ -25,9 +30,13 @@ if [[ ! -x /usr/local/bin/quickshell ]]; then
   sudo ldconfig
 fi
 
-mkdir -p "$HOME_DIR/.config/quickshell"
-chmod 0755 "$HOME_DIR/.config/quickshell"
+qs_link="$HOME_DIR/.config/quickshell"
+mkdir -p "$HOME_DIR/.config"
+if [[ -L "$qs_link" ]]; then
+  rm -f "$qs_link"
+elif [[ -e "$qs_link" ]]; then
+  rm -rf "$qs_link"
+fi
+ln -sfn "$CONFIGS_REPO/quickshell" "$qs_link"
 
-for f in shell.qml Panel.qml Notifications.qml; do
-  ln -sfn "$CONFIGS_REPO/quickshell/$f" "$HOME_DIR/.config/quickshell/$f"
-done
+chmod +x "$CONFIGS_REPO/quickshell/scripts/find-apps.sh"

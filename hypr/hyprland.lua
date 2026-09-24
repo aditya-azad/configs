@@ -2,7 +2,7 @@ local mainMod     = "SUPER"
 local terminal    = "kitty"
 local fileManager = "thunar"
 local browser     = "brave"
-local launcher    = "fuzzel"
+local launcher    = "qs ipc call launcherWindow toggle"
 
 -- ── Monitors ────────────────────────────────────────────────────────────────
 -- Use kanshi instead

@@ -1,7 +1,242 @@
-import Quickshell
 import QtQuick
+import Quickshell
+import qs.modules.network
+import qs.modules.control
+import qs.modules.calendar
+import qs.modules.media
+import qs.modules.bar
+import qs.modules.system
+import Quickshell.Io
+import qs.services as Services
+import qs.components
+import qs.Osd
+import Quickshell.Wayland
+import Quickshell.Hyprland
+import qs.modules.launcher
 
-Shell {
-    Panel {}
-    Notifications {}
+ShellRoot {
+    id: root
+    NotificationToasts {}
+    CalendarWindow {}
+
+    PanelWindow {
+        id: rootPanel
+        exclusionMode: ExclusionMode.Ignore
+        implicitHeight: screen.height
+        implicitWidth: screen.width
+        anchors {
+            top: true
+            bottom: true
+            left: true
+            right: true
+        }
+        color: "transparent"
+        focusable: true
+
+        Loader {
+            id: mediaPanelLoader
+            active: false
+            anchors.horizontalCenter: parent.horizontalCenter
+            sourceComponent: MediaPanel {
+                id: mediaPanel
+            }
+            focus: true
+        }
+
+        SystemPanel {
+            id: systemPanel
+        }
+
+        Loader {
+            id: networkPanelLoader
+            active: false
+            anchors.fill: parent
+            sourceComponent: NetworkPanel {
+                id: networkPanel
+            }
+        }
+
+        OsdWindow {}
+
+        PanelWindow {
+            implicitHeight: 42
+            implicitWidth: 0
+            anchors {
+                top: true
+            }
+            color: "transparent"
+            mask: rootPanel.mask
+        }
+
+        TopBar {
+            id: topBar
+        }
+
+        Loader {
+            id: controlCenterLoader
+            active: false
+            anchors.fill: parent
+            sourceComponent: ControlCenter {
+                id: controlCenter
+            }
+            focus: true
+        }
+
+        LauncherWindow {
+            id: launcherWindow
+        }
+
+        MouseArea {
+            id: launcherTrigger
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            width: 2
+            z: 100
+            height: 600
+
+            onEntered: {
+                launcherWindow.toggle()
+            }
+
+            hoverEnabled: true
+
+            Rectangle {
+                anchors.fill: parent
+                color: parent.containsMouse ? "#40FFFFFF" : "transparent"
+                visible: parent.containsMouse
+            }
+        }
+
+        property bool altHeld: false
+
+        mask: Region {
+            Region {
+                item: mediaPanelLoader.active ? mediaPanelLoader : null
+            }
+            Region {
+                item: systemPanel
+            }
+            Region {
+                item: topBar
+            }
+            Region {
+                item: networkPanelLoader.item && networkPanelLoader.item.visible ? networkPanelLoader.item : null
+            }
+            Region {
+                item: controlCenterLoader.item && controlCenterLoader.item.visible ? controlCenterLoader.item : null
+            }
+            Region {
+                item: launcherTrigger
+            }
+            Region {
+                item: launcherWindow.isOpen ? launcherWindow : null
+            }
+        }
+    }
+
+    Connections {
+        target: mediaPanelLoader.item
+        function onOpenedChanged() {
+            if (!mediaPanelLoader.item.opened) {
+                closeTimer.start()
+            }
+        }
+    }
+
+    Timer {
+        id: closeTimer
+        interval: 600
+        onTriggered: mediaPanelLoader.active = false
+    }
+
+    Timer {
+        id: closeNetworkTimer
+        interval: 600
+        onTriggered: networkPanelLoader.active = false
+    }
+
+    Connections {
+        target: networkPanelLoader.item
+        function onOpenedChanged() {
+            if (networkPanelLoader.item && !networkPanelLoader.item.opened) {
+                closeNetworkTimer.start()
+            }
+        }
+    }
+
+    Timer {
+        id: closeControlCenterTimer
+        interval: 600
+        onTriggered: controlCenterLoader.active = false
+    }
+
+    Connections {
+        target: controlCenterLoader.item
+        function onOpenedChanged() {
+            if (controlCenterLoader.item && !controlCenterLoader.item.opened) {
+                closeControlCenterTimer.start()
+            }
+        }
+    }
+
+    IpcHandler {
+        target: "mediaPanel"
+
+        function toggle(): void {
+            if (!mediaPanelLoader.active) {
+                mediaPanelLoader.active = true
+                mediaPanelLoader.item.opened = true
+            } else {
+                mediaPanelLoader.item.opened = !mediaPanelLoader.item.opened
+            }
+        }
+    }
+
+    IpcHandler {
+        target: "networkPanel"
+
+        function changeVisible(tab: string): void {
+            if (!networkPanelLoader.active)
+                networkPanelLoader.active = true
+
+            const panel = networkPanelLoader.item
+            if (!panel)
+                return
+
+            if (panel.opened) {
+                panel.opened = false
+                return
+            }
+
+            if (tab === "wifi")
+                panel.currentTab = 0
+            else if (tab === "bluetooth")
+                panel.currentTab = 1
+
+            if (tab !== undefined)
+                panel.opened = true
+            else
+                panel.opened = !panel.opened
+        }
+    }
+
+    IpcHandler {
+        target: "controlCenter"
+        function changeVisible(): void {
+            if (!controlCenterLoader.active) {
+                controlCenterLoader.active = true
+                controlCenterLoader.item.opened = true
+            } else {
+                controlCenterLoader.item.opened = !controlCenterLoader.item.opened
+            }
+        }
+    }
+
+    IpcHandler {
+        target: "launcherWindow"
+
+        function toggle() {
+            launcherWindow.toggle()
+        }
+    }
 }
