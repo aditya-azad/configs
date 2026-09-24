@@ -4,4 +4,4 @@ set -euo pipefail
 
 sudo apt-get install -y chrony
 sudo systemctl disable --now systemd-timesyncd.service 2>/dev/null || true
-sudo systemctl enable --now chronyd
+sudo systemctl enable --now chrony

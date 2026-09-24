@@ -19,7 +19,7 @@ if [[ ! -x /usr/bin/Hyprland ]]; then
       SWAYOSD_SETUP=false \
       THEME_PREF=none \
       THUNAR_SETUP=false \
-      TUIGREET_SETUP=true \
+      TUIGREET_SETUP=false \
       WAYBAR_SETUP=false \
       "$HOME_DIR/.local/bin/hyprbuntu.sh"
 fi
