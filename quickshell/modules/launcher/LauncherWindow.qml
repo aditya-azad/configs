@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Io
 import qs.colors
 import qs.services as Services
 import qs.components
@@ -481,13 +480,7 @@ Item {
     function launchApp(app) {
         if (!app || !app.exec) return
         const cmd = app.exec.replace(/%[uUfFdDnNickvm]/g, "").trim()
-        launcher.command = ["bash", "-c", cmd]
-        launcher.running = true
+        Quickshell.execDetached(["bash", "-c", cmd])
         root.close()
-    }
-
-    Process {
-        id: launcher
-        running: false
     }
 }
