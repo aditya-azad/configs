@@ -28,6 +28,7 @@ SEARCH_PATHS=(
     "$HOME/.local/share/applications"
     "$HOME/.local/share/flatpak/exports/share/applications"
     "/var/lib/flatpak/exports/share/applications"
+    "/var/lib/snapd/desktop/applications"
     "/usr/local/share/applications"
     "/usr/share/applications"
 )
