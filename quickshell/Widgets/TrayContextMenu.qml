@@ -5,32 +5,20 @@ import Quickshell
 import Quickshell.Wayland
 import qs.colors
 import qs.components
+import qs.services as Services
 
 PanelWindow {
     id: root
 
-    property var menuHandle: null
-    property real menuX: 0
-    property real menuY: 0
-    property bool hasCurrent: false
     property int animLength: 400
     property var animCurve: [0.05, 0, 0.133, 0.06, 0.166, 0.4, 0.208, 0.82, 0.25, 1, 1, 1]
 
-    function open(handle, x, y) {
-        menuHandle = handle;
-        let width = 240;
-        let safeX = x - (width / 2);
-        safeX = Math.max(8, Math.min(safeX, Screen.width - width - 8));
-        menuX = safeX;
-        menuY = y + 4;
-        hasCurrent = true;
-    }
-
-    function close() {
-        hasCurrent = false;
-    }
+    readonly property real menuWidth: 240
+    readonly property real menuX: (Screen.width - menuWidth) / 2
+    readonly property real menuY: 0
 
     color: "transparent"
+    exclusionMode: ExclusionMode.Ignore
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: wrapper.visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
@@ -44,7 +32,7 @@ PanelWindow {
     MouseArea {
         anchors.fill: parent
         enabled: wrapper.visible
-        onClicked: root.close()
+        onClicked: Services.TrayMenuState.close()
     }
 
     Item {
@@ -54,10 +42,10 @@ PanelWindow {
 
         x: root.menuX
         y: Math.max(0, Math.min(root.menuY, Screen.height - wrapper.contentHeight - 8))
-        width: 240
+        width: root.menuWidth
         visible: height > 0
         clip: true
-        implicitHeight: root.hasCurrent ? contentHeight : 0
+        implicitHeight: Services.TrayMenuState.open ? contentHeight : 0
 
         Rectangle {
             id: menuBg
@@ -73,7 +61,7 @@ PanelWindow {
             QsMenuOpener {
                 id: opener
 
-                menu: root.menuHandle
+                menu: Services.TrayMenuState.menuHandle
             }
 
             Rectangle {
@@ -235,10 +223,10 @@ PanelWindow {
                             onClicked: {
                                 if (!menuItem.isSeparator) {
                                     if (modelData.hasChildren) {
-                                        root.menuHandle = modelData;
+                                        Services.TrayMenuState.menuHandle = modelData;
                                     } else {
                                         modelData.triggered();
-                                        root.close();
+                                        Services.TrayMenuState.close();
                                     }
                                 }
                             }

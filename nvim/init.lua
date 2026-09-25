@@ -32,17 +32,6 @@ vim.opt.encoding = "utf-8"
 vim.opt.hidden = true
 vim.opt.updatetime = 100
 vim.opt.clipboard:append { "unnamed", "unnamedplus" }
-vim.g.clipboard = {
-    name = "xclip",
-    copy = {
-        ["+"] = "xclip -selection clipboard -i",
-        ["*"] = "xclip -selection clipboard -i"
-    },
-    paste = {
-        ["+"] = "xclip -selection clipboard -o",
-        ["*"] = "xclip -selection clipboard -o"
-    }
-}
 vim.opt.backspace:append { "indent", "eol", "start" }
 vim.opt.mouse = "a"
 

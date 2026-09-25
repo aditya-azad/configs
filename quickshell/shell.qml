@@ -11,6 +11,7 @@ import qs.Osd
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import qs.modules.launcher
+import qs.Widgets
 
 ShellRoot {
     id: root
@@ -53,6 +54,8 @@ ShellRoot {
             id: topBar
         }
     }
+
+    TrayContextMenu { screen: barPanel.screen }
 
     PanelWindow {
         id: overlayPanel

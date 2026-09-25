@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Services.SystemTray
 import qs.colors
 import qs.components
+import qs.services as Services
 
 RowLayout {
     id: trayRoot
@@ -77,15 +78,14 @@ RowLayout {
                     else if (mouse.button === Qt.MiddleButton)
                         modelData.secondaryActivate()
                     else if (mouse.button === Qt.RightButton && modelData.hasMenu) {
+                        var win = QsWindow.window
                         var pos = mapToGlobal(width/2, height)
-                        contextMenu.open(modelData.menu, pos.x, pos.y)
+                        var sx = pos.x + (win ? win.margins.left : 0)
+                        var sy = pos.y + (win ? win.margins.top : 0)
+                        Services.TrayMenuState.openAt(modelData.menu, sx, sy)
                     }
                 }
             }
         }
-    }
-
-    TrayContextMenu {
-        id: contextMenu
     }
 }
