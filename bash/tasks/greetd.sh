@@ -17,9 +17,12 @@ if [[ "$cfg_changed" == 1 ]]; then
   sudo install -m 0644 "$cfg_src" "$cfg_dst"
 fi
 
+sudo systemctl disable --now gdm.service 2>/dev/null || true
+sudo systemctl disable --now gdm3.service 2>/dev/null || true
+
 sudo systemctl enable greetd.service 2>/dev/null || true
+sudo ln -sfn /usr/lib/systemd/system/greetd.service /etc/systemd/system/display-manager.service
+sudo systemctl daemon-reload 2>/dev/null || true
 sudo systemctl set-default graphical.target 2>/dev/null || true
 
-if systemctl list-unit-files 2>/dev/null | grep -qE '^gdm\.service[[:space:]]'; then
-  sudo systemctl disable gdm.service 2>/dev/null || true
-fi
+echo /usr/sbin/greetd | sudo tee /etc/X11/default-display-manager >/dev/null

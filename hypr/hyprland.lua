@@ -1,6 +1,6 @@
 local mainMod     = "SUPER"
 local terminal    = "kitty"
-local fileManager = "nautilus"
+local fileManager = "thunar"
 local browser     = "firefox"
 local launcher    = "qs ipc call launcherWindow toggle"
 
