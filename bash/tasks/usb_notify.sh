@@ -7,6 +7,7 @@ sudo apt-get install -y libnotify-bin
 sudo install -Dm755 /dev/stdin /usr/local/bin/usb-notify <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 DEVNAME="${DEVNAME:-}"
 [[ -n "$DEVNAME" ]] || exit 0
@@ -36,11 +37,10 @@ for bus in /run/user/*/bus; do
   active=""
   while read -r s; do
     [[ -n "$s" ]] || continue
-    info="$(loginctl show-session "$s" --value -p Type -p Active 2>/dev/null || true)"
-    info="$(printf '%s' "$info" | paste -sd' ' -)"
-    case "$info" in
-      wayland\ true|x11\ true) active=1; break;;
-    esac
+    stype="$(loginctl show-session "$s" --value -p Type 2>/dev/null | head -n1 || true)"
+    [[ "$stype" == "wayland" || "$stype" == "x11" ]] || continue
+    [[ "$(loginctl show-session "$s" --value -p Active 2>/dev/null | head -n1 || true)" == "yes" ]] || continue
+    active=1; break
   done < <(loginctl show-user "$user" --value -p Sessions 2>/dev/null | tr ' ' '\n' || true)
   [[ -n "$active" ]] || continue
   runuser -u "$user" -- env \
