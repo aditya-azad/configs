@@ -14,6 +14,7 @@ hl.env("HYPRCURSOR_SIZE", "24")
 
 -- ── Autostart ────────────────────────────────────────────────────────────────
 hl.on("hyprland.start", function()
+    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE && systemctl --user start graphical-session.target")
     hl.exec_cmd("wlsunset -s 19:00 -S 06:00")
     hl.exec_cmd("quickshell")
     hl.exec_cmd("kanshi")

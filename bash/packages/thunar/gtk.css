@@ -1,0 +1,6 @@
+/* bootstrap accent for GTK3 apps — st regenerates from the palette on theme switch */
+@define-color theme_selected_bg_color #58a6ff;
+@define-color theme_selected_fg_color #ffffff;
+@define-color accent_color #58a6ff;
+@define-color accent_bg_color #58a6ff;
+@define-color accent_fg_color #ffffff;
