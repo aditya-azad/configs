@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -u
+
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/volume-remember"
+mkdir -p "$STATE_DIR"
+
+sanitize() { printf '%s' "$1" | tr -c 'A-Za-z0-9._-' '_'; }
+
+snapshot_device() {
+  local type="$1" name="$2" abs mute
+  [[ "$type" == source && "$name" == *.monitor ]] && return 0
+  abs=$(pactl "get-${type}-volume" "$name" 2>/dev/null | awk '{print $3; exit}')
+  mute=$(pactl "get-${type}-mute" "$name" 2>/dev/null | awk '{print $2; exit}')
+  [[ -z "${abs:-}" || -z "${mute:-}" ]] && return 0
+  case "$mute" in yes) mute=1;; *) mute=0;; esac
+  printf '%s\n%s\n' "$abs" "$mute" > "$STATE_DIR/${type}-$(sanitize "$name")"
+  return 0
+}
+
+snapshot_all() {
+  local idx name
+  while read -r idx name _; do snapshot_device sink "$name"; done < <(pactl list short sinks 2>/dev/null)
+  while read -r idx name _; do snapshot_device source "$name"; done < <(pactl list short sources 2>/dev/null)
+  return 0
+}
+
+restore_device() {
+  local type="$1" name="$2" f abs mute
+  [[ "$type" == source && "$name" == *.monitor ]] && return 0
+  f="$STATE_DIR/${type}-$(sanitize "$name")"
+  [[ -f "$f" ]] || return 0
+  abs=$(sed -n '1p' "$f")
+  mute=$(sed -n '2p' "$f")
+  [[ -z "${abs:-}" || -z "${mute:-}" ]] && return 0
+  pactl "set-${type}-volume" "$name" "$abs" 2>/dev/null || true
+  pactl "set-${type}-mute" "$name" "$mute" 2>/dev/null || true
+  return 0
+}
+
+restore_all() {
+  local idx name
+  while read -r idx name _; do restore_device sink "$name"; done < <(pactl list short sinks 2>/dev/null)
+  while read -r idx name _; do restore_device source "$name"; done < <(pactl list short sources 2>/dev/null)
+  return 0
+}
+
+name_for() {
+  local type="$1" idx="$2"
+  pactl list short "${type}s" 2>/dev/null | awk -v i="$idx" '$1==i{print $2;exit}'
+}
+
+restore_all
+snapshot_all
+
+pactl subscribe 2>/dev/null | while IFS= read -r line; do
+  case "$line" in
+    *"Event 'new'"*"on sink "*)
+      idx=${line##*on sink #}; idx=${idx%% *}
+      sleep 0.4
+      name=$(name_for sink "$idx")
+      [[ -n "${name:-}" ]] && restore_device sink "$name"
+      ;;
+    *"Event 'new'"*"on source "*)
+      idx=${line##*on source #}; idx=${idx%% *}
+      sleep 0.4
+      name=$(name_for source "$idx")
+      [[ -n "${name:-}" ]] && restore_device source "$name"
+      ;;
+    *"on sink "*|*"on source "*)
+      while IFS= read -r -t 0.25 _; do :; done
+      snapshot_all
+      ;;
+  esac
+done

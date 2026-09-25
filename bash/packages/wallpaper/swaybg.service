@@ -1,7 +1,7 @@
 [Unit]
 Description=swaybg wallpaper
 PartOf=graphical-session.target
-ConditionEnvironment=WAYLAND_DISPLAY
+After=graphical-session.target
 
 [Service]
 ExecStart=%h/.local/bin/swaybg-wallpaper

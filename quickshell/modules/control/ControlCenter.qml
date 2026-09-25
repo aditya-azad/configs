@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
-import Quickshell.Io
 import qs.services as Services
 import qs.colors
 import qs.components
@@ -21,8 +20,6 @@ Item {
     property bool opened: false
     property int controlCenterWidth: 450
 
-    function run(cmd) { proc.exec(cmd) }
-
     onOpenedChanged: {
         if (opened) {
             visible = true
@@ -37,8 +34,6 @@ Item {
     function close() {
         opened = false
     }
-
-    Process { id: proc }
 
     // ── Scrim ─────────────────────────────────────────────────────────────────
 

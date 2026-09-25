@@ -117,7 +117,7 @@ hl.bind(mainMod .. " + Comma", hl.dsp.window.float({ action = "toggle" }))
 -- Window ops
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle", mode = "maximized" }))
-hl.bind(mainMod .. " + SHIFT + Colon", hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + Colon", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region"))
 
 -- Power

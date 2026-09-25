@@ -1,4 +1,5 @@
 import QtQuick.Layouts
+import Quickshell.Io
 import qs.colors
 import qs.components
 
@@ -9,6 +10,12 @@ ColumnLayout {
     Layout.topMargin: 20
     Layout.bottomMargin: 30
     spacing: 14
+
+    Process { id: proc }
+    function run(cmd) {
+        if (cmd instanceof Array) proc.exec(cmd)
+        else proc.exec(["bash", "-c", cmd])
+    }
 
     StyledText {
         Layout.topMargin: 8
@@ -38,13 +45,6 @@ ColumnLayout {
             label: "Restart"
             buttonColor: Colors.primary_container
             onClicked: run("systemctl reboot")
-        }
-
-        ActionButton {
-            icon: "󰒲"
-            label: "Sleep"
-            buttonColor: Colors.secondary_container
-            onClicked: run("systemctl suspend")
         }
 
         ActionButton {

@@ -17,6 +17,12 @@ ColumnLayout {
     property bool nightLightEnabled: false
     property bool airplaneModeEnabled: false
 
+    Process { id: proc }
+    function run(cmd) {
+        if (cmd instanceof Array) proc.exec(cmd)
+        else proc.exec(["bash", "-c", cmd])
+    }
+
     GridLayout {
         Layout.fillWidth: true
         columns: 3
