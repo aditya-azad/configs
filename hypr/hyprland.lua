@@ -104,6 +104,12 @@ hl.config({
     },
 })
 
+hl.config({
+    cursor = {
+        warp_on_change_workspace = 1,
+    },
+})
+
 -- Launchers & apps
 
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))

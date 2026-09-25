@@ -15,6 +15,22 @@ Singleton {
 
     property int brightness: 0
     property int lastBrightness: -1
+    property string brightnessDevice: ""
+
+    Process {
+        id: brightnessDevProc
+        running: true
+        command: ["sh", "-c", "for d in /sys/class/backlight/*; do readlink -f \"$d\" | grep -q /drm/ && { echo \"${d##*/}\"; exit; }; done; mx=0; dev=\"\"; for d in /sys/class/backlight/*; do m=$(cat \"$d/max_brightness\" 2>/dev/null || echo 0); [ \"$m\" -gt \"$mx\" ] && { mx=$m; dev=\"${d##*/}\"; }; done; echo \"$dev\""]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                let dev = text.trim()
+                if (dev) {
+                    stats.brightnessDevice = dev
+                    brightnessProc.running = true
+                }
+            }
+        }
+    }
 
     Timer {
         interval: 2000
@@ -31,11 +47,9 @@ Singleton {
 
     Timer {
         interval: 500
-        running: true
+        running: stats.brightnessDevice !== ""
         repeat: true
-        onTriggered: {
-            brightnessProc.running = true
-        }
+        onTriggered: brightnessProc.running = true
     }
 
     Process {
@@ -85,10 +99,7 @@ Singleton {
 
     Process {
         id: brightnessProc
-        command: [
-            "bash","-c",
-            "brightnessctl -m | cut -d, -f4 | tr -d '%'"
-        ]
+        command: ["sh", "-c", "brightnessctl -d " + stats.brightnessDevice + " -m | cut -d, -f4 | tr -d '%'"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -106,10 +117,11 @@ Singleton {
     }
 
     function setBrightness(v) {
-        setBrightnessProc.command = ["brightnessctl","set", v + "%"]
+        if (!stats.brightnessDevice) return
+        setBrightnessProc.command = ["brightnessctl", "-d", stats.brightnessDevice, "set", v + "%"]
         setBrightnessProc.running = true
         stats.brightness = v
-        Osd.show("brightness", v)  // Show OSD when user changes brightness
+        Osd.show("brightness", v)
     }
 
     Process { id: setBrightnessProc }
