@@ -13,10 +13,6 @@ ColumnLayout {
     Layout.bottomMargin: 20
     spacing: 14
 
-    property bool dndEnabled: false
-    property bool nightLightEnabled: false
-    property bool airplaneModeEnabled: false
-
     Process { id: proc }
     function run(cmd) {
         if (cmd instanceof Array) proc.exec(cmd)
@@ -41,36 +37,6 @@ ColumnLayout {
             icon: "󰂯"
             active: Services.Bluetooth.defaultAdapter?.enabled ?? false
             onClicked: Services.Bluetooth.defaultAdapter.enabled = !Services.Bluetooth.defaultAdapter.enabled
-        }
-
-        ToggleTile {
-            label: "DND"
-            icon: "󰂛"
-            active: dndEnabled
-            onClicked: {
-                quickSettings.dndEnabled = !dndEnabled
-                run("swaync-client -d")
-            }
-        }
-
-        ToggleTile {
-            label: "Night Light"
-            icon: "󰖔"
-            active: nightLightEnabled
-            onClicked: {
-                quickSettings.nightLightEnabled = !nightLightEnabled
-                run(["bash", "-c", "gammastep -O " + (nightLightEnabled ? "4000" : "6500")])
-            }
-        }
-
-        ToggleTile {
-            label: "Airplane"
-            icon: "󰀝"
-            active: airplaneModeEnabled
-            onClicked: {
-                quickSettings.airplaneModeEnabled = !airplaneModeEnabled
-                run("rfkill " + (airplaneModeEnabled ? "block" : "unblock") + " all")
-            }
         }
 
         ToggleTile {

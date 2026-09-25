@@ -24,6 +24,8 @@ if [[ ! -x /usr/bin/Hyprland ]]; then
       "$HOME_DIR/.local/bin/hyprbuntu.sh"
 fi
 
+sudo rm -f /usr/share/wayland-sessions/hyprland-uwsm.desktop
+
 gsettings set org.gnome.desktop.interface icon-theme "Yaru"
 gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
 gsettings set org.gnome.desktop.interface enable-animations false
@@ -76,3 +78,24 @@ rm -f "$lid_new"
 mkdir -p "$HOME_DIR/.config/hypr"
 chmod 0755 "$HOME_DIR/.config/hypr"
 ln -sfn "$CONFIGS_REPO/hypr/hyprland.lua" "$HOME_DIR/.config/hypr/hyprland.lua"
+ln -sfn "$CONFIGS_REPO/hypr/hyprlock.conf" "$HOME_DIR/.config/hypr/hyprlock.conf"
+
+mkdir -p "$HOME_DIR/.config/systemd/user/graphical-session.target.d"
+chmod 0755 "$HOME_DIR/.config/systemd/user/graphical-session.target.d"
+target_new="$(mktemp)"
+cat > "$target_new" <<'EOF'
+[Unit]
+RefuseManualStart=no
+StopWhenUnneeded=no
+EOF
+target_dst="$HOME_DIR/.config/systemd/user/graphical-session.target.d/override.conf"
+target_changed=0
+if [[ ! -f "$target_dst" ]]; then
+  target_changed=1
+elif ! diff -q "$target_new" "$target_dst" >/dev/null 2>&1; then
+  target_changed=1
+fi
+if [[ "$target_changed" == 1 ]]; then
+  install -m 0644 "$target_new" "$target_dst"
+fi
+rm -f "$target_new"
