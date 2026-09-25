@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 import qs.services as Services
 
@@ -25,6 +26,62 @@ Singleton {
 
     property real sourceVolume: (defaultSource?.audio?.volume > 1 ? 1 : defaultSource?.audio?.volume) ?? 0
     property bool sourceMuted: defaultSource?.audio?.muted ?? false
+
+    property string statePath: Quickshell.env("HOME") + "/.config/quickshell/microphone.json"
+    property real savedSourceVolume: {
+        const text = micStateFile.text()
+        if (!text || !text.trim()) return -1
+        try {
+            const obj = JSON.parse(text)
+            const v = obj.volume
+            return (typeof v === "number" && v >= 0 && v <= 1) ? v : -1
+        } catch (e) {
+            return -1
+        }
+    }
+    property bool sourceVolumeRestored: false
+
+    FileView {
+        id: micStateFile
+        path: statePath
+        blockLoading: true
+    }
+
+    FileView {
+        id: micStateWriter
+        path: statePath
+    }
+
+    property real _pendingSaveVolume: -1
+    Timer {
+        id: saveSourceTimer
+        interval: 250
+        onTriggered: {
+            if (_pendingSaveVolume >= 0)
+                micStateWriter.setText(JSON.stringify({ volume: _pendingSaveVolume }))
+        }
+    }
+
+    Connections {
+        id: restoreConn
+        target: defaultSource
+        function onReadyChanged() { tryRestoreSourceVolume() }
+    }
+
+    function tryRestoreSourceVolume() {
+        if (sourceVolumeRestored) return
+        if (savedSourceVolume < 0) return
+        if (defaultSource?.ready && defaultSource?.audio) {
+            defaultSource.audio.muted = false
+            defaultSource.audio.volume = savedSourceVolume
+            sourceVolumeRestored = true
+        }
+    }
+
+    function saveSourceVolume(v: real): void {
+        _pendingSaveVolume = v
+        saveSourceTimer.restart()
+    }
 
     Connections {
         id: audioConn
@@ -71,6 +128,7 @@ Singleton {
             let val = Math.max(0, Math.min(1, to));
             defaultSource.audio.volume = val
             Services.Osd.show("microphone", val * 100)
+            saveSourceVolume(val)
         }
     }
 
@@ -81,6 +139,8 @@ Singleton {
     function setDefaultSource(source: PwNode): void {
         Pipewire.preferredDefaultAudioSource = source;
     }
+
+    Component.onCompleted: tryRestoreSourceVolume()
 
     function init() {
     }
