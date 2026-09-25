@@ -45,6 +45,7 @@ cat > "$tmp" <<'JSON'
     "Extensions": {
       "Install": [
         "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi",
+        "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
         "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi",
         "https://www.zotero.org/download/connector/dl?browser=firefox"
       ]

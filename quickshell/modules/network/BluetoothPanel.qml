@@ -231,12 +231,7 @@ Item {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: {
                                     if (!btRoot.bluetoothEnabled) return
-                                    if (modelData.connected) {
-                                        modelData.disconnect()
-                                    } else {
-                                        if (!modelData.paired) modelData.pair()
-                                        modelData.connect()
-                                    }
+                                    Services.Bluetooth.connectDevice(modelData)
                                 }
                             }
 

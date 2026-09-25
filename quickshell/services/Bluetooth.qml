@@ -19,4 +19,59 @@ Singleton {
 
         return defaultAdapter.discovering ? "bluetooth_searching" : "bluetooth"
     }
+
+    property string pendingConnectAddress: ""
+
+    function connectDevice(device) {
+        if (!device) return
+        if (device.connected) {
+            device.disconnect()
+            return
+        }
+        device.trusted = true
+        if (device.paired) {
+            device.connect()
+        } else {
+            root.pendingConnectAddress = device.address
+            pairTimer.restart()
+            pairTimeout.restart()
+            device.pair()
+        }
+    }
+
+    function _deviceForAddress(address) {
+        return root.devices.find(d => d.address === address) ?? null
+    }
+
+    Timer {
+        id: pairTimer
+        interval: 500
+        repeat: true
+        onTriggered: {
+            if (root.pendingConnectAddress === "") {
+                pairTimer.stop()
+                return
+            }
+            var d = root._deviceForAddress(root.pendingConnectAddress)
+            if (!d) {
+                pairTimer.stop()
+                return
+            }
+            if (d.paired) {
+                root.pendingConnectAddress = ""
+                pairTimer.stop()
+                d.trusted = true
+                d.connect()
+            }
+        }
+    }
+
+    Timer {
+        id: pairTimeout
+        interval: 30000
+        onTriggered: {
+            root.pendingConnectAddress = ""
+            pairTimer.stop()
+        }
+    }
 }
