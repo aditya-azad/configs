@@ -22,7 +22,7 @@ PanelWindow {
         let safeX = x - (width / 2);
         safeX = Math.max(8, Math.min(safeX, Screen.width - width - 8));
         menuX = safeX;
-        menuY = y - 32;
+        menuY = y + 4;
         hasCurrent = true;
     }
 
@@ -53,7 +53,7 @@ PanelWindow {
         readonly property real contentHeight: menuColumn.implicitHeight + 16
 
         x: root.menuX
-        y: root.menuY
+        y: Math.max(0, Math.min(root.menuY, Screen.height - wrapper.contentHeight - 8))
         width: 240
         visible: height > 0
         clip: true

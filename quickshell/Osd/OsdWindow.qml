@@ -58,7 +58,7 @@ Item {
 
                 MaterialIcon {
                     anchors.centerIn: parent
-                    text: Services.Osd.type === "volume" ? getVolumeIcon() : Icons.brightness
+                    text: Services.Osd.type === "volume" ? getVolumeIcon() : (Services.Osd.type === "microphone" ? getMicrophoneIcon() : Icons.brightness)
                     font.pixelSize: 28
                     color: Colors.on_primary_container
                 }
@@ -76,7 +76,7 @@ Item {
                     spacing: 8
 
                     StyledText {
-                        text: Services.Osd.type === "volume" ? "Volume" : "Brightness"
+                        text: Services.Osd.type === "volume" ? "Volume" : (Services.Osd.type === "microphone" ? "Microphone" : "Brightness")
                         font.pixelSize: 16
                         font.weight: Font.Medium
                         anchors.verticalCenter: parent.verticalCenter
@@ -139,5 +139,10 @@ Item {
         if (vol < 33) return Icons.volumeLow
         if (vol < 66) return Icons.volumeMedium
         return Icons.volumeHigh
+    }
+
+    function getMicrophoneIcon() {
+        if (Services.Volume.sourceMuted) return Icons.microphoneMuted
+        return Icons.microphone
     }
 }

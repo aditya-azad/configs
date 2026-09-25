@@ -41,6 +41,7 @@ Item {
             Network {}
             Bluetooth {}
             Volume {}
+            Microphone {}
         }
     }
 }

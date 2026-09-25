@@ -23,6 +23,9 @@ Singleton {
     property real volume: (defaultSink?.audio?.volume > 1 ? 1 : defaultSink?.audio?.volume) ?? 0
     property bool muted: defaultSink?.audio?.muted ?? false
 
+    property real sourceVolume: (defaultSource?.audio?.volume > 1 ? 1 : defaultSource?.audio?.volume) ?? 0
+    property bool sourceMuted: defaultSource?.audio?.muted ?? false
+
     Connections {
         id: audioConn
         target: defaultSink && defaultSink.audio ? defaultSink.audio : null
@@ -35,6 +38,21 @@ Singleton {
         function onMutedChanged() {
             let vol = defaultSink.audio.muted ? 0 : Math.min(defaultSink.audio.volume * 100, 100)
             Services.Osd.show("volume", vol)
+        }
+    }
+
+    Connections {
+        id: sourceAudioConn
+        target: defaultSource && defaultSource.audio ? defaultSource.audio : null
+
+        function onVolumeChanged() {
+            let vol = Math.min(defaultSource.audio.volume * 100, 100)
+            Services.Osd.show("microphone", vol)
+        }
+
+        function onMutedChanged() {
+            let vol = defaultSource.audio.muted ? 0 : Math.min(defaultSource.audio.volume * 100, 100)
+            Services.Osd.show("microphone", vol)
         }
     }
 
@@ -52,7 +70,7 @@ Singleton {
             defaultSource.audio.muted = false;
             let val = Math.max(0, Math.min(1, to));
             defaultSource.audio.volume = val
-            Services.Osd.show("volume", val * 100)
+            Services.Osd.show("microphone", val * 100)
         }
     }
 

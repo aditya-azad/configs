@@ -10,6 +10,8 @@ QtObject {
     readonly property string volumeLow: "󰕿"
     readonly property string volumeMedium: "󰖀"
     readonly property string volumeHigh: "󰕾"
+    readonly property string microphone: "󰍬"
+    readonly property string microphoneMuted: "󰍭"
     readonly property string batteryUnknown: "󰂎"
     readonly property string batteryCharging: "󰂄"
     readonly property string battery100: "󰁹"
