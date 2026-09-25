@@ -37,8 +37,8 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 8
 
-            Network {}
             SystemTray {}
+            Network {}
             Bluetooth {}
             Volume {}
         }
