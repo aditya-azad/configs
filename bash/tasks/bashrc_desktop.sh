@@ -9,8 +9,8 @@ cat >> "$BASHRC_FILE" <<EOF
 # BEGIN configs bashrc-desktop
 PS1='\[\e[38;5;28m\]\u@\h:\w\[\e[0m\]\$ '
 alias cdw='cd ~/database/workspace'
-alias todo='nvim ~/database/workspace/inbox.md'
-alias ideas='nvim ~/database/workspace/ideas.md'
+alias todo='nvim ~/database/workspace/diary/todo.md'
+alias ideas='nvim ~/database/workspace/diary/ideas.md'
 alias notes='nvim ~/database/workspace/notes'
 alias qgc='QGroundControl-x86_64.AppImage'
 export PX4_PATH=$PX4_PATH
