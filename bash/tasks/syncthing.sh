@@ -2,35 +2,26 @@
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-syncthing_version="2.0.11"
-if [[ "$ARCH" == "x86_64" ]]; then
-  syncthing_arch_dir="syncthing-linux-amd64-v$syncthing_version"
-  syncthing_archive="syncthing-linux-amd64-v$syncthing_version.tar.gz"
-else
-  syncthing_arch_dir="syncthing-linux-arm64-v$syncthing_version"
-  syncthing_archive="syncthing-linux-arm64-v$syncthing_version.tar.gz"
-fi
-
-[[ -f "/tmp/$syncthing_archive" ]] || \
-  curl -fsSL -o "/tmp/$syncthing_archive" \
-    "https://github.com/syncthing/syncthing/releases/download/v$syncthing_version/$syncthing_archive"
-
-if [[ ! -x "$HOME_DIR/syncthing/syncthing" ]]; then
-  bash -c "set -e; cd '$HOME_DIR'; tar xzf '/tmp/$syncthing_archive'; rm -rf syncthing; mv '$syncthing_arch_dir' syncthing"
-fi
-
-mkdir -p "$HOME_DIR/.config/systemd/user"
-chmod 0755 "$HOME_DIR/.config/systemd/user"
-cp -f "$HOME_DIR/syncthing/etc/linux-systemd/user/syncthing.service" \
-      "$HOME_DIR/.config/systemd/user/syncthing.service"
-chmod 0644 "$HOME_DIR/.config/systemd/user/syncthing.service"
-
-sed -i '/# BEGIN configs syncthing-path/,/# END configs syncthing-path/d' "$BASHRC_FILE"
-cat >> "$BASHRC_FILE" <<'EOF'
-# BEGIN configs syncthing-path
-export PATH=${PATH}:${HOME}/syncthing/
-# END configs syncthing-path
+[[ -x /usr/bin/syncthing ]] || {
+  sudo install -d -m 0755 /etc/apt/keyrings
+  curl -fsSL https://syncthing.net/release-key.gpg \
+    | sudo tee /etc/apt/keyrings/syncthing-archive-keyring.gpg >/dev/null
+  echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" \
+    | sudo tee /etc/apt/sources.list.d/syncthing.list >/dev/null
+  sudo tee /etc/apt/preferences.d/syncthing >/dev/null <<'EOF'
+Package: *
+Pin: origin apt.syncthing.net
+Pin-Priority: 990
 EOF
+  sudo apt-get update
+  sudo apt-get install -y syncthing
+}
 
+rm -rf "$HOME_DIR/syncthing"
+sed -i '/# BEGIN configs syncthing-path/,/# END configs syncthing-path/d' "$BASHRC_FILE"
+
+systemctl --user disable --now syncthing.service 2>/dev/null || true
+rm -f "$HOME_DIR/.config/systemd/user/syncthing.service"
 systemctl --user daemon-reload
+
 systemctl --user enable --now syncthing.service
