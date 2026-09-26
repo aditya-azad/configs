@@ -2,6 +2,8 @@
 
 My config files. Use if you feel risky
 
+TODO: moving windows someetimes disappears it
+
 ### Usage
 
 1. Edit `bash/hosts/<host>.env`:
