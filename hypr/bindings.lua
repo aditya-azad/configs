@@ -49,3 +49,7 @@ o.bind("SUPER + J", "Focus on below window", hl.dsp.focus({ direction = "d" }))
 -- applications
 o.bind("SUPER + B", "Browser", { omarchy = "browser" })
 o.bind("SUPER + E", "File manager", { omarchy = "nautilus" })
+
+-- screenshot
+hl.unbind("SUPER + SHIFT + S")
+o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
