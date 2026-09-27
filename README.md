@@ -2,7 +2,7 @@
 
 My config files. Use if you feel risky
 
-TODO: moving windows someetimes disappears it
+TODO: move to sway
 
 ### Usage
 
