@@ -21,6 +21,7 @@ esac
 alias cdc='cd ~/code'
 alias cdd='cd ~/Downloads'
 alias cdw='cd ~/database/workspace'
+alias conf='cd ~/.config && nvim'
 
 alias todo='nvim ~/database/workspace/diary/todo.md'
 alias ideas='nvim ~/database/workspace/diary/ideas.md'
