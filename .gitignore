@@ -14,3 +14,6 @@ pulse/
 user-dirs.dirs
 wireplumber/
 systemd/
+KeePass/
+unity3d/
+.mono/
