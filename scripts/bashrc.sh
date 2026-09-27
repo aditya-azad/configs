@@ -95,5 +95,26 @@ rdid() {
   echo "ROS_DOMAIN_ID set to \${id} (current shell) and persisted in ~/.bashrc"
 }
 
+venvup() {
+  local dir="$PWD"
+  local home="${HOME%/}"
+  local name
+  while true; do
+    for name in .venv venv; do
+      if [ -f "$dir/$name/bin/activate" ]; then
+        source "$dir/$name/bin/activate"
+        echo "Activated: $dir/$name"
+        return 0
+      fi
+    done
+    if [ "$dir" = "$home" ] || [ "$dir" = "/" ]; then
+      break
+    fi
+    dir="$(dirname "$dir")"
+  done
+  echo "No .venv or venv found from $PWD up to $home" >&2
+  return 1
+}
+
 # END configs bashrc
 EOF
