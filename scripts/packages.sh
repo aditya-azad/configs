@@ -1,1 +1,2 @@
 omarchy pkg add ttf-firacode-nerd
+sudo omarchy-pkg-add steam

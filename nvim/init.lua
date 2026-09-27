@@ -182,6 +182,7 @@ vim.pack.add({
     'https://github.com/L3MON4D3/LuaSnip',
     'https://github.com/saadparwaiz1/cmp_luasnip',
     'https://github.com/rafamadriz/friendly-snippets',
+    'https://github.com/EskelinenAntti/omarchy-theme.nvim',
     'https://github.com/MeanderingProgrammer/render-markdown.nvim',
     'https://github.com/Thiago4532/mdmath.nvim',
     'https://github.com/kristijanhusak/vim-dadbod-ui',
@@ -607,7 +608,7 @@ vim.keymap.set("n", "<leader>ft", ":TodoTelescope<CR>", { desc = "Search over to
 
 -- theme
 
-require('theme')
+vim.cmd.colorscheme("omarchy")
 
 -- neogit
 
