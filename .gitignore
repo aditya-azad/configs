@@ -1,0 +1,17 @@
+autostart/
+chromium/
+chromium-flags.conf
+dconf/
+fcitx/
+fcitx5/
+git/
+ibus/
+gtk-3.0/
+hyprland-preview-share-picker/
+yay/
+microsoft-edge/
+microsoft-edge-dev/
+pulse/
+user-dirs.dirs
+wireplumber/
+systemd/
