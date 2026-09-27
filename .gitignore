@@ -1,6 +1,5 @@
 autostart/
 chromium/
-chromium-flags.conf
 dconf/
 fcitx/
 fcitx5/
