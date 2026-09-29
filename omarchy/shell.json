@@ -25,7 +25,9 @@
           "id": "omarchy.clock",
           "format": "dddd HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
-          "verticalFormat": "HH\n—\nmm"
+          "verticalFormat": "HH\n—\nmm",
+          "birthYear": 2000,
+          "lifeExpectancy": 70
         },
         {
           "id": "omarchy.keyboard-layout"

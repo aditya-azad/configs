@@ -29,10 +29,6 @@
 -- o.bind("SUPER + PERIOD", nil, "omarchy-shell shell toggle omarchy.emojis")
 --
 
--- terminal
-hl.unbind("SUPER + T")
-o.bind("SUPER + T", "Terminal", { omarchy = "terminal" })
-
 -- close window
 hl.unbind("SUPER + SHIFT + Q")
 o.bind("SUPER + SHIFT + Q", "Close window", hl.dsp.window.close())
