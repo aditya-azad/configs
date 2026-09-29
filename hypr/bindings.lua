@@ -49,3 +49,7 @@ o.bind("SUPER + E", "File manager", { omarchy = "nautilus" })
 -- screenshot
 hl.unbind("SUPER + SHIFT + S")
 o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
+
+-- lock screen
+hl.unbind("SUPER + CTRL + L")
+o.bind("SUPER + SHIFT + SEMICOLON", "Lock system", "omarchy-system-lock")
