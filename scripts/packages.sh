@@ -22,13 +22,16 @@ curl -fsSL https://pi.dev/install.sh | sh
 cfg="$HOME_DIR/.pi/agent/settings.json"
 cat > "$cfg" <<'EOF'
 {
+  "theme": "omarchy-system",
+  "packages": [
+    "npm:pi-subagents",
+    "npm:@zhushanwen/pi-ask-user",
+    "npm:pi-agent-browser-native",
+    "npm:pi-mcp-adapter",
+    "npm:pi-notify",
+    "npm:pi-vim"
+  ],
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.2"
+  "defaultModel": "z-ai/glm-5.3-flash"
 }
 EOF
-pi install npm:pi-subagents
-pi install npm:@zhushanwen/pi-ask-user
-pi install npm:pi-agent-browser-native
-pi install npm:pi-mcp-adapter
-pi install npm:pi-notify
-pi install npm:pi-vim
