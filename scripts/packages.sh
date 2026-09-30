@@ -35,3 +35,9 @@ cat > "$cfg" <<'EOF'
   "defaultModel": "z-ai/glm-5.3-flash"
 }
 EOF
+
+# hugo
+sudo pacman -S hugo
+
+# anki
+sudo pacman -S anki
