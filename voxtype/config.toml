@@ -69,6 +69,7 @@ flash_attention = true
 on_demand_loading = false
 gpu_isolation = false
 eager_processing = false
+gpu_device = 1
 
 # Number of CPU threads for inference (omit for auto-detection)
 # threads = 4
