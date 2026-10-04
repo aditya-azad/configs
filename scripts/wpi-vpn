@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # wpi-vpn — connect to / disconnect from the WPI GlobalProtect VPN via openconnect.
 #
-# Uses gpauth (browser SSO) + gpclient (openconnect-based tunnel) from the
-# GlobalProtect-openconnect project. gpclient manages the tun device, so it
-# runs under sudo. gpauth runs as the normal user so the browser callback
-# round-trips correctly.
+# Uses gpclient (openconnect-based tunnel) from the GlobalProtect-openconnect
+# project. It runs under sudo and handles ALL auth itself: it opens its own SSO
+# window for the portal AND the gateway. We do NOT pre-auth with gpauth and
+# hand it a cookie: WPI's gateway (GlobalProtect-3) rejects portal-minted
+# cookies with "Authentication failure: Invalid username or password" — it
+# requires its own SAML round-trip.
 #
-#   wpi-vpn connect       authenticate via browser, start VPN in background
+#   wpi-vpn connect       open SSO windows, start VPN in background
 #   wpi-vpn disconnect    stop the VPN
 #   wpi-vpn -h            usage
 
@@ -26,38 +28,25 @@ EOF
 }
 
 connect() {
-  GPAUTH="$(command -v gpauth || true)"
   GPCLIENT="$(command -v gpclient || true)"
-  if [ -z "$GPAUTH" ] || [ -z "$GPCLIENT" ]; then
-    echo "wpi-vpn: gpauth/gpclient not found. Install 'globalprotect-openconnect' (Arch: yay -S, Ubuntu PPA: yuezk/globalprotect-openconnect)." >&2
+  if [ -z "$GPCLIENT" ]; then
+    echo "wpi-vpn: gpclient not found. Install 'globalprotect-openconnect' (Arch: yay -S, Ubuntu PPA: yuezk/globalprotect-openconnect)." >&2
     exit 1
   fi
 
-  # Step 1: authenticate in the foreground (browser opens for WPI SSO).
-  # gpauth prints a JSON auth result to stdout; logs go to stderr.
-  echo "Opening browser for WPI authentication..."
-  COOKIE_FILE="$(mktemp)"
-  trap 'rm -f "$COOKIE_FILE"' EXIT
+  # Present as the Windows client: some gateways behave differently per OS.
+  # --clean forces a fresh SSO round instead of a remembered cookie.
+  # The SSO window opens on the desktop; complete login there. The tunnel then
+  # runs detached, so this terminal can be closed after auth completes.
+  echo "Opening SSO window for WPI authentication..."
 
-  "$GPAUTH" "$PORTAL" --browser 2>/dev/null > "$COOKIE_FILE"
-
-  # gpauth outputs {"success": ...} or {"failure": "msg"} as JSON on stdout.
-  if ! grep -q '"success"' "$COOKIE_FILE" 2>/dev/null; then
-    echo "wpi-vpn: authentication failed." >&2
-    cat "$COOKIE_FILE" >&2
-    exit 1
-  fi
-
-  # Step 2: start the VPN tunnel detached from this terminal.
   # Cache sudo credentials first so the background process doesn't prompt.
   sudo -v
-  sudo setsid "$GPCLIENT" connect "$PORTAL" --cookie-on-stdin \
-    < "$COOKIE_FILE" > "$LOG_FILE" 2>&1 &
+  sudo setsid "$GPCLIENT" connect "$PORTAL" --os Windows --clean \
+    > "$LOG_FILE" 2>&1 &
 
-  rm -f "$COOKIE_FILE"
-  trap - EXIT
-
-  echo "VPN connecting in background. Logs: $LOG_FILE"
+  echo "VPN connecting. Complete the SSO window if it is still open."
+  echo "Logs: $LOG_FILE"
   echo "Run 'wpi-vpn disconnect' to stop."
 }
 
