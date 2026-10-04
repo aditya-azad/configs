@@ -41,3 +41,7 @@ sudo pacman -S hugo
 
 # anki
 sudo pacman -S anki
+
+# global protect
+yay -S globalprotect-openconnect
+ln -sfn "$HOME/.config/scripts/wpi-vpn" "$HOME/.local/bin/wpi-vpn"

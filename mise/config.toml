@@ -1,7 +1,8 @@
 [tools]
-codex = "latest"
 node = "26.8.2"
 pi = "latest"
+rust = "stable"
+uv = "latest"
 
 [settings.upgrade]
 auto_prune = false
