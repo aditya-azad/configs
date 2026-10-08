@@ -212,7 +212,14 @@ vim.notify = notify
 
 -- notes
 
-require("obelisk").setup({ notes_dir = "~/database/workspace/notes" })
+require("obelisk").setup({
+    notes_dir = "~/database/workspace/notes",
+    cite = {
+        -- refree runs in Docker with /data bind-mounted from this host path,
+        -- so pdf_path values must be rewritten before opening
+        pdf_path_map = { ["/data"] = "~/database/third-party-media/papers" },
+    },
+})
 require("neoflash").setup({ notes_dir = "~/database/workspace/notes" })
 
 -- db ui (vim-dadbod-ui reads these globals when its commands run)
