@@ -29,21 +29,13 @@ services:
     environment:
       VERSION: "15"
       DISK_SIZE: "256G"
-      RAM_SIZE: "16G"
+      RAM_SIZE: "8G"
       CPU_CORES: "4"
       GPU: "Y"
+      VGA: "virtio"
       AUDIO: "Y"
-      NVIDIA_DRIVER_CAPABILITIES: "all"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
     devices:
-      - /dev/dri
+      - /dev/dri/renderD129
       - /dev/kvm
       - /dev/net/tun
     cap_add:
