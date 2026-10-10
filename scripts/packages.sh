@@ -45,3 +45,8 @@ sudo pacman -S anki
 # global protect
 yay -S globalprotect-openconnect
 ln -sfn "$HOME/.config/scripts/wpi-vpn" "$HOME/.local/bin/wpi-vpn"
+
+# nvidia container toolkit (docker gpu)
+sudo pacman -S nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
