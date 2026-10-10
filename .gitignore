@@ -29,3 +29,9 @@ rerun/
 uwsm/
 blender/
 chromium-headless/
+React Native DevTools/
+kdeglobals
+kdenliverc
+refree/qdrant
+refree/docker-compose.yml
+.env
