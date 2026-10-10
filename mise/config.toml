@@ -1,0 +1,13 @@
+[tools]
+codex = "latest"
+copilot = "latest"
+gh = "latest"
+node = "26.8.2"
+"npm:@xai-official/grok" = "latest"
+pi = "latest"
+rust = "stable"
+uv = "latest"
+zig = "latest"
+
+[settings.upgrade]
+auto_prune = false

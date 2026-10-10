@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# https://github.com/dockur/macos
+# First time setup
+# - Start the container and connect to port 8006 using your web browser.
+# - After the recovery image is downloaded, a black screen with a progress bar will appear while macOS downloads the remaining installation files.
+# - Once the download is complete, the macOS recovery menu will appear.
+# - Choose Disk Utility and then select the largest Apple Inc. VirtIO Block Media disk.
+# - Click the Erase button to format the disk to APFS, and give it any name you like.
+# - Close the current window and proceed the installation by clicking Reinstall macOS.
+# - When prompted where you want to install it, select the disk you created previously.
+# - After all files are copied, select your region, language, and keyboard settings.
+# - When the Migration Assistant wants to transfer data, select Not now (bottom left).
+# - On the Apple ID screen, select Set Up Later (bottom left) and then proceed using Skip.
+# - On the Create a Computer Account screen, fill in a username and password and Continue.
+
+set -euo pipefail
+
+MAC_DIR="$HOME/code/mac"
+mkdir -p "$HOME/.macos"
+cd "$MAC_DIR"
+
+cleanup() {
+    echo "Stopping macOS container..."
+    docker compose -p mac down --remove-orphans
+    echo "Stopped."
+    exit 0
+}
+
+trap cleanup INT TERM
+
+# Run in background so the trap can fire on signals; wait on the PID.
+docker compose -f - up <<'EOF' &
+name: mac
+services:
+  macos:
+    image: dockurr/macos
+    container_name: macos
+    environment:
+      VERSION: "15"
+      DISK_SIZE: "256G"
+      RAM_SIZE: "8G"
+      CPU_CORES: "4"
+      GPU: "Y"
+      VGA: "virtio"
+      AUDIO: "Y"
+    devices:
+      - /dev/dri/renderD129
+      - /dev/kvm
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006
+      - 5900:5900/tcp
+      - 5900:5900/udp
+    volumes:
+      - ${HOME}/.macos:/storage
+    restart: always
+    stop_grace_period: 2m
+EOF
+
+COMPOSE_PID=$!
+
+wait "$COMPOSE_PID"
