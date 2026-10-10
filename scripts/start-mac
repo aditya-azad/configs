@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Start the macOS container (dockur/macos).
+# Callable from anywhere: ~/.local/bin/start-mac
+# Stopping this script (Ctrl+C / SIGTERM) stops and removes the container.
+# The docker compose config is embedded below — no mac.yaml needed.
+
+set -euo pipefail
+
+MAC_DIR="$HOME/code/mac"
+mkdir -p "$HOME/.macos"
+cd "$MAC_DIR"
+
+cleanup() {
+    echo "Stopping macOS container..."
+    docker compose -p mac down --remove-orphans
+    echo "Stopped."
+    exit 0
+}
+
+trap cleanup INT TERM
+
+# Run in background so the trap can fire on signals; wait on the PID.
+docker compose -f - up <<'EOF' &
+name: mac
+services:
+  macos:
+    image: dockurr/macos
+    container_name: macos
+    environment:
+      VERSION: "15"
+      DISK_SIZE: "256G"
+      RAM_SIZE: "16G"
+      CPU_CORES: "4"
+      GPU: "Y"
+      AUDIO: "Y"
+      NVIDIA_DRIVER_CAPABILITIES: "all"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    devices:
+      - /dev/dri
+      - /dev/kvm
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006
+      - 5900:5900/tcp
+      - 5900:5900/udp
+    volumes:
+      - ${HOME}/.macos:/storage
+    restart: always
+    stop_grace_period: 2m
+EOF
+
+COMPOSE_PID=$!
+
+wait "$COMPOSE_PID"

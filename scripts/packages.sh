@@ -50,3 +50,6 @@ ln -sfn "$HOME/.config/scripts/wpi-vpn" "$HOME/.local/bin/wpi-vpn"
 sudo pacman -S nvidia-container-toolkit
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
+
+# macos container (start-mac)
+ln -sfn "$HOME/.config/scripts/start-mac" "$HOME/.local/bin/start-mac"
