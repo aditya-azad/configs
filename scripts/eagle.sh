@@ -426,7 +426,7 @@ touch "$BASHRC_FILE"
 
 sed -i '/# BEGIN bashrc eagle/,/# END bashrc eagle/d' "$BASHRC_FILE"
 cat >> "$BASHRC_FILE" <<'EOF'
-# BEGIN configs bashrc-common
+# BEGIN bashrc eagle
 alias start='xdg-open'
 alias brc='nvim ~/.bashrc'
 alias dev='./scripts/dev.sh'

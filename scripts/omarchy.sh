@@ -5,9 +5,6 @@ set -euo pipefail
 
 # ---------------------------------------------------------------- env / setup
 
-mkdir -p "$HOME_DIR/.local/bin"
-chmod 0755 "$HOME_DIR/.local/bin"
-
 CONFIGS_REPO="$HOME/.config"
 PACKAGES_DIR="$CONFIGS_REPO/scripts/packages"
 
@@ -22,47 +19,52 @@ PX4_PATH="$HOME/code/PX4-Autopilot"
 HOME_DIR="$HOME"
 BASHRC_FILE="$HOME_DIR/.bashrc"
 
+mkdir -p "$HOME_DIR/.local/bin"
+chmod 0755 "$HOME_DIR/.local/bin"
+
+pkg_has() { pacman -Qi "$1" >/dev/null 2>&1; }
+
 # ---------------------------------------------------------------- firacode
 
-omarchy pkg add ttf-firacode-nerd
+pkg_has ttf-firacode-nerd || omarchy pkg add ttf-firacode-nerd
 
 # ---------------------------------------------------------------- steam
 
-sudo omarchy-pkg-add steam
+pkg_has steam || sudo omarchy-pkg-add steam
 
 # ---------------------------------------------------------------- keepass
 
-sudo pacman -Sy keepassxc
+pkg_has keepassxc || sudo pacman -S --noconfirm keepassxc
 
 # ---------------------------------------------------------------- freefilesync
 
-yay -S freefilesync-bin
+pkg_has freefilesync-bin || yay -S --noconfirm freefilesync-bin
 
 # ---------------------------------------------------------------- zellij
 
-sudo pacman -Sy zellij
+pkg_has zellij || sudo pacman -S --noconfirm zellij
 
 # ---------------------------------------------------------------- hugo
 
-sudo pacman -S hugo
+pkg_has hugo || sudo pacman -S --noconfirm hugo
 
 # ---------------------------------------------------------------- anki
 
-sudo pacman -S anki
+pkg_has anki || sudo pacman -S --noconfirm anki
 
 # ---------------------------------------------------------------- global protect
 
-yay -S globalprotect-openconnect
+pkg_has globalprotect-openconnect || yay -S --noconfirm globalprotect-openconnect
 
 # ---------------------------------------------------------------- nvidia container toolkit (docker gpu)
 
-sudo pacman -S nvidia-container-toolkit
+pkg_has nvidia-container-toolkit || sudo pacman -S --noconfirm nvidia-container-toolkit
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 
 # ---------------------------------------------------------------- pi
 
-curl -fsSL https://pi.dev/install.sh | sh
+[[ -x "$HOME_DIR/.local/bin/pi" || -x /usr/bin/pi ]] || curl -fsSL https://pi.dev/install.sh | sh
 
 cfg="$HOME_DIR/.pi/agent/settings.json"
 
@@ -227,7 +229,6 @@ update_host() {
   fi
 }
 
-# Add hosts from ~/code/configs (bizon, jetson) to /etc/hosts, idempotently.
 update_host "192.168.55.1" "jetson"
 update_host "130.215.183.33" "bizon"
 
