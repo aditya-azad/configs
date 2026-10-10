@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# https://github.com/dockur/macos
 # First time setup
 # - Start the container and connect to port 8006 using your web browser.
 # - After the recovery image is downloaded, a black screen with a progress bar will appear while macOS downloads the remaining installation files.
