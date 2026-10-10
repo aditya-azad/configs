@@ -44,7 +44,7 @@ sudo pacman -S anki
 
 # global protect
 yay -S globalprotect-openconnect
-ln -sfn "$HOME/.config/scripts/wpi-vpn" "$HOME/.local/bin/wpi-vpn"
+ln -sfn "$HOME/.config/scripts/packages/wpi-vpn/wpi-vpn" "$HOME/.local/bin/wpi-vpn"
 
 # nvidia container toolkit (docker gpu)
 sudo pacman -S nvidia-container-toolkit
@@ -52,4 +52,10 @@ sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 
 # macos container (start-mac)
-ln -sfn "$HOME/.config/scripts/start-mac" "$HOME/.local/bin/start-mac"
+ln -sfn "$HOME/.config/scripts/packages/start-mac/start-mac" "$HOME/.local/bin/start-mac"
+
+# distrobox launcher (db)
+ln -sfn "$HOME/.config/scripts/packages/distrobox/db" "$HOME/.local/bin/db"
+
+# github backup (ghclone)
+ln -sfn "$HOME/.config/scripts/packages/ghclone/ghclone" "$HOME/.local/bin/ghclone"
