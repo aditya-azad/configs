@@ -14,7 +14,8 @@
         { "name": "Student Portal Profile", "url": "https://international.wpi.edu/index.cfm?FuseAction=scholarPortal.department#/student/student-service-menu/1778" },
         { "name": "Payroll Calendar", "url": "https://www.wpi.edu/sites/default/files/2025-11/2026-Pay-Calendar-with-Deadlines.pdf" },
         { "name": "Events List", "url": "https://mywpi.wpi.edu/events" },
-        { "name": "Washburn Schedule", "url": "https://pear-wiki.wpi.edu/washburn" }
+        { "name": "Washburn Schedule", "url": "https://pear-wiki.wpi.edu/washburn" },
+        { "name": "Lab Wiki", "url": "https://acplab-wiki.wpi.edu/" }
       ] },
       { "name": "OpenRouter", "url": "https://openrouter.ai/settings/credits" },
       { "name": "Hacker News", "url": "https://news.ycombinator.com/" },
