@@ -52,6 +52,10 @@ pkg_has hugo || sudo pacman -S --noconfirm hugo
 
 pkg_has anki || sudo pacman -S --noconfirm anki
 
+# ---------------------------------------------------------------- texlive
+
+pkg_has texlive-latexextra || sudo pacman -S --noconfirm texlive-latexextra texlive-binextra
+
 # ---------------------------------------------------------------- global protect
 
 pkg_has globalprotect-openconnect || yay -S --noconfirm globalprotect-openconnect
