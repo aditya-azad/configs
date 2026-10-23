@@ -166,7 +166,6 @@ vim.pack.add({
     'https://github.com/kristijanhusak/vim-dadbod-completion',
 
     'https://github.com/aditya-azad/obelisk',
-    'https://github.com/aditya-azad/neoflash',
     'https://github.com/lewis6991/gitsigns.nvim',
     'https://github.com/mbbill/undotree',
     'https://github.com/williamboman/mason.nvim',
