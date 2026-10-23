@@ -164,7 +164,6 @@ vim.pack.add({
     'https://github.com/Bilal2453/luvit-meta',
     'https://github.com/tpope/vim-dadbod',
     'https://github.com/kristijanhusak/vim-dadbod-completion',
-
     'https://github.com/aditya-azad/obelisk',
     'https://github.com/lewis6991/gitsigns.nvim',
     'https://github.com/mbbill/undotree',
