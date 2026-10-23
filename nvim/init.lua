@@ -218,7 +218,6 @@ require("obelisk").setup({
         pdf_path_map = { ["/data"] = "~/database/third-party-media/papers" },
     },
 })
-require("neoflash").setup({ notes_dir = "~/database/workspace/notes" })
 
 -- db ui (vim-dadbod-ui reads these globals when its commands run)
 
