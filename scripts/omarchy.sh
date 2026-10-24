@@ -52,6 +52,10 @@ pkg_has hugo || sudo pacman -S --noconfirm hugo
 
 pkg_has anki || sudo pacman -S --noconfirm anki
 
+# ---------------------------------------------------------------- pureref
+
+pkg_has pureref || yay -S pureref
+
 # ---------------------------------------------------------------- texlive
 
 pkg_has texlive-latexextra || sudo pacman -S --noconfirm texlive-latexextra texlive-binextra
