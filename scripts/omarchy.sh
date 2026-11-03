@@ -69,6 +69,12 @@ pkg_has pureref || yay -S pureref
 
 pkg_has texlive-latexextra || sudo pacman -S --noconfirm texlive-latexextra texlive-binextra
 
+# ---------------------------------------------------------------- learnharness
+
+LH_DATA_TARGET="$HOME_DIR/database/workspace/notes/learnharness/data"
+mkdir -p "$LH_DATA_TARGET"
+ln -sfn "$LH_DATA_TARGET" "$HOME_DIR/.config/LearnHarness/data"
+
 # ---------------------------------------------------------------- global protect
 
 pkg_has globalprotect-openconnect || yay -S --noconfirm globalprotect-openconnect
