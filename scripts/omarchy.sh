@@ -36,9 +36,18 @@ pkg_has steam || sudo omarchy-pkg-add steam
 
 pkg_has keepassxc || sudo pacman -S --noconfirm keepassxc
 
+# ---------------------------------------------------------------- keepass
+
+pkg_has calibre || sudo pacman -S --noconfirm calibre
+
 # ---------------------------------------------------------------- freefilesync
 
 pkg_has freefilesync-bin || yay -S --noconfirm freefilesync-bin
+
+# ---------------------------------------------------------------- syncthing
+
+omarchy plugin add https://github.com/ninepointlabs/omasync.git --enable
+pkg_has freefilesync-bin || omarchy pkg add syncthing
 
 # ---------------------------------------------------------------- zellij
 

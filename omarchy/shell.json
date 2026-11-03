@@ -27,7 +27,8 @@
           "formatAlt": "d MMMM 'W'ww yyyy",
           "verticalFormat": "HH\n—\nmm",
           "birthYear": 2000,
-          "lifeExpectancy": 70
+          "lifeExpectancy": 70,
+          "weekStartDay": "monday"
         },
         {
           "id": "omarchy.keyboard-layout"
@@ -42,6 +43,12 @@
       "right": [
         {
           "id": "omarchy.tray"
+        },
+        {
+          "id": "ninepointlabs.omasync"
+        },
+        {
+          "id": "omarchy.tailscale"
         },
         {
           "id": "omarchy.agents"
