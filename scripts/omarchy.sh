@@ -49,6 +49,10 @@ pkg_has freefilesync-bin || yay -S --noconfirm freefilesync-bin
 omarchy plugin add https://github.com/ninepointlabs/omasync.git --enable
 pkg_has freefilesync-bin || omarchy pkg add syncthing
 
+# ---------------------------------------------------------------- auto nightlight
+
+omarchy plugin add https://github.com/key-tone/omarchy-nightlight.git --enable
+
 # ---------------------------------------------------------------- zellij
 
 pkg_has zellij || sudo pacman -S --noconfirm zellij

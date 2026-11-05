@@ -37,6 +37,9 @@
           "id": "omarchy.weather"
         },
         {
+          "id": "kenny.nightlight"
+        },
+        {
           "id": "omarchy.system-update"
         }
       ],
@@ -71,5 +74,11 @@
       ]
     }
   },
-  "plugins": []
+  "plugins": [],
+  "disabledPlugins": [
+    "omarchy.nightlight"
+  ],
+  "cloneSourceRestores": [
+    "kenny.nightlight"
+  ]
 }
