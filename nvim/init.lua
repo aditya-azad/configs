@@ -438,11 +438,6 @@ lsp.config('gopls', {
     filetypes = { "go", },
 })
 
--- typescript/javascript (ts_ls)
-lsp.config('ts_ls', {
-    capabilities = capabilities,
-})
-
 -- tailwindcss
 lsp.config('tailwindcss', {
     capabilities = capabilities,
@@ -515,7 +510,7 @@ for _, name in ipairs({
     "gopls",
     "zls",
     "ruff",
-    "ts_ls",
+    "tsc",
     "tailwindcss",
     "pyrefly",
     "intelephense",
