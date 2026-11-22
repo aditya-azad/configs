@@ -52,3 +52,20 @@ LearnHarness/
 PureRef/
 calibre/
 omarchy/plugins/
+BraveSoftware/
+Raspberry Pi/
+config3d/
+configstore/
+environment.d/
+google-chrome-beta/
+google-chrome-unstable/
+google-chrome/
+herdr/
+inscribe/
+mozilla/
+netlify/
+omarchy/defaults/dictation
+omarchy/defaults/dictation.lock
+omarchy/hooks/theme-set.d/10-owe-sync
+papers-agent/
+xdg-desktop-portal/

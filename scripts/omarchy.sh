@@ -91,15 +91,24 @@ sudo systemctl restart docker
 
 # ---------------------------------------------------------------- pi
 
-[[ -x "$HOME_DIR/.local/bin/pi" || -x /usr/bin/pi ]] || curl -fsSL https://pi.dev/install.sh | sh
+# pi is managed by mise; the curl installer is only a fallback
+command -v pi >/dev/null 2>&1 || curl -fsSL https://pi.dev/install.sh | sh
 
 cfg="$HOME_DIR/.pi/agent/settings.json"
 
-cat > "$cfg" <<'EOF'
+# write default settings only on fresh install; never clobber manual edits
+if [[ ! -f "$cfg" ]]; then
+  mkdir -p "$(dirname "$cfg")"
+  cat > "$cfg" <<EOF
 {
   "theme": "omarchy-system",
   "packages": [
-    "npm:pi-subagents",
+    {
+      "source": "npm:pi-subagents",
+      "extensions": ["./bundle/index.js"],
+      "skills": [],
+      "prompts": []
+    },
     "npm:@zhushanwen/pi-ask-user",
     "npm:pi-agent-browser-native",
     "npm:pi-mcp-adapter",
@@ -107,9 +116,16 @@ cat > "$cfg" <<'EOF'
     "npm:pi-vim"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.3-flash"
+  "skills": [
+    "$HOME_DIR/code/flashcard-agent/skills",
+    "$HOME_DIR/code/papers-agent/skills"
+  ],
+  "defaultModel": "z-ai/glm-5.3-flash",
+  "hideThinkingBlock": true,
+  "extensions": ["-builtin:mcp"]
 }
 EOF
+fi
 
 # ---------------------------------------------------------------- wpi-vpn
 

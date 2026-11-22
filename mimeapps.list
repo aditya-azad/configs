@@ -6,6 +6,9 @@ x-scheme-handler/about=chromium.desktop
 x-scheme-handler/unknown=chromium.desktop
 x-scheme-handler/mailto=chromium.desktop
 application/epub+zip=calibre-ebook-viewer.desktop
+x-scheme-handler/rpi-imager=com.raspberrypi.rpi-imager-uri-handler.desktop
+image/heif=imv-dir.desktop
 
 [Added Associations]
 application/epub+zip=calibre-ebook-viewer.desktop;
+image/heif=imv-dir.desktop;

@@ -1,37 +1,36 @@
 {
-  "version": 1,
-  "idle": {
-    "screensaver": 150,
-    "lock": 300
-  },
   "bar": {
-    "position": "top",
-    "transparent": false,
-    "centerAnchor": "omarchy.clock",
+    "background": "opaque",
     "layout": {
-      "left": [
-        {
-          "id": "omarchy.menu"
-        },
-        {
-          "id": "omarchy.workspaces"
-        }
-      ],
       "center": [
         {
-          "id": "omarchy.indicators"
-        },
-        {
-          "id": "omarchy.clock",
+          "birthYear": 2000,
           "format": "dddd HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
-          "verticalFormat": "HH\n—\nmm",
-          "birthYear": 2000,
+          "id": "omarchy.clock",
           "lifeExpectancy": 70,
+          "verticalFormat": "HH\n—\nmm",
           "weekStartDay": "monday"
-        },
+        }
+      ],
+      "centerBegin": [
         {
-          "id": "omarchy.keyboard-layout"
+          "id": "omarchy.indicators"
+        }
+      ],
+      "centerEnd": [
+        {
+          "id": "omarchy.elsewhen",
+          "cities": [
+            {
+              "name": "New York",
+              "zone": "America/New_York"
+            },
+            {
+              "name": "New Delhi",
+              "zone": "Asia/Kolkata"
+            }
+          ]
         },
         {
           "id": "omarchy.weather"
@@ -43,9 +42,20 @@
           "id": "omarchy.system-update"
         }
       ],
+      "left": [
+        {
+          "id": "omarchy.menu"
+        },
+        {
+          "id": "omarchy.workspaces"
+        }
+      ],
       "right": [
         {
           "id": "omarchy.tray"
+        },
+        {
+          "id": "omarchy.keyboard-layout"
         },
         {
           "id": "ninepointlabs.omasync"
@@ -71,14 +81,25 @@
         {
           "id": "omarchy.power"
         }
-      ]
-    }
+      ],
+      "tray": []
+    },
+    "position": "top"
   },
-  "plugins": [],
+  "cloneSourceRestores": [
+    "kenny.nightlight"
+  ],
   "disabledPlugins": [
     "omarchy.nightlight"
   ],
-  "cloneSourceRestores": [
-    "kenny.nightlight"
-  ]
+  "idle": {
+    "lock": 300,
+    "screensaver": 150
+  },
+  "plugins": [
+    {
+      "id": "io.voxtype.settings"
+    }
+  ],
+  "version": 1
 }
