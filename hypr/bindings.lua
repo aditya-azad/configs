@@ -42,6 +42,12 @@ o.bind("SUPER + K", "Focus on above window", hl.dsp.focus({ direction = "u" }))
 hl.unbind("SUPER + J")
 o.bind("SUPER + J", "Focus on below window", hl.dsp.focus({ direction = "d" }))
 
+-- move window to monitor in that direction
+o.bind("SUPER + SHIFT + H", "Move window to left monitor", o.workspaces.move_window_to_monitor("l"))
+o.bind("SUPER + SHIFT + J", "Move window to down monitor", o.workspaces.move_window_to_monitor("d"))
+o.bind("SUPER + SHIFT + K", "Move window to up monitor", o.workspaces.move_window_to_monitor("u"))
+o.bind("SUPER + SHIFT + L", "Move window to right monitor", o.workspaces.move_window_to_monitor("r"))
+
 -- applications
 o.bind("SUPER + B", "Browser", { omarchy = "browser" })
 o.bind("SUPER + E", "File manager", { omarchy = "nautilus" })
