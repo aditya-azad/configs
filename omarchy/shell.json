@@ -1,6 +1,6 @@
 {
   "bar": {
-    "background": "opaque",
+    "background": "glassy",
     "layout": {
       "center": [
         {
@@ -20,7 +20,6 @@
       ],
       "centerEnd": [
         {
-          "id": "omarchy.elsewhen",
           "cities": [
             {
               "name": "New York",
@@ -30,7 +29,8 @@
               "name": "New Delhi",
               "zone": "Asia/Kolkata"
             }
-          ]
+          ],
+          "id": "omarchy.elsewhen"
         },
         {
           "id": "omarchy.weather"
