@@ -36,9 +36,6 @@
           "id": "omarchy.weather"
         },
         {
-          "id": "kenny.nightlight"
-        },
-        {
           "id": "omarchy.system-update"
         }
       ],
@@ -99,6 +96,9 @@
   "plugins": [
     {
       "id": "io.voxtype.settings"
+    },
+    {
+      "id": "kenny.nightlight"
     }
   ],
   "version": 1
