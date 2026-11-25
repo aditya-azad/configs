@@ -1,34 +1,26 @@
 #!/usr/bin/env bash
-# All-in-one setup for eagle
 set -euo pipefail
 
-# ---------------------------------------------------------------- env (common.sh + eagle.env)
-
-CONFIGS_REPO="$HOME/.config"
-PACKAGES_DIR="$CONFIGS_REPO/bash/packages"
-TASKS_DIR="$CONFIGS_REPO/bash/tasks"
-
 USERNAME="eagle7"
-GIT_FULL_NAME="Aditya Azad"
-GIT_EMAIL="adityaazad121@gmail.com"
 ROS_DOMAIN_ID=7
 
-[[ "$USERNAME" == "$(id -un)" ]] || { echo "run as '$USERNAME' (you are '$(id -un)')" >&2; exit 1; }
+source "$HOME/.config/scripts/common/env.sh"
+source "$HOME/.config/scripts/common/links.sh"
+source "$HOME/.config/scripts/common/bashrc.sh"
+source "$HOME/.config/scripts/common/pi.sh"
 
-HOME_DIR="$HOME"
+require_user "$USERNAME"
+
 USER_UID="$(id -u)"
 XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$USER_UID}"
 DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=$XDG_RUNTIME_DIR/bus}"
 CODE_DIR="$HOME_DIR/code"
 SOFTWARE_DIR="$HOME_DIR/.software"
-BASHRC_FILE="$HOME_DIR/.bashrc"
 MISE_BIN="$HOME_DIR/.local/bin/mise"
 CARGO_BIN="$HOME_DIR/.cargo/bin"
 ARCH="$(uname -m)"
 
 mkdir -p "$CODE_DIR" "$SOFTWARE_DIR"
-
-# ---------------------------------------------------------------- ssh_key
 
 mkdir -p "$HOME_DIR/.ssh"
 chmod 0700 "$HOME_DIR/.ssh"
@@ -44,33 +36,21 @@ if [[ ! -f "$HOME_DIR/.ssh/id_ed25519" ]]; then
   read -rp "Paste the public key above into GitHub, then press Enter to continue (Ctrl+C to abort): "
 fi
 
-# ---------------------------------------------------------------- git
-
 git config --global user.name  "$GIT_FULL_NAME"
 git config --global user.email "$GIT_EMAIL"
 
 bash -c 'eval "$(ssh-agent -s)"; ssh-add "$HOME/.ssh/id_ed25519" 2>/dev/null || true' || true
 
-# ---------------------------------------------------------------- rust
-
 [[ -x "$CARGO_BIN/cargo" ]] || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-# ---------------------------------------------------------------- compilers
 
 sudo apt-get install -y \
   git build-essential ninja-build gettext cmake unzip curl \
   xclip g++ pkg-config libfontconfig1-dev libxcb-xfixes0-dev \
   libxkbcommon-dev python3-pip
 
-# ---------------------------------------------------------------- mise_runtimes
-
 [[ -x "$MISE_BIN" ]] || curl https://mise.run | sh
 
-# ---------------------------------------------------------------- net_tools
-
 sudo apt-get install -y net-tools
-
-# ---------------------------------------------------------------- chrony
 
 if [[ "$(timedatectl show -p Timezone --value)" != "America/New_York" ]]; then
   sudo timedatectl set-timezone America/New_York
@@ -80,25 +60,14 @@ sudo apt-get install -y chrony
 sudo systemctl disable --now systemd-timesyncd.service 2>/dev/null || true
 sudo systemctl enable --now chrony
 
-# ---------------------------------------------------------------- zellij
-# config is already at ~/.config/zellij (repo lives in ~/.config)
-
 [[ -x "$CARGO_BIN/zellij" ]] || "$CARGO_BIN/cargo" install zellij
 
 mkdir -p "$HOME_DIR/.config"
 chmod 0755 "$HOME_DIR/.config"
 
-# ---------------------------------------------------------------- ripgrep
-
 [[ -x "$CARGO_BIN/rg" ]] || "$CARGO_BIN/cargo" install ripgrep
 
-# ---------------------------------------------------------------- python_lsp
-# per nvim config: pip install ruff pyrefly
-
 pip3 install --user ruff pyrefly
-
-# ---------------------------------------------------------------- neovim
-# release tarball (0.12); config is already at ~/.config/nvim (repo lives in ~/.config)
 
 nvim_version="0.12.0"
 nvim_installed_version=""
@@ -114,13 +83,10 @@ if [[ "$nvim_installed_version" != "$nvim_version" || ! -x /usr/local/bin/nvim ]
   sudo mv "/opt/${nvim_asset%.tar.gz}" /opt/nvim
   rm -rf "$nvim_tmp"
   sudo ln -sfn /opt/nvim/bin/nvim /usr/local/bin/nvim
-  # remove leftovers from a previous source-built install
   sudo rm -rf /usr/local/share/nvim /usr/local/lib/nvim /usr/local/share/nvim-commit
   printf '%s\n' "$nvim_version" | sudo tee /usr/local/share/nvim-version >/dev/null
   sudo chmod 0644 /usr/local/share/nvim-version
 fi
-
-# ---------------------------------------------------------------- singularity
 
 sudo apt-get install -y \
   autoconf automake cryptsetup fuse2fs git fuse libfuse-dev \
@@ -145,8 +111,6 @@ fi
 [[ -x /usr/local/bin/singularity ]] || \
   sudo make -C "$CODE_DIR/singularity-ce-4.3.0/builddir" install
 
-# ---------------------------------------------------------------- realsense
-
 sudo apt-get install -y v4l-utils
 mkdir -p "$CODE_DIR"
 chmod 0755 "$CODE_DIR"
@@ -159,8 +123,6 @@ else
 fi
 
 sudo bash -c "cd '$CODE_DIR/librealsense'; bash ./scripts/setup_udev_rules.sh"
-
-# ---------------------------------------------------------------- nvidia_container_toolkit
 
 sudo apt-get install -y curl
 
@@ -180,8 +142,6 @@ sudo apt-get install -y \
   nvidia-container-toolkit-base=1.17.8-1 \
   libnvidia-container-tools=1.17.8-1 \
   libnvidia-container1=1.17.8-1
-
-# ---------------------------------------------------------------- nvliblist
 
 sudo mkdir -p /usr/local/etc/singularity
 sudo chmod 0755 /usr/local/etc/singularity
@@ -406,8 +366,6 @@ libwayland-server.so
 # END configs jetson-nvliblist
 EOF
 
-# ---------------------------------------------------------------- local_scripts
-
 sudo apt-get install -y jq zip
 
 for d in "$HOME_DIR/.local/bin" "$HOME_DIR/.local/lib" "$HOME_DIR/.local/share" \
@@ -416,86 +374,25 @@ for d in "$HOME_DIR/.local/bin" "$HOME_DIR/.local/lib" "$HOME_DIR/.local/share" 
   chmod 0755 "$d"
 done
 
-install -m 0755 "$PACKAGES_DIR/wpi-vpn/wpi-vpn" "$HOME_DIR/.local/bin/wpi-vpn"
-install -m 0644 "$PACKAGES_DIR/venvup/venvup" "$HOME_DIR/.local/lib/venvup"
-install -m 0644 "$PACKAGES_DIR/rdid/rdid"     "$HOME_DIR/.local/lib/rdid"
+link_tool wpi-vpn
 
-# ---------------------------------------------------------------- bashrc_common
-
-touch "$BASHRC_FILE"
+write_bashrc_block
 
 sed -i '/# BEGIN bashrc eagle/,/# END bashrc eagle/d' "$BASHRC_FILE"
 cat >> "$BASHRC_FILE" <<'EOF'
-# BEGIN bashrc eagle
+# BEGIN bashrc eagle extras
 alias start='xdg-open'
-alias brc='nvim ~/.bashrc'
 alias dev='./scripts/dev.sh'
 
-case ":$PATH:" in
-  *:"$HOME/.local/bin":*) ;;
-  *) export PATH="$HOME/.local/bin:$PATH" ;;
-esac
-
-alias cdc='cd ~/code'
-alias cdd='cd ~/Downloads'
-
-[ -f "$HOME/.local/lib/venvup" ] && source "$HOME/.local/lib/venvup"
-[ -f "$HOME/.local/lib/rdid" ]   && source "$HOME/.local/lib/rdid"
-
-alias z='zellij'
-alias tmux='zellij'
-alias scp='rsync -avP'
-
-alias vim='nvim'
-alias vi='nvim'
-export EDITOR=nvim
-
-set -o vi
-bind -m vi-command 'Control-l: clear-screen'
-bind -m vi-insert 'Control-l: clear-screen'
-
 export PATH=${PATH}:/usr/src/tensorrt/bin/
-alias r2='source /opt/ros/humble/setup.bash'
-alias ws='source ./install/setup.bash'
-alias cws='rm -rf ./build ./install ./log'
-alias bws='colcon build --symlink-install'
-alias chrons='chronyc sources'
-alias chronr='sudo systemctl restart chronyd'
-alias chronc='sudo nvim /etc/chrony/chrony.conf'
-alias acp='source ~/code/acp_ws/install/setup.bash'
 alias sin='sudo chmod 666 /dev/ttyTHS1 && singularity exec --nv -B /run ~/code/singularity/jetson_6_2.sif /bin/bash'
 alias fan='sudo jetson_clocks --fan'
-export ROS_DOMAIN_ID=$ROS_DOMAIN_ID
-export ROS_LOCALHOST_ONLY=0
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
 eval "$(~/.local/bin/mise activate bash)"
 
 PS1='\[\e[38;5;196m\]\u@\h\[\e[38;5;28m\]:\w\[\e[0m\]\$ '
 
-# END bashrc eagle
+# END bashrc eagle extras
 EOF
 
-# ---------------------------------------------------------------- pi
-
-mkdir -p "$HOME_DIR/.pi/agent"
-chmod 0755 "$HOME_DIR/.pi/agent"
-
-[[ -x "$HOME_DIR/.local/bin/pi" || -x /usr/bin/pi ]] || curl -fsSL https://pi.dev/install.sh | sh
-
-cfg="$HOME_DIR/.pi/agent/settings.json"
-
-cat > "$cfg" <<'EOF'
-{
-  "packages": [
-    "npm:pi-subagents",
-    "npm:@zhushanwen/pi-ask-user",
-    "npm:pi-agent-browser-native",
-    "npm:pi-mcp-adapter",
-    "npm:pi-notify",
-    "npm:pi-vim"
-  ],
-  "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.3-flash"
-}
-EOF
+setup_pi
