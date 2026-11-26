@@ -21,8 +21,9 @@ setup_pi() {
     "npm:pi-agent-browser-native",
     "npm:pi-mcp-adapter",
     "npm:pi-notify",
-    "npm:pi-vim"
-    "npm:pi-token-speed"
+    "npm:pi-vim",
+    "npm:pi-token-speed",
+    "npm:pi-session-search"
   ],
   "defaultProvider": "openrouter",
   "skills": [
