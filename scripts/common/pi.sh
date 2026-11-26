@@ -22,7 +22,7 @@ setup_pi() {
     "npm:pi-mcp-adapter",
     "npm:pi-notify",
     "npm:pi-vim",
-    "npm:pi-token-speed",
+    "npm:pi-token-speed"
   ],
   "defaultProvider": "openrouter",
   "skills": [
