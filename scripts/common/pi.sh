@@ -23,7 +23,6 @@ setup_pi() {
     "npm:pi-notify",
     "npm:pi-vim",
     "npm:pi-token-speed",
-    "npm:pi-session-search"
   ],
   "defaultProvider": "openrouter",
   "skills": [
